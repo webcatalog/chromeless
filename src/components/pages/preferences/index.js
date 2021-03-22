@@ -23,6 +23,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import PowerIcon from '@material-ui/icons/Power';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import SecurityIcon from '@material-ui/icons/Security';
+import StoreIcon from '@material-ui/icons/Store';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 import WidgetsIcon from '@material-ui/icons/Widgets';
 
@@ -48,6 +49,15 @@ import {
 } from '../../../senders';
 
 import DefinedAppBar from './defined-app-bar';
+
+import webcatalogIconPng from '../../../assets/products/webcatalog-mac-icon-128@2x.png';
+import translatiumIconPng from '../../../assets/products/translatium-mac-icon-128@2x.png';
+import singleboxIconPng from '../../../assets/products/singlebox-mac-icon-128@2x.png';
+import squeezerIconPng from '../../../assets/products/squeezer-mac-icon-128@2x.png';
+import chromelessIconPng from '../../../assets/products/chromeless-mac-icon-128@2x.png';
+import cloveryIconPng from '../../../assets/products/clovery-mac-icon-128@2x.png';
+import pantextIconPng from '../../../assets/products/pantext-mac-icon-128@2x.png';
+import panmailIconPng from '../../../assets/products/panmail-mac-icon-128@2x.png';
 
 const styles = (theme) => ({
   root: {
@@ -192,6 +202,7 @@ const Preferences = ({
   useHardwareAcceleration,
   useSystemTitleBar,
 }) => {
+  const utmSource = 'chromeless_app';
   const sections = {
     general: {
       text: 'General',
@@ -222,6 +233,11 @@ const Preferences = ({
     reset: {
       text: 'Reset',
       Icon: RotateLeftIcon,
+      ref: useRef(),
+    },
+    moreApps: {
+      text: 'MoreApps',
+      Icon: StoreIcon,
       ref: useRef(),
     },
     miscs: {
@@ -675,6 +691,229 @@ const Preferences = ({
                 }}
               >
                 <ListItemText primary="Restore preferences to their original defaults" />
+                <ChevronRightIcon color="action" />
+              </ListItem>
+            </List>
+          </Paper>
+
+          <Typography variant="subtitle2" color="textPrimary" className={classes.sectionTitle} ref={sections.moreApps.ref}>
+            More Apps
+          </Typography>
+          <Paper elevation={0} className={classes.paper}>
+            <List disablePadding dense>
+              <ListItem
+                button
+                onClick={() => requestOpenInBrowser('https://webcatalog.app?utm_source=webcatalog_app')}
+                className={classes.listItemPromotion}
+              >
+                <div className={classes.promotionBlock}>
+                  <div className={classes.promotionLeft}>
+                    <img src={webcatalogIconPng} alt="WebCatalog" className={classes.appIcon} />
+                  </div>
+                  <div className={classes.promotionRight}>
+                    <div>
+                      <Typography variant="body1" className={classes.appTitle}>
+                        WebCatalog
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        Desktop App Bundle, powered by the Web
+                      </Typography>
+                    </div>
+                  </div>
+                </div>
+                <ChevronRightIcon color="action" />
+              </ListItem>
+              <Divider />
+              <ListItem
+                button
+                onClick={() => {
+                  let url = `https://translatium.app?utm_source=${utmSource}`;
+                  if (window.process.mas) {
+                    url = 'macappstore://apps.apple.com/app/translatium/id1547052291';
+                  } else if (window.process.windowsStore) {
+                    url = 'ms-windows-store://pdp/?productid=9MWPG56JKS38';
+                  }
+                  requestOpenInBrowser(url);
+                }}
+                className={classes.listItemPromotion}
+              >
+                <div className={classes.promotionBlock}>
+                  <div className={classes.promotionLeft}>
+                    <img src={translatiumIconPng} alt="Translatium" className={classes.appIcon} />
+                  </div>
+                  <div className={classes.promotionRight}>
+                    <div>
+                      <Typography variant="body1" className={classes.appTitle}>
+                        Translatium
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        Translate 100+ Languages Instantly
+                      </Typography>
+                    </div>
+                  </div>
+                </div>
+                <ChevronRightIcon color="action" />
+              </ListItem>
+              <Divider />
+              <ListItem
+                button
+                onClick={() => {
+                  let url = `https://singlebox.app?utm_source=${utmSource}`;
+                  if (window.process.mas) {
+                    url = 'macappstore://apps.apple.com/app/singlebox/id1548853763';
+                  }
+                  requestOpenInBrowser(url);
+                }}
+                className={classes.listItemPromotion}
+              >
+                <div className={classes.promotionBlock}>
+                  <div className={classes.promotionLeft}>
+                    <img src={singleboxIconPng} alt="Singlebox" className={classes.appIcon} />
+                  </div>
+                  <div className={classes.promotionRight}>
+                    <div>
+                      <Typography variant="body1" className={classes.appTitle}>
+                        Singlebox
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        Smart Browser for Busy People
+                      </Typography>
+                    </div>
+                  </div>
+                </div>
+                <ChevronRightIcon color="action" />
+              </ListItem>
+              <Divider />
+              <ListItem
+                button
+                onClick={() => {
+                  let url = `https://squeezer.app?utm_source=${utmSource}`;
+                  if (window.process.mas) {
+                    url = 'macappstore://apps.apple.com/us/app/squeezer-image-compression/id1554751184';
+                  }
+                  requestOpenInBrowser(url);
+                }}
+                className={classes.listItemPromotion}
+              >
+                <div className={classes.promotionBlock}>
+                  <div className={classes.promotionLeft}>
+                    <img src={squeezerIconPng} alt="Squeezer" className={classes.appIcon} />
+                  </div>
+                  <div className={classes.promotionRight}>
+                    <div>
+                      <Typography variant="body1" className={classes.appTitle}>
+                        Squeezer
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        Compress, Resize, Convert Images
+                      </Typography>
+                    </div>
+                  </div>
+                </div>
+                <ChevronRightIcon color="action" />
+              </ListItem>
+              <Divider />
+              <ListItem
+                button
+                onClick={() => {
+                  const url = `https://chromeless.app?utm_source=${utmSource}`;
+                  requestOpenInBrowser(url);
+                }}
+                className={classes.listItemPromotion}
+              >
+                <div className={classes.promotionBlock}>
+                  <div className={classes.promotionLeft}>
+                    <img src={chromelessIconPng} alt="Chromeless" className={classes.appIcon} />
+                  </div>
+                  <div className={classes.promotionRight}>
+                    <div>
+                      <Typography variant="body1" className={classes.appTitle}>
+                        Chromeless
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        Turn Any Websites into Site-specific Browsers
+                      </Typography>
+                    </div>
+                  </div>
+                </div>
+                <ChevronRightIcon color="action" />
+              </ListItem>
+              <Divider />
+              <ListItem
+                button
+                onClick={() => {
+                  const url = `https://clovery.app?utm_source=${utmSource}`;
+                  requestOpenInBrowser(url);
+                }}
+                className={classes.listItemPromotion}
+              >
+                <div className={classes.promotionBlock}>
+                  <div className={classes.promotionLeft}>
+                    <img src={cloveryIconPng} alt="Clovery" className={classes.appIcon} />
+                  </div>
+                  <div className={classes.promotionRight}>
+                    <div>
+                      <Typography variant="body1" className={classes.appTitle}>
+                        Clovery
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        All Google Apps in One
+                      </Typography>
+                    </div>
+                  </div>
+                </div>
+                <ChevronRightIcon color="action" />
+              </ListItem>
+              <Divider />
+              <ListItem
+                button
+                onClick={() => {
+                  const url = `https://pantext.app?utm_source=${utmSource}`;
+                  requestOpenInBrowser(url);
+                }}
+                className={classes.listItemPromotion}
+              >
+                <div className={classes.promotionBlock}>
+                  <div className={classes.promotionLeft}>
+                    <img src={pantextIconPng} alt="PanText" className={classes.appIcon} />
+                  </div>
+                  <div className={classes.promotionRight}>
+                    <div>
+                      <Typography variant="body1" className={classes.appTitle}>
+                        PanText
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        All Your Messaging Apps in One
+                      </Typography>
+                    </div>
+                  </div>
+                </div>
+                <ChevronRightIcon color="action" />
+              </ListItem>
+              <Divider />
+              <ListItem
+                button
+                onClick={() => {
+                  const url = `https://panmail.app?utm_source=${utmSource}`;
+                  requestOpenInBrowser(url);
+                }}
+                className={classes.listItemPromotion}
+              >
+                <div className={classes.promotionBlock}>
+                  <div className={classes.promotionLeft}>
+                    <img src={panmailIconPng} alt="PanMail" className={classes.appIcon} />
+                  </div>
+                  <div className={classes.promotionRight}>
+                    <div>
+                      <Typography variant="body1" className={classes.appTitle}>
+                        PanMail
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        All Your Email Apps in One
+                      </Typography>
+                    </div>
+                  </div>
+                </div>
                 <ChevronRightIcon color="action" />
               </ListItem>
             </List>
