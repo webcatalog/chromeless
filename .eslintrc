@@ -1,0 +1,20 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "globals": {
+    "window": true,
+    "document": true
+  },
+  "plugins": [
+    "header"
+  ],
+  "rules": {
+    "header/header": [2, "build-resources/copyright.txt"],
+    "import/no-extraneous-dependencies": [0],
+    "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
+    "react/forbid-prop-types": [0],
+    "import/prefer-default-export": [0],
+    "camelcase": [0],
+    "linebreak-style": [0]
+  }
+}
