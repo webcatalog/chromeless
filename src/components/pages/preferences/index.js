@@ -236,7 +236,7 @@ const Preferences = ({
       ref: useRef(),
     },
     moreApps: {
-      text: 'MoreApps',
+      text: 'More Apps',
       Icon: StoreIcon,
       ref: useRef(),
     },
