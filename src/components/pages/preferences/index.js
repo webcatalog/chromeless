@@ -298,28 +298,24 @@ const Preferences = ({
                   <MenuItem dense value="dark">Dark</MenuItem>
                 </Select>
               </ListItem>
-              {window.process.platform !== 'linux' && (
-                <>
-                  <Divider />
-                  <ListItem>
-                    <ListItemText
-                      primary={window.process.platform === 'win32' ? 'Pin to system tray (notification area)' : 'Attach to menu bar'}
-                      secondary="Tip: Right-click on app icon to access context menu."
-                    />
-                    <ListItemSecondaryAction>
-                      <Switch
-                        edge="end"
-                        color="primary"
-                        checked={attachToMenubar}
-                        onChange={(e) => {
-                          requestSetPreference('attachToMenubar', e.target.checked);
-                          enqueueRequestRestartSnackbar();
-                        }}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </>
-              )}
+              <Divider />
+              <ListItem>
+                <ListItemText
+                  primary={window.process.platform === 'darwin' ? 'Attach to menu bar' : 'Pin to system tray (notification area)'}
+                  secondary="Tip: Right-click on app icon to access context menu."
+                />
+                <ListItemSecondaryAction>
+                  <Switch
+                    edge="end"
+                    color="primary"
+                    checked={attachToMenubar}
+                    onChange={(e) => {
+                      requestSetPreference('attachToMenubar', e.target.checked);
+                      enqueueRequestRestartSnackbar();
+                    }}
+                  />
+                </ListItemSecondaryAction>
+              </ListItem>
               <Divider />
               <ListItem>
                 <ListItemText

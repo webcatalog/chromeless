@@ -29,8 +29,7 @@ const get = () => {
 };
 
 const createAsync = () => new Promise((resolve) => {
-  // only supported on macOS
-  attachToMenubar = process.platform !== 'linux' && getPreference('attachToMenubar');
+  attachToMenubar = getPreference('attachToMenubar');
 
   if (attachToMenubar) {
     const menubarWindowState = windowStateKeeper({
