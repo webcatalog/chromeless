@@ -327,7 +327,7 @@ firefox -new-instance -P "chromeless-${id}" "${url}";`;
   })
   .then(() => {
     const packageJson = JSON.stringify({
-      version: '1.1.0',
+      version: '1.2.0',
     });
     return fsExtra.writeFile(packageJsonPath, packageJson);
   })
