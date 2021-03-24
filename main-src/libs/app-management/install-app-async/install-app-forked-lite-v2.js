@@ -409,6 +409,11 @@ open -n "$PWD"/${addSlash(name)}.app --args --no-sandbox --test-type --app="${ur
 
             // add empty "First Run" file so default browser prompt doesn't show up
             fsExtra.ensureFileSync(path.join(profilePath, 'First Run'));
+
+            // this file is needed
+            // if not, Chromium will crash on first launch
+            // details: https://github.com/webcatalog/chromeless/issues/4#issuecomment-805901787
+            fsExtra.writeFileSync(path.join(profilePath, 'Local State'), '{"profile":{"info_cache":{}}}');
           }
         })
         .then(() => {
