@@ -318,6 +318,20 @@ firefox -new-instance -P "chromeless-${id}" "${url}";`;
           }
           return null;
         })
+        .then(() => {
+          const chromiumDataPath = path.join(homePath, '.chromeless', 'chromium-data', id);
+          // (redundant as ensureFileSync would ensureDir too
+          fsExtra.ensureDirSync(chromiumDataPath);
+
+          // prepare files for Chromium profile
+          // add empty "First Run" file so default browser prompt doesn't show up
+          fsExtra.ensureFileSync(path.join(chromiumDataPath, 'First Run'));
+
+          // this file is needed
+          // if not, Chromium will crash on first launch
+          // details: https://github.com/webcatalog/chromeless/issues/4#issuecomment-805901787
+          fsExtra.writeFileSync(path.join(chromiumDataPath, 'Local State'), '{"profile":{"info_cache":{}}}');
+        })
         .then(() => fsExtra.ensureDir(appAsarUnpackedPath))
         .then(() => fsExtra.copy(iconPngPath, publicIconPngPath))
         .then(() => fsExtra.copy(iconIcoPath, publicIconIcoPath));
@@ -327,7 +341,7 @@ firefox -new-instance -P "chromeless-${id}" "${url}";`;
   })
   .then(() => {
     const packageJson = JSON.stringify({
-      version: '1.2.0',
+      version: '1.3.0',
     });
     return fsExtra.writeFile(packageJsonPath, packageJson);
   })

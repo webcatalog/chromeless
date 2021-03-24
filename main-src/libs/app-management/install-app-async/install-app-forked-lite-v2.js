@@ -405,7 +405,7 @@ open -n "$PWD"/${addSlash(name)}.app --args --no-sandbox --test-type --app="${ur
             }
 
             // (redundant as ensureFileSync would ensureDir too
-            // fsExtra.ensureDirSync(profilePath);
+            fsExtra.ensureDirSync(profilePath);
 
             // add empty "First Run" file so default browser prompt doesn't show up
             fsExtra.ensureFileSync(path.join(profilePath, 'First Run'));
@@ -517,7 +517,7 @@ open -n "$PWD"/${addSlash(name)}.app --args --no-sandbox --test-type --app="${ur
   })
   .then(() => {
     const packageJson = JSON.stringify({
-      version: '2.7.0',
+      version: '2.8.0',
     });
     return fsExtra.writeFileSync(packageJsonPath, packageJson);
   })
