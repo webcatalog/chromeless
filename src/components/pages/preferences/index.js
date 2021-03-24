@@ -23,7 +23,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import PowerIcon from '@material-ui/icons/Power';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import SecurityIcon from '@material-ui/icons/Security';
-import StoreIcon from '@material-ui/icons/Store';
+import StorefrontIcon from '@material-ui/icons/Storefront';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 import WidgetsIcon from '@material-ui/icons/Widgets';
 
@@ -237,7 +237,7 @@ const Preferences = ({
     },
     moreApps: {
       text: 'More Apps',
-      Icon: StoreIcon,
+      Icon: StorefrontIcon,
       ref: useRef(),
     },
     miscs: {
