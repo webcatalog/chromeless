@@ -19,7 +19,7 @@ const canAccess = (file) => {
   }
 };
 
-const getWin32BravePaths = () => {
+const getWin32EdgePaths = () => {
   const installations = [];
   const suffixes = [
     `${path.sep}Microsoft${path.sep}Edge${path.sep}Application${path.sep}msedge.exe`,
@@ -36,4 +36,4 @@ const getWin32BravePaths = () => {
   return installations;
 };
 
-module.exports = getWin32BravePaths;
+module.exports = getWin32EdgePaths;
