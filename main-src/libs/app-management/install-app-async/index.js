@@ -18,7 +18,7 @@ const getFreedesktopCategory = require('../../get-freedesktop-category');
 const getWin32BravePaths = require('../../get-win32-brave-paths');
 const getWin32ChromePaths = require('../../get-win32-chrome-paths');
 const getWin32VivaldiPaths = require('../../get-win32-vivaldi-paths');
-const getWin32EdgePaths = require('../../get-win32-vivaldi-paths');
+const getWin32EdgePaths = require('../../get-win32-edge-paths');
 const getWin32OperaPaths = require('../../get-win32-opera-paths');
 const getWin32YandexPaths = require('../../get-win32-yandex-paths');
 const getWin32CoccocPaths = require('../../get-win32-coccoc-paths');
@@ -88,7 +88,7 @@ const installAppAsync = (
         v = '2.8.0';
       } else {
         scriptFileName = 'install-app-forked-lite-v1.js';
-        v = '1.3.0';
+        v = '1.4.0';
       }
 
       return null;
