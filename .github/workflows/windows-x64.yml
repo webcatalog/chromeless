@@ -1,7 +1,6 @@
 name: Windows (x64)
 
 on:
-  workflow_dispatch:
   push:
     tags:
       - "v*.*.*"
