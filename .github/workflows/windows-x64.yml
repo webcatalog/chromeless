@@ -1,11 +1,7 @@
 name: Windows (x64)
 
 on:
-<<<<<<< HEAD
   workflow_dispatch:
-=======
-  - workflow_dispatch
->>>>>>> 3a2e496789e16f0eacfc1a26b07ff7e5e557f80b
   push:
     tags:
       - "v*.*.*"
