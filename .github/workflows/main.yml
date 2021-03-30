@@ -1,5 +1,4 @@
 name: Windows (x64)
-
 on:
   push:
     tags:
