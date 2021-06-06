@@ -12,6 +12,7 @@ const {
 const path = require('path');
 const windowStateKeeper = require('electron-window-state');
 const { menubar } = require('menubar');
+const contextMenu = require('electron-context-menu');
 
 const sendToAllWindows = require('../send-to-all-windows');
 const { getPreference } = require('../preferences');
@@ -79,6 +80,10 @@ const createAsync = () => new Promise((resolve) => {
     mb.on('after-create-window', () => {
       menubarWindowState.manage(mb.window);
 
+      contextMenu({
+        window: mb.window,
+      });
+
       mb.window.on('focus', () => {
         const view = mb.window.getBrowserView();
         if (view && view.webContents) {
@@ -110,7 +115,7 @@ const createAsync = () => new Promise((resolve) => {
           updaterMenuItem.enabled = false;
         }
 
-        const contextMenu = Menu.buildFromTemplate([
+        const trayContextMenu = Menu.buildFromTemplate([
           {
             label: 'Open Chromeless',
             click: () => mb.showWindow(),
@@ -146,7 +151,7 @@ const createAsync = () => new Promise((resolve) => {
             },
           },
         ]);
-        mb.tray.popUpContextMenu(contextMenu);
+        mb.tray.popUpContextMenu(trayContextMenu);
       });
 
       resolve();
@@ -197,6 +202,10 @@ const createAsync = () => new Promise((resolve) => {
   win = new BrowserWindow(winOpts);
 
   mainWindowState.manage(win);
+
+  contextMenu({
+    window: win,
+  });
 
   // check system-preferences.js
   // wasOpenedAsHidden is only available on macOS
