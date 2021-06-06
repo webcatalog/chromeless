@@ -26,9 +26,8 @@ const getDefaultInstallationPath = () => {
 };
 
 const getDefaultEngine = () => {
-  if (process.platform === 'darwin') return 'webkit';
   if (process.platform === 'win32') return 'edge';
-  return 'firefox';
+  return 'chrome';
 };
 
 const defaultPreferences = {
