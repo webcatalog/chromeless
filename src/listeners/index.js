@@ -13,7 +13,6 @@ import { changeRoute } from '../state/router/actions';
 import { setPreference, setPreferences } from '../state/preferences/actions';
 import { setSystemPreference } from '../state/system-preferences/actions';
 import { open as openDialogAbout } from '../state/dialog-about/actions';
-import { open as openDialogCatalogAppDetails } from '../state/dialog-catalog-app-details/actions';
 import { updateUpdater } from '../state/updater/actions';
 import {
   updateInstallationProgress,
@@ -83,10 +82,6 @@ const loadListeners = (store) => {
 
   window.ipcRenderer.on('set-scanning-for-installed', (e, scanning) => {
     store.dispatch(setScanningForInstalled(scanning));
-  });
-
-  window.ipcRenderer.on('open-dialog-catalog-app-details', (e, appId) => {
-    store.dispatch(openDialogCatalogAppDetails(appId));
   });
 
   window.ipcRenderer.on('set-is-full-screen', (e, isFullScreen) => {
