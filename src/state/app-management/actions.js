@@ -9,7 +9,7 @@ import {
   SORT_APPS,
 } from '../../constants/actions';
 
-import swiftype from '../../swiftype';
+import appSearch from '../../app-search';
 
 import {
   isNameExisted,
@@ -81,7 +81,7 @@ export const updateApp = (id, _name, _url, _icon, _opts) => async (dispatch, get
   if (window.process.platform === 'linux'
     && !id.startsWith('custom-')
     && opts.category == null) {
-    await swiftype
+    await appSearch
       .search('', {
         filters: {
           id: [id],

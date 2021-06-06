@@ -28,11 +28,12 @@ import CreateCustomAppCard from './create-custom-app-card';
 
 import AppCard from '../../shared/app-card';
 
-const connector = process.env.REACT_APP_SWIFTYPE_SEARCH_KEY ? new AppSearchAPIConnector({
-  searchKey: process.env.REACT_APP_SWIFTYPE_SEARCH_KEY,
-  engineName: process.env.REACT_APP_SWIFTYPE_ENGINE_NAME,
-  hostIdentifier: process.env.REACT_APP_SWIFTYPE_HOST_ID,
-}) : null;
+const connector = process.env.REACT_APP_ELASTIC_CLOUD_APP_SEARCH_SEARCH_KEY
+  ? new AppSearchAPIConnector({
+    searchKey: process.env.REACT_APP_ELASTIC_CLOUD_APP_SEARCH_SEARCH_KEY,
+    engineName: process.env.REACT_APP_ELASTIC_CLOUD_APP_SEARCH_ENGINE_NAME,
+    endpointBase: process.env.REACT_APP_ELASTIC_CLOUD_APP_SEARCH_API_ENDPOINT,
+  }) : null;
 
 const styles = (theme) => ({
   root: {

@@ -34,7 +34,7 @@ import {
   close,
   create,
   getIconFromInternet,
-  getIconFromSwiftype,
+  getIconFromAppSearch,
   updateForm,
 } from '../../state/dialog-create-custom-app/actions';
 
@@ -84,7 +84,7 @@ const DialogCreateCustomApp = (props) => {
     onClose,
     onCreate,
     onGetIconFromInternet,
-    onGetIconFromSwiftype,
+    onGetIconFromAppSearch,
     onUpdateForm,
     open,
     url,
@@ -196,7 +196,7 @@ const DialogCreateCustomApp = (props) => {
               size="small"
               className={classes.buttonBot}
               disabled={Boolean(!url || urlError || urlDisabled || downloadingIcon)}
-              onClick={() => onGetIconFromSwiftype()}
+              onClick={() => onGetIconFromAppSearch()}
             >
               {downloadingIcon ? 'Downloading...' : 'Download Icon from WebCatalog'}
             </Button>
@@ -311,7 +311,7 @@ DialogCreateCustomApp.propTypes = {
   onClose: PropTypes.func.isRequired,
   onCreate: PropTypes.func.isRequired,
   onGetIconFromInternet: PropTypes.func.isRequired,
-  onGetIconFromSwiftype: PropTypes.func.isRequired,
+  onGetIconFromAppSearch: PropTypes.func.isRequired,
   onUpdateForm: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   url: PropTypes.string,
@@ -355,7 +355,7 @@ const actionCreators = {
   close,
   create,
   getIconFromInternet,
-  getIconFromSwiftype,
+  getIconFromAppSearch,
   updateForm,
 };
 
