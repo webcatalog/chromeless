@@ -43,12 +43,12 @@ const CustomHelpIcon = withStyles((theme) => ({
 
 const getDesc = (engineCode, browserName) => {
   if (engineCode === 'webkit') {
-    return `This option creates lightweight ${browserName}-based app, optimized to save memory & battery.`;
+    return `This option creates lightweight ${browserName}-based app, optimized to save memory & battery. WebKit support will be moved to WebCatalog app soon.`;
   }
 
   const standardDesc = `This option creates bare-bone ${browserName}-based app${engineCode !== 'firefox' ? ' with WebExtension support' : ''}.`;
   const tabbedDesc = `This option creates ${browserName}-based app with traditional browser user interface, tab and WebExtension support.`;
-  if (engineCode === 'opera') {
+  if (engineCode === 'opera' || engineCode.startsWith('firefox')) {
     return tabbedDesc;
   }
 
@@ -60,9 +60,6 @@ const getDesc = (engineCode, browserName) => {
       <br />
       <strong>Tabbed: </strong>
       {tabbedDesc}
-      <br />
-      <br />
-      This option is experimental, buggy and not recommended.
     </>
   );
 };
@@ -91,174 +88,6 @@ const EngineList = ({
   onEngineSelected,
 }) => (
   <List>
-    {window.process.platform === 'darwin' && (
-      <>
-        {isMultisite ? (
-          <HelpTooltip
-            title={(
-              <Typography variant="body2" color="textPrimary">
-                This app is incompatible with WebKit.
-              </Typography>
-            )}
-          >
-            <ListItem
-              dense
-              button
-              onClick={() => null}
-              selected={engine === 'webkit'}
-              className={classnames(classes.disabledListItem)}
-            >
-              <ListItemAvatar className={classes.smallListItemAvatar}>
-                <Avatar alt="WebKit (part of Safari)" src={webkitIcon} className={classes.smallAvatar} />
-              </ListItemAvatar>
-              <ListItemText
-                primary={(
-                  <Grid container direction="row" alignItems="center" spacing={1}>
-                    <Grid item>
-                      <Typography variant="body2" noWrap>
-                        WebKit (part of Safari)
-                      </Typography>
-                    </Grid>
-                    <Grid>
-                      <HelpTooltip
-                        title={(
-                          <Typography variant="body2" color="textPrimary">
-                            {getDesc('webkit', 'WebKit')}
-                          </Typography>
-                        )}
-                      >
-                        <CustomHelpIcon fontSize="small" color="disabled" />
-                      </HelpTooltip>
-                    </Grid>
-                  </Grid>
-                )}
-              />
-              {!isMultisite && (
-                <ListItemSecondaryAction>
-                  <ToggleButtonGroup
-                    value={engine}
-                    exclusive
-                    onChange={(_, val) => {
-                      if (!val) return;
-                      onEngineSelected(val);
-                    }}
-                    size="small"
-                  >
-                    <ToggleButton value="webkit" classes={{ root: classes.toggleButton }}>
-                      Standard
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </ListItemSecondaryAction>
-              )}
-            </ListItem>
-          </HelpTooltip>
-        ) : (
-          <ListItem
-            dense
-            button
-            onClick={() => onEngineSelected('webkit')}
-            selected={engine === 'webkit'}
-          >
-            <ListItemAvatar className={classes.smallListItemAvatar}>
-              <Avatar alt="WebKit (part of Safari)" src={webkitIcon} className={classes.smallAvatar} />
-            </ListItemAvatar>
-            <ListItemText
-              primary={(
-                <Grid container direction="row" alignItems="center" spacing={1}>
-                  <Grid item>
-                    <Typography variant="body2" noWrap>
-                      WebKit (part of Safari)
-                    </Typography>
-                  </Grid>
-                  <Grid>
-                    <HelpTooltip
-                      title={(
-                        <Typography variant="body2" color="textPrimary">
-                          {getDesc('webkit', 'WebKit')}
-                        </Typography>
-                      )}
-                    >
-                      <CustomHelpIcon fontSize="small" color="disabled" />
-                    </HelpTooltip>
-                  </Grid>
-                </Grid>
-              )}
-            />
-            {!isMultisite && (
-              <ListItemSecondaryAction>
-                <ToggleButtonGroup
-                  value={engine}
-                  exclusive
-                  onChange={(_, val) => {
-                    if (!val) return;
-                    onEngineSelected(val);
-                  }}
-                  size="small"
-                >
-                  <ToggleButton value="webkit" classes={{ root: classes.toggleButton }}>
-                    Standard
-                  </ToggleButton>
-                </ToggleButtonGroup>
-              </ListItemSecondaryAction>
-            )}
-          </ListItem>
-        )}
-      </>
-    )}
-    {window.process.platform !== 'linux' && (
-      <ListItem
-        dense
-        button
-        onClick={() => {
-          if (engine === 'firefox' || engine.startsWith('firefox/')) return;
-          onEngineSelected('firefox/tabs');
-        }}
-        selected={engine === 'firefox' || engine.startsWith('firefox/')}
-      >
-        <ListItemAvatar className={classes.smallListItemAvatar}>
-          <Avatar alt="Mozilla Firefox" src={firefoxIcon} className={classes.smallAvatar} />
-        </ListItemAvatar>
-        <ListItemText
-          primary={(
-            <Grid container direction="row" alignItems="center" spacing={1}>
-              <Grid item>
-                <Typography variant="body2" noWrap>
-                  Mozilla Firefox
-                </Typography>
-              </Grid>
-              <Grid item>
-                <HelpTooltip
-                  title={(
-                    <Typography variant="body2" color="textPrimary">
-                      {getDesc('firefox', 'Mozilla Firefox')}
-                    </Typography>
-                  )}
-                >
-                  <CustomHelpIcon fontSize="small" color="disabled" />
-                </HelpTooltip>
-              </Grid>
-            </Grid>
-          )}
-        />
-        {!isMultisite && (
-          <ListItemSecondaryAction>
-            <ToggleButtonGroup
-              value={engine}
-              exclusive
-              onChange={(_, val) => {
-                if (!val) return;
-                onEngineSelected(val);
-              }}
-              size="small"
-            >
-              <ToggleButton value="firefox/tabs" classes={{ root: classes.toggleButton }}>
-                Tabbed
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </ListItemSecondaryAction>
-        )}
-      </ListItem>
-    )}
     <ListItem
       dense
       button
@@ -756,6 +585,174 @@ const EngineList = ({
         </ListItemSecondaryAction>
       )}
     </ListItem>
+    {window.process.platform !== 'linux' && (
+      <ListItem
+        dense
+        button
+        onClick={() => {
+          if (engine === 'firefox' || engine.startsWith('firefox/')) return;
+          onEngineSelected('firefox/tabs');
+        }}
+        selected={engine === 'firefox' || engine.startsWith('firefox/')}
+      >
+        <ListItemAvatar className={classes.smallListItemAvatar}>
+          <Avatar alt="Mozilla Firefox" src={firefoxIcon} className={classes.smallAvatar} />
+        </ListItemAvatar>
+        <ListItemText
+          primary={(
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <Typography variant="body2" noWrap>
+                  Mozilla Firefox (experimental)
+                </Typography>
+              </Grid>
+              <Grid item>
+                <HelpTooltip
+                  title={(
+                    <Typography variant="body2" color="textPrimary">
+                      {getDesc('firefox', 'Mozilla Firefox')}
+                    </Typography>
+                  )}
+                >
+                  <CustomHelpIcon fontSize="small" color="disabled" />
+                </HelpTooltip>
+              </Grid>
+            </Grid>
+          )}
+        />
+        {!isMultisite && (
+          <ListItemSecondaryAction>
+            <ToggleButtonGroup
+              value={engine}
+              exclusive
+              onChange={(_, val) => {
+                if (!val) return;
+                onEngineSelected(val);
+              }}
+              size="small"
+            >
+              <ToggleButton value="firefox/tabs" classes={{ root: classes.toggleButton }}>
+                Tabbed
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </ListItemSecondaryAction>
+        )}
+      </ListItem>
+    )}
+    {window.process.platform === 'darwin' && (
+      <>
+        {isMultisite ? (
+          <HelpTooltip
+            title={(
+              <Typography variant="body2" color="textPrimary">
+                This app is incompatible with WebKit.
+              </Typography>
+            )}
+          >
+            <ListItem
+              dense
+              button
+              onClick={() => null}
+              selected={engine === 'webkit'}
+              className={classnames(classes.disabledListItem)}
+            >
+              <ListItemAvatar className={classes.smallListItemAvatar}>
+                <Avatar alt="WebKit (part of Safari)" src={webkitIcon} className={classes.smallAvatar} />
+              </ListItemAvatar>
+              <ListItemText
+                primary={(
+                  <Grid container direction="row" alignItems="center" spacing={1}>
+                    <Grid item>
+                      <Typography variant="body2" noWrap>
+                        WebKit (deprecated, will be moved to WebCatalog soon)
+                      </Typography>
+                    </Grid>
+                    <Grid>
+                      <HelpTooltip
+                        title={(
+                          <Typography variant="body2" color="textPrimary">
+                            {getDesc('webkit', 'WebKit')}
+                          </Typography>
+                        )}
+                      >
+                        <CustomHelpIcon fontSize="small" color="disabled" />
+                      </HelpTooltip>
+                    </Grid>
+                  </Grid>
+                )}
+              />
+              {!isMultisite && (
+                <ListItemSecondaryAction>
+                  <ToggleButtonGroup
+                    value={engine}
+                    exclusive
+                    onChange={(_, val) => {
+                      if (!val) return;
+                      onEngineSelected(val);
+                    }}
+                    size="small"
+                  >
+                    <ToggleButton value="webkit" classes={{ root: classes.toggleButton }}>
+                      Standard
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+                </ListItemSecondaryAction>
+              )}
+            </ListItem>
+          </HelpTooltip>
+        ) : (
+          <ListItem
+            dense
+            button
+            onClick={() => onEngineSelected('webkit')}
+            selected={engine === 'webkit'}
+          >
+            <ListItemAvatar className={classes.smallListItemAvatar}>
+              <Avatar alt="WebKit (part of Safari)" src={webkitIcon} className={classes.smallAvatar} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={(
+                <Grid container direction="row" alignItems="center" spacing={1}>
+                  <Grid item>
+                    <Typography variant="body2" noWrap>
+                      WebKit (deprecated, will be moved to WebCatalog app soon)
+                    </Typography>
+                  </Grid>
+                  <Grid>
+                    <HelpTooltip
+                      title={(
+                        <Typography variant="body2" color="textPrimary">
+                          {getDesc('webkit', 'WebKit')}
+                        </Typography>
+                      )}
+                    >
+                      <CustomHelpIcon fontSize="small" color="disabled" />
+                    </HelpTooltip>
+                  </Grid>
+                </Grid>
+              )}
+            />
+            {!isMultisite && (
+              <ListItemSecondaryAction>
+                <ToggleButtonGroup
+                  value={engine}
+                  exclusive
+                  onChange={(_, val) => {
+                    if (!val) return;
+                    onEngineSelected(val);
+                  }}
+                  size="small"
+                >
+                  <ToggleButton value="webkit" classes={{ root: classes.toggleButton }}>
+                    Standard
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </ListItemSecondaryAction>
+            )}
+          </ListItem>
+        )}
+      </>
+    )}
   </List>
 );
 
