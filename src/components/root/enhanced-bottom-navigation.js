@@ -60,7 +60,7 @@ const EnhancedBottomNavigation = ({
         }}
       />
       <BottomNavigationAction
-        label="Installed"
+        label="Updates"
         icon={appBadgeCount > 0 ? (
           <Badge color="secondary" badgeContent={appBadgeCount}>
             <SystemUpdateIcon />
