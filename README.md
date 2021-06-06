@@ -26,9 +26,9 @@ This repository only contains the source code of the Chromeless app. If you'd li
 
 For the app to be fully functional, set these environment variables:
 ```
-REACT_APP_SWIFTYPE_HOST_ID=
-REACT_APP_SWIFTYPE_SEARCH_KEY=
-REACT_APP_SWIFTYPE_ENGINE_NAME=
+REACT_APP_ELASTIC_CLOUD_APP_SEARCH_SEARCH_KEY=
+REACT_APP_ELASTIC_CLOUD_APP_SEARCH_API_ENDPOINT=
+REACT_APP_ELASTIC_CLOUD_APP_SEARCH_ENGINE_NAME=
 ELECTRON_APP_SENTRY_DSN=
 ```
 

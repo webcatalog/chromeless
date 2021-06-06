@@ -8,7 +8,7 @@ import {
 } from '../../constants/actions';
 import { INSTALLED } from '../../constants/app-statuses';
 
-import swiftype from '../../swiftype';
+import appSearch from '../../app-search';
 
 import { getRelatedPathsAsync } from '../../invokers';
 
@@ -47,7 +47,7 @@ export const getDetailsAsync = () => async (dispatch, getState) => {
     return;
   }
 
-  swiftype
+  appSearch
     .search('', {
       filters: {
         id: [appId],
