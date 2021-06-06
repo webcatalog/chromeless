@@ -184,6 +184,7 @@ const createAsync = () => new Promise((resolve) => {
     titleBarStyle: 'hiddenInset',
     show: false,
     frame: process.platform === 'darwin' || global.useSystemTitleBar,
+    autoHideMenuBar: global.useSystemTitleBar && getPreference('autoHideMenuBar'),
     alwaysOnTop: getPreference('alwaysOnTop'),
     webPreferences: {
       enableRemoteModule: true,
