@@ -3,7 +3,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import PropTypes from 'prop-types';
 import React from 'react';
-import classnames from 'classnames';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -36,7 +35,6 @@ import { updateApp } from '../../state/app-management/actions';
 import { open as openDialogChooseEngine } from '../../state/dialog-choose-engine/actions';
 import { open as openDialogCreateCustomApp } from '../../state/dialog-create-custom-app/actions';
 import { open as openDialogEditApp } from '../../state/dialog-edit-app/actions';
-import { open as openDialogCatalogAppDetails } from '../../state/dialog-catalog-app-details/actions';
 
 import InstallationProgress from './installation-progress';
 
@@ -51,17 +49,6 @@ const styles = (theme) => ({
     position: 'relative',
     boxShadow: theme.palette.type === 'dark' ? 'none' : '0 0 0 1px rgba(0, 0, 0, 0.12)',
     transition: 'all 0.2s ease-in-out',
-  },
-  cardClickable: {
-    cursor: 'pointer',
-    '&:hover': {
-      boxShadow: theme.shadows[3],
-    },
-  },
-  cardFrameless: {
-    boxShadow: 'none',
-    width: '100%',
-    height: '100%',
   },
   appName: {
     overflow: 'hidden',
@@ -84,12 +71,6 @@ const styles = (theme) => ({
     marginTop: window.process.platform === 'win32' ? 4 : 0,
     marginBottom: window.process.platform === 'win32' ? 4 : 0,
     userSelect: 'none',
-  },
-  paperIconLarge: {
-    width: window.process.platform === 'win32' ? 96 : 128,
-    height: window.process.platform === 'win32' ? 96 : 128,
-    marginTop: window.process.platform === 'win32' ? 16 : 0,
-    marginBottom: window.process.platform === 'win32' ? 16 : 0,
   },
   actionContainer: {
     marginTop: theme.spacing(1),
@@ -125,10 +106,8 @@ const AppCard = (props) => {
     icon,
     iconThumbnail,
     id,
-    inDetailsDialog,
     isOutdated,
     name,
-    onOpenDialogCatalogAppDetails,
     onOpenDialogChooseEngine,
     onOpenDialogCreateCustomApp,
     onOpenDialogEditApp,
@@ -138,10 +117,6 @@ const AppCard = (props) => {
     url,
     version,
   } = props;
-
-  const clickable = !inDetailsDialog;
-  const buttonSize = inDetailsDialog ? 'large' : 'medium';
-  const buttonVariant = inDetailsDialog ? 'contained' : 'text';
 
   const combinedOpts = { ...opts };
   if (category) {
@@ -192,23 +167,11 @@ const AppCard = (props) => {
       },
       {
         type: 'separator',
-        visible: !inDetailsDialog,
-      },
-      {
-        type: 'separator',
-        visible: !inDetailsDialog,
-      },
-      {
-        label: 'View Details',
-        visible: !inDetailsDialog,
-        click: () => onOpenDialogCatalogAppDetails(id),
-      },
-      {
-        type: 'separator',
       },
       {
         label: 'What\'s New',
         click: () => requestOpenInBrowser('https://github.com/webcatalog/chromeless/releases?utm_source=chromeless_app'),
+        visible: Boolean(engine && version),
       },
       {
         label: `Powered by ${getEngineName(engine)} (implementation ${version})`,
@@ -229,8 +192,8 @@ const AppCard = (props) => {
         <div>
           <Button
             className={classes.actionButton}
-            size={buttonSize}
-            variant={buttonVariant}
+            size="medium"
+            variant="text"
             disableElevation
             onClick={(e) => {
               e.stopPropagation();
@@ -243,8 +206,8 @@ const AppCard = (props) => {
             <Button
               className={classes.actionButton}
               color="primary"
-              size={buttonSize}
-              variant={buttonVariant}
+              size="medium"
+              variant="text"
               disableElevation
               onClick={(e) => {
                 e.stopPropagation();
@@ -258,8 +221,8 @@ const AppCard = (props) => {
             <Button
               className={classes.actionButton}
               color="secondary"
-              variant={buttonVariant}
-              size={buttonSize}
+              variant="text"
+              size="medium"
               disableElevation
               onClick={(e) => {
                 e.stopPropagation();
@@ -297,8 +260,8 @@ const AppCard = (props) => {
       <Button
         className={classes.actionButton}
         color="primary"
-        size={buttonSize}
-        variant={buttonVariant}
+        size="medium"
+        variant="text"
         disableElevation
         disabled={status !== null}
         onClick={(e) => {
@@ -315,30 +278,20 @@ const AppCard = (props) => {
     <Grid item>
       <Paper
         elevation={0}
-        className={classnames(
-          classes.card,
-          clickable && classes.cardClickable,
-          inDetailsDialog && classes.cardFrameless,
-        )}
-        onClick={clickable ? () => {
-          onOpenDialogCatalogAppDetails(id);
-        } : null}
+        className={classes.card}
         onContextMenu={() => {
           showMenu();
         }}
       >
         <img
           alt={name}
-          className={classnames(
-            classes.paperIcon,
-            inDetailsDialog && classes.paperIconLarge,
-          )}
+          className={classes.paperIcon}
           src={iconThumbnail || (isUrl(icon) ? icon : `file://${icon}`)}
         />
         <Typography
           className={classes.appName}
           title={name}
-          variant={inDetailsDialog ? 'h5' : 'subtitle2'}
+          variant="subtitle2"
         >
           {name}
         </Typography>
@@ -354,7 +307,7 @@ const AppCard = (props) => {
             showMenu();
           }}
         >
-          <MoreVertIcon fontSize={inDetailsDialog ? 'default' : 'small'} />
+          <MoreVertIcon fontSize="small" />
         </IconButton>
       </Paper>
     </Grid>
@@ -365,7 +318,6 @@ AppCard.defaultProps = {
   category: undefined,
   engine: null,
   iconThumbnail: null,
-  inDetailsDialog: false,
   opts: {},
   status: null,
   url: null,
@@ -380,10 +332,8 @@ AppCard.propTypes = {
   icon: PropTypes.string.isRequired,
   iconThumbnail: PropTypes.string,
   id: PropTypes.string.isRequired,
-  inDetailsDialog: PropTypes.bool,
   isOutdated: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
-  onOpenDialogCatalogAppDetails: PropTypes.func.isRequired,
   onOpenDialogChooseEngine: PropTypes.func.isRequired,
   onOpenDialogCreateCustomApp: PropTypes.func.isRequired,
   onOpenDialogEditApp: PropTypes.func.isRequired,
@@ -416,7 +366,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const actionCreators = {
-  openDialogCatalogAppDetails,
   openDialogChooseEngine,
   openDialogCreateCustomApp,
   openDialogEditApp,

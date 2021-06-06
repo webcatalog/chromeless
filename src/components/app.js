@@ -14,7 +14,6 @@ import Home from './pages/home';
 import Preferences from './pages/preferences';
 
 import DialogAbout from './dialogs/dialog-about';
-import DialogCatalogAppDetails from './dialogs/dialog-catalog-app-details';
 import DialogChooseEngine from './dialogs/dialog-choose-engine';
 import DialogCreateCustomApp from './dialogs/dialog-create-custom-app';
 import DialogEditApp from './dialogs/dialog-edit-app';
@@ -97,7 +96,6 @@ class App extends React.Component {
         <SnackbarTrigger />
 
         <DialogAbout />
-        <DialogCatalogAppDetails />
         <DialogChooseEngine />
         <DialogCreateCustomApp />
         <DialogEditApp />
