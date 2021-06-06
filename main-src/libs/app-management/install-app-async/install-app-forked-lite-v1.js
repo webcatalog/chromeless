@@ -197,82 +197,72 @@ Promise.resolve()
         .then(() => fsExtra.ensureDir(appAsarUnpackedPath))
         .then(() => fsExtra.copy(iconPngPath, publicIconPngPath))
         .then(() => {
-          const chromiumDataPath = path.join('$HOME', '.chromeless', 'chromium-data', id);
-          let execFileContent = '';
-          switch (engine) {
-            case 'chromium': {
-              let binPath = 'chromium';
-              if (!commandExistsSync('chromium') && commandExistsSync('chromium-browser')) {
-                binPath = 'chromium-browser';
+          let command = '';
+
+          // Handle Firefox
+          if (engine.startsWith('firefox')) {
+            if (!url) { // multiple websites mode
+              command = `firefox -new-instance -P "chromeless-${id}";`;
+            } else if (engine.endsWith('/tabs')) {
+              command = `firefox -new-instance -P "chromeless-${id}" "${url}";`;
+            } else {
+              command = `firefox -new-instance -P "chromeless-${id}" --ssb="${url}";`;
+            }
+          // Handle Chromium-based browsers
+          } else {
+            const browserId = engine.split('/')[0];
+
+            let binPath;
+            switch (browserId) {
+              case 'chromium': {
+                binPath = 'chromium';
+                if (!commandExistsSync('chromium') && commandExistsSync('chromium-browser')) {
+                  binPath = 'chromium-browser';
+                }
+                break;
               }
-              execFileContent = `#!/bin/sh -ue
-${binPath} --class "${name}" --user-data-dir="${chromiumDataPath}" --app="${url}";`;
-              break;
+              case 'chrome': {
+                binPath = 'google-chrome';
+                break;
+              }
+              case 'brave': {
+                binPath = 'brave-browser';
+                break;
+              }
+              case 'vivaldi': {
+                binPath = 'vivaldi';
+                break;
+              }
+              case 'opera/tabs': {
+                binPath = 'opera';
+                break;
+              }
+              case 'yandex': {
+                binPath = 'yandex-browser';
+                break;
+              }
+              default: {
+                return Promise.reject(new Error('Engine is not supported'));
+              }
             }
-            case 'chromium/tabs': {
-              execFileContent = `#!/bin/sh -ue
-chromium-browser --user-data-dir="${chromiumDataPath}" "${url}";`;
-              break;
+
+            const chromiumDataPath = path.join('$HOME', '.chromeless', 'chromium-data', id);
+
+            let args;
+            if (!url) { // multiple websites mode
+              args = `--user-data-dir="${chromiumDataPath}"`;
+            } else if (engine.endsWith('/tabs')) {
+              args = `--user-data-dir="${chromiumDataPath}" "${url}"`;
+            } else {
+              args = `--class "${name}" --user-data-dir="${chromiumDataPath}" --app="${url}"`;
             }
-            case 'chrome': {
-              execFileContent = `#!/bin/sh -ue
-google-chrome --class "${name}" --user-data-dir="${chromiumDataPath}" --app="${url}";`;
-              break;
-            }
-            case 'chrome/tabs': {
-              execFileContent = `#!/bin/sh -ue
-google-chrome --user-data-dir="${chromiumDataPath}" "${url}";`;
-              break;
-            }
-            case 'brave': {
-              execFileContent = `#!/bin/sh -ue
-brave-browser --class "${name}" --user-data-dir="${chromiumDataPath}" --app="${url}";`;
-              break;
-            }
-            case 'brave/tabs': {
-              execFileContent = `#!/bin/sh -ue
-brave-browser --user-data-dir="${chromiumDataPath}" "${url}";`;
-              break;
-            }
-            case 'vivaldi': {
-              execFileContent = `#!/bin/sh -ue
-vivaldi --class "${name}" --user-data-dir="${chromiumDataPath}" --app="${url}";`;
-              break;
-            }
-            case 'vivaldi/tabs': {
-              execFileContent = `#!/bin/sh -ue
-vivaldi --user-data-dir="${chromiumDataPath}" "${url}";`;
-              break;
-            }
-            case 'opera/tabs': {
-              execFileContent = `#!/bin/sh -ue
-opera --user-data-dir="${chromiumDataPath}" "${url}";`;
-              break;
-            }
-            case 'yandex': {
-              execFileContent = `#!/bin/sh -ue
-yandex-browser --class "${name}" --user-data-dir="${chromiumDataPath}" --app="${url}";`;
-              break;
-            }
-            case 'yandex/tabs': {
-              execFileContent = `#!/bin/sh -ue
-yandex-browser --user-data-dir="${chromiumDataPath}" "${url}";`;
-              break;
-            }
-            case 'firefox': {
-              execFileContent = `#!/bin/sh -ue
-firefox -new-instance -P "chromeless-${id}" --ssb="${url}";`;
-              break;
-            }
-            case 'firefox/tabs': {
-              execFileContent = `#!/bin/sh -ue
-firefox -new-instance -P "chromeless-${id}" "${url}";`;
-              break;
-            }
-            default: {
-              return Promise.reject(new Error('Engine is not supported'));
-            }
+
+            command = `${binPath} ${args};`;
           }
+
+          const execFileContent = `#!/bin/sh -ue
+${command}`;
+
           return fsExtra.outputFile(execFilePath, execFileContent);
         })
         .then(() => fsExtra.chmod(execFilePath, '755'))
@@ -341,7 +331,7 @@ firefox -new-instance -P "chromeless-${id}" "${url}";`;
   })
   .then(() => {
     const packageJson = JSON.stringify({
-      version: '1.4.0',
+      version: '1.5.0',
     });
     return fsExtra.writeFile(packageJsonPath, packageJson);
   })

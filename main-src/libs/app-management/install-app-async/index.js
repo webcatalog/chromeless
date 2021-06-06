@@ -88,7 +88,7 @@ const installAppAsync = (
         v = '2.8.0';
       } else {
         scriptFileName = 'install-app-forked-lite-v1.js';
-        v = '1.4.0';
+        v = '1.5.0';
       }
 
       return null;
@@ -265,14 +265,18 @@ const installAppAsync = (
         let args;
 
         if (engine.startsWith('firefox')) {
-          if (engine.endsWith('/tabs')) {
+          if (!url) { // multiple websites mode
+            args = `-P "chromeless-${id}"`;
+          } else if (engine.endsWith('/tabs')) {
             args = `-P "chromeless-${id}" "${url}"`;
           } else {
             args = `-P "chromeless-${id}" --ssb="${url}"`;
           }
         } else {
           const chromiumDataPath = path.join(app.getPath('home'), '.chromeless', 'chromium-data', id);
-          if (engine.endsWith('/tabs')) {
+          if (!url) { // multiple websites mode
+            args = `--user-data-dir="${chromiumDataPath}"`;
+          } else if (engine.endsWith('/tabs')) {
             args = `--user-data-dir="${chromiumDataPath}" "${url}"`;
           } else {
             args = `--class "${name}" --user-data-dir="${chromiumDataPath}" --app="${url}"`;

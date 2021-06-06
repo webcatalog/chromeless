@@ -123,7 +123,7 @@ const DialogCreateCustomApp = (props) => {
           variant="outlined"
         />
         <FormControl variant="outlined" fullWidth margin="normal">
-          <InputLabel id="input-type-label">Type</InputLabel>
+          <InputLabel id="input-type-label">Tied to</InputLabel>
           <Select
             id="input-type"
             labelId="input-type-label"

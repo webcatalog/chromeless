@@ -34,7 +34,7 @@ export const isOutdatedApp = (id, state) => {
     return semver.lt(v, '2.8.0');
   }
   // check if app is installed with the latest version of forked-script-v1.js
-  return semver.lt(v, '1.4.0');
+  return semver.lt(v, '1.5.0');
 };
 
 export const isCancelableApp = (id, state) => {
