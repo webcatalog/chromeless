@@ -100,7 +100,7 @@ const Home = ({
           return next(updatedState, queryConfig);
         },
         initialState: {
-          resultsPerPage: 59,
+          resultsPerPage: 60,
           sortField: '',
           sortDirection: '',
           filters: [
@@ -212,7 +212,6 @@ const Home = ({
                             ? app.icon_unplated_128.raw : app.icon_128.raw}
                         />
                       ))}
-                      {results.length > 0 && <CreateCustomAppCard />}
                       <Grid item xs={12} container justify="center">
                         <Paging />
                       </Grid>

@@ -17,7 +17,7 @@ import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
 
-import BuildIcon from '@material-ui/icons/Build';
+import PaletteIcon from '@material-ui/icons/Palette';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import PowerIcon from '@material-ui/icons/Power';
@@ -53,11 +53,9 @@ import DefinedAppBar from './defined-app-bar';
 import webcatalogIconPng from '../../../assets/products/webcatalog-mac-icon-128@2x.png';
 import translatiumIconPng from '../../../assets/products/translatium-mac-icon-128@2x.png';
 import singleboxIconPng from '../../../assets/products/singlebox-mac-icon-128@2x.png';
-import squeezerIconPng from '../../../assets/products/squeezer-mac-icon-128@2x.png';
 import chromelessIconPng from '../../../assets/products/chromeless-mac-icon-128@2x.png';
 import cloveryIconPng from '../../../assets/products/clovery-mac-icon-128@2x.png';
-import pantextIconPng from '../../../assets/products/pantext-mac-icon-128@2x.png';
-import panmailIconPng from '../../../assets/products/panmail-mac-icon-128@2x.png';
+import switchbarIconPng from '../../../assets/products/switchbar-mac-icon-128@2x.png';
 
 const styles = (theme) => ({
   root: {
@@ -209,16 +207,15 @@ const Preferences = ({
       Icon: WidgetsIcon,
       ref: useRef(),
     },
+    appearance: {
+      text: 'Appearance',
+      Icon: PaletteIcon,
+      ref: useRef(),
+    },
     privacy: {
       text: 'Privacy & Security',
       Icon: SecurityIcon,
       ref: useRef(),
-    },
-    system: {
-      text: 'System',
-      Icon: BuildIcon,
-      ref: useRef(),
-      hidden: window.process.platform === 'linux',
     },
     advanced: {
       text: 'Advanced',
@@ -281,25 +278,6 @@ const Preferences = ({
           <Paper elevation={0} className={classes.paper}>
             <List disablePadding dense>
               <ListItem>
-                <ListItemText primary="Theme" />
-                <Select
-                  value={themeSource}
-                  onChange={(e) => requestSetPreference('themeSource', e.target.value)}
-                  variant="filled"
-                  disableUnderline
-                  margin="dense"
-                  classes={{
-                    root: classes.select,
-                  }}
-                  className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
-                >
-                  <MenuItem dense value="system">System default</MenuItem>
-                  <MenuItem dense value="light">Light</MenuItem>
-                  <MenuItem dense value="dark">Dark</MenuItem>
-                </Select>
-              </ListItem>
-              <Divider />
-              <ListItem>
                 <ListItemText
                   primary={window.process.platform === 'darwin' ? 'Attach to menu bar' : 'Pin to system tray (notification area)'}
                   secondary="Tip: Right-click on app icon to access context menu."
@@ -355,6 +333,78 @@ const Preferences = ({
                   />
                 </ListItemSecondaryAction>
               </ListItem>
+              {window.process.platform !== 'linux' && (
+                <>
+                  <Divider />
+                  <ListItem>
+                    <ListItemText primary="Open at login" />
+                    <Select
+                      value={openAtLogin}
+                      onChange={(e) => requestSetSystemPreference('openAtLogin', e.target.value)}
+                      variant="filled"
+                      disableUnderline
+                      margin="dense"
+                      classes={{
+                        root: classes.select,
+                      }}
+                      className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
+                    >
+                      <MenuItem dense value="yes">Yes</MenuItem>
+                      {window.process.platform !== 'win32' && (
+                        <MenuItem dense value="yes-hidden">Yes, but minimized</MenuItem>
+                      )}
+                      <MenuItem dense value="no">No</MenuItem>
+                    </Select>
+                  </ListItem>
+                </>
+              )}
+            </List>
+          </Paper>
+
+          <Typography variant="subtitle2" color="textPrimary" className={classes.sectionTitle} ref={sections.appearance.ref}>
+            Appearance
+          </Typography>
+          <Paper elevation={0} className={classes.paper}>
+            <List disablePadding dense>
+              <ListItem>
+                <ListItemText primary="Theme" />
+                <Select
+                  value={themeSource}
+                  onChange={(e) => requestSetPreference('themeSource', e.target.value)}
+                  variant="filled"
+                  disableUnderline
+                  margin="dense"
+                  classes={{
+                    root: classes.select,
+                  }}
+                  className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
+                >
+                  <MenuItem dense value="system">System default</MenuItem>
+                  <MenuItem dense value="light">Light</MenuItem>
+                  <MenuItem dense value="dark">Dark</MenuItem>
+                </Select>
+              </ListItem>
+              {window.process.platform !== 'darwin' && (
+                <>
+                  <Divider />
+                  <ListItem>
+                    <ListItemText
+                      primary="Use system title bar and borders"
+                    />
+                    <ListItemSecondaryAction>
+                      <Switch
+                        edge="end"
+                        color="primary"
+                        checked={useSystemTitleBar}
+                        onChange={(e) => {
+                          requestSetPreference('useSystemTitleBar', e.target.checked);
+                          enqueueRequestRestartSnackbar();
+                        }}
+                      />
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </>
+              )}
             </List>
           </Paper>
 
@@ -380,49 +430,12 @@ const Preferences = ({
                 </ListItemSecondaryAction>
               </ListItem>
               <Divider />
-              <ListItem button onClick={() => requestOpenInBrowser('https://webcatalog.ltd/privacy?utm_source=chromeless_app')}>
+              <ListItem button onClick={() => requestOpenInBrowser(`https://webcatalog.io/privacy/?utm_source=${utmSource}`)}>
                 <ListItemText primary="Privacy Policy" />
                 <ChevronRightIcon color="action" />
               </ListItem>
             </List>
           </Paper>
-
-          {window.process.platform !== 'linux' && (
-            <>
-              <Typography
-                variant="subtitle2"
-                color="textPrimary"
-                className={classes.sectionTitle}
-                ref={sections.system.ref}
-              >
-                System
-              </Typography>
-              <Paper elevation={0} className={classes.paper}>
-                <List disablePadding dense>
-                  <ListItem>
-                    <ListItemText primary="Open at login" />
-                    <Select
-                      value={openAtLogin}
-                      onChange={(e) => requestSetSystemPreference('openAtLogin', e.target.value)}
-                      variant="filled"
-                      disableUnderline
-                      margin="dense"
-                      classes={{
-                        root: classes.select,
-                      }}
-                      className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
-                    >
-                      <MenuItem dense value="yes">Yes</MenuItem>
-                      {window.process.platform !== 'win32' && (
-                        <MenuItem dense value="yes-hidden">Yes, but minimized</MenuItem>
-                      )}
-                      <MenuItem dense value="no">No</MenuItem>
-                    </Select>
-                  </ListItem>
-                </List>
-              </Paper>
-            </>
-          )}
 
           <Typography variant="subtitle2" color="textPrimary" className={classes.sectionTitle} ref={sections.advanced.ref}>
             Advanced
@@ -583,27 +596,6 @@ const Preferences = ({
                   </ListItem>
                 </>
               )}
-              {window.process.platform !== 'darwin' && (
-                <>
-                  <Divider />
-                  <ListItem>
-                    <ListItemText
-                      primary="Use system title bar and borders"
-                    />
-                    <ListItemSecondaryAction>
-                      <Switch
-                        edge="end"
-                        color="primary"
-                        checked={useSystemTitleBar}
-                        onChange={(e) => {
-                          requestSetPreference('useSystemTitleBar', e.target.checked);
-                          enqueueRequestRestartSnackbar();
-                        }}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </>
-              )}
               <Divider />
               <ListItem>
                 <ListItemText
@@ -699,7 +691,7 @@ const Preferences = ({
             <List disablePadding dense>
               <ListItem
                 button
-                onClick={() => requestOpenInBrowser('https://webcatalog.app?utm_source=webcatalog_app')}
+                onClick={() => requestOpenInBrowser(`https://webcatalog.app?utm_source=${utmSource}`)}
                 className={classes.listItemPromotion}
               >
                 <div className={classes.promotionBlock}>
@@ -712,7 +704,7 @@ const Preferences = ({
                         WebCatalog
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        Desktop App Bundle, powered by the Web
+                        Turn Any Websites Into Real Desktop Apps
                       </Typography>
                     </div>
                   </div>
@@ -722,15 +714,7 @@ const Preferences = ({
               <Divider />
               <ListItem
                 button
-                onClick={() => {
-                  let url = `https://translatium.app?utm_source=${utmSource}`;
-                  if (window.process.mas) {
-                    url = 'macappstore://apps.apple.com/app/translatium/id1547052291';
-                  } else if (window.process.windowsStore) {
-                    url = 'ms-windows-store://pdp/?productid=9MWPG56JKS38';
-                  }
-                  requestOpenInBrowser(url);
-                }}
+                onClick={() => requestOpenInBrowser(`https://translatium.app?utm_source=${utmSource}`)}
                 className={classes.listItemPromotion}
               >
                 <div className={classes.promotionBlock}>
@@ -753,13 +737,30 @@ const Preferences = ({
               <Divider />
               <ListItem
                 button
-                onClick={() => {
-                  let url = `https://singlebox.app?utm_source=${utmSource}`;
-                  if (window.process.mas) {
-                    url = 'macappstore://apps.apple.com/app/singlebox/id1548853763';
-                  }
-                  requestOpenInBrowser(url);
-                }}
+                onClick={() => requestOpenInBrowser(`https://switchbar.app?utm_source=${utmSource}`)}
+                className={classes.listItemPromotion}
+              >
+                <div className={classes.promotionBlock}>
+                  <div className={classes.promotionLeft}>
+                    <img src={switchbarIconPng} alt="Switchbar" className={classes.appIcon} />
+                  </div>
+                  <div className={classes.promotionRight}>
+                    <div>
+                      <Typography variant="body1" className={classes.appTitle}>
+                        Switchbar
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        Choose Where to Open Links
+                      </Typography>
+                    </div>
+                  </div>
+                </div>
+                <ChevronRightIcon color="action" />
+              </ListItem>
+              <Divider />
+              <ListItem
+                button
+                onClick={() => requestOpenInBrowser(`https://singlebox.app?utm_source=${utmSource}`)}
                 className={classes.listItemPromotion}
               >
                 <div className={classes.promotionBlock}>
@@ -772,62 +773,7 @@ const Preferences = ({
                         Singlebox
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        Smart Browser for Busy People
-                      </Typography>
-                    </div>
-                  </div>
-                </div>
-                <ChevronRightIcon color="action" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                onClick={() => {
-                  let url = `https://squeezer.app?utm_source=${utmSource}`;
-                  if (window.process.mas) {
-                    url = 'macappstore://apps.apple.com/us/app/squeezer-image-compression/id1554751184';
-                  }
-                  requestOpenInBrowser(url);
-                }}
-                className={classes.listItemPromotion}
-              >
-                <div className={classes.promotionBlock}>
-                  <div className={classes.promotionLeft}>
-                    <img src={squeezerIconPng} alt="Squeezer" className={classes.appIcon} />
-                  </div>
-                  <div className={classes.promotionRight}>
-                    <div>
-                      <Typography variant="body1" className={classes.appTitle}>
-                        Squeezer
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        Compress, Resize, Convert Images
-                      </Typography>
-                    </div>
-                  </div>
-                </div>
-                <ChevronRightIcon color="action" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                onClick={() => {
-                  const url = `https://chromeless.app?utm_source=${utmSource}`;
-                  requestOpenInBrowser(url);
-                }}
-                className={classes.listItemPromotion}
-              >
-                <div className={classes.promotionBlock}>
-                  <div className={classes.promotionLeft}>
-                    <img src={chromelessIconPng} alt="Chromeless" className={classes.appIcon} />
-                  </div>
-                  <div className={classes.promotionRight}>
-                    <div>
-                      <Typography variant="body1" className={classes.appTitle}>
-                        Chromeless
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        Turn Any Websites into Site-specific Browsers
+                        All-in-One Messenger
                       </Typography>
                     </div>
                   </div>
@@ -863,49 +809,20 @@ const Preferences = ({
               <Divider />
               <ListItem
                 button
-                onClick={() => {
-                  const url = `https://pantext.app?utm_source=${utmSource}`;
-                  requestOpenInBrowser(url);
-                }}
+                onClick={() => requestOpenInBrowser(`https://chromeless.app?utm_source=${utmSource}`)}
                 className={classes.listItemPromotion}
               >
                 <div className={classes.promotionBlock}>
                   <div className={classes.promotionLeft}>
-                    <img src={pantextIconPng} alt="PanText" className={classes.appIcon} />
+                    <img src={chromelessIconPng} alt="Chromeless" className={classes.appIcon} />
                   </div>
                   <div className={classes.promotionRight}>
                     <div>
                       <Typography variant="body1" className={classes.appTitle}>
-                        PanText
+                        Chromeless
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        All Your Messaging Apps in One
-                      </Typography>
-                    </div>
-                  </div>
-                </div>
-                <ChevronRightIcon color="action" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                onClick={() => {
-                  const url = `https://panmail.app?utm_source=${utmSource}`;
-                  requestOpenInBrowser(url);
-                }}
-                className={classes.listItemPromotion}
-              >
-                <div className={classes.promotionBlock}>
-                  <div className={classes.promotionLeft}>
-                    <img src={panmailIconPng} alt="PanMail" className={classes.appIcon} />
-                  </div>
-                  <div className={classes.promotionRight}>
-                    <div>
-                      <Typography variant="body1" className={classes.appTitle}>
-                        PanMail
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        All Your Email Apps in One
+                        Create Chromium-based Apps
                       </Typography>
                     </div>
                   </div>
