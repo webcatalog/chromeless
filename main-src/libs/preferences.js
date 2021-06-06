@@ -34,6 +34,7 @@ const defaultPreferences = {
   allowPrerelease: Boolean(semver.prerelease(app.getVersion())),
   alwaysOnTop: false, // for menubar
   attachToMenubar: false,
+  autoHideMenuBar: false,
   createDesktopShortcut: true,
   createStartMenuShortcut: true,
   defaultHome: 'home',

@@ -180,6 +180,7 @@ const Preferences = ({
   alwaysOnTop,
   appCount,
   attachToMenubar,
+  autoHideMenuBar,
   classes,
   createDesktopShortcut,
   createStartMenuShortcut,
@@ -398,6 +399,24 @@ const Preferences = ({
                         checked={useSystemTitleBar}
                         onChange={(e) => {
                           requestSetPreference('useSystemTitleBar', e.target.checked);
+                          enqueueRequestRestartSnackbar();
+                        }}
+                      />
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="Hide menu bar automatically"
+                      secondary="Auto hide the menu bar unless the Alt key is pressed."
+                    />
+                    <ListItemSecondaryAction>
+                      <Switch
+                        edge="end"
+                        color="primary"
+                        disabled={!useSystemTitleBar}
+                        checked={useSystemTitleBar && autoHideMenuBar}
+                        onChange={(e) => {
+                          requestSetPreference('autoHideMenuBar', e.target.checked);
                           enqueueRequestRestartSnackbar();
                         }}
                       />
@@ -884,6 +903,7 @@ Preferences.propTypes = {
   alwaysOnTop: PropTypes.bool.isRequired,
   appCount: PropTypes.number.isRequired,
   attachToMenubar: PropTypes.bool.isRequired,
+  autoHideMenuBar: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired,
   createDesktopShortcut: PropTypes.bool.isRequired,
   createStartMenuShortcut: PropTypes.bool.isRequired,
@@ -910,6 +930,7 @@ const mapStateToProps = (state) => ({
   alwaysOnTop: state.preferences.alwaysOnTop,
   appCount: Object.keys(state.appManagement.apps).length,
   attachToMenubar: state.preferences.attachToMenubar,
+  autoHideMenuBar: state.preferences.autoHideMenuBar,
   createDesktopShortcut: state.preferences.createDesktopShortcut,
   createStartMenuShortcut: state.preferences.createStartMenuShortcut,
   defaultHome: state.preferences.defaultHome,
@@ -922,8 +943,8 @@ const mapStateToProps = (state) => ({
   themeSource: state.preferences.themeSource,
   updaterInfo: state.updater.info,
   updaterStatus: state.updater.status,
-  useSystemTitleBar: state.preferences.useSystemTitleBar,
   useHardwareAcceleration: state.preferences.useHardwareAcceleration,
+  useSystemTitleBar: state.preferences.useSystemTitleBar,
 });
 
 const actionCreators = {
