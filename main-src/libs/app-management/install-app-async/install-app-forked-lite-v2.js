@@ -38,9 +38,9 @@ const {
   name,
   url,
   icon,
+  helperPath,
   homePath,
   installationPath,
-  helperPath,
   username,
 } = argv;
 const opts = JSON.parse(argv.opts);
@@ -206,7 +206,7 @@ const finalPath = process.platform === 'darwin'
   ? path.join(allAppsPath, `${name}.app`)
   : path.join(allAppsPath, name);
 
-const helperDestPath = path.join(resourcesPath, 'chromeless-helper');
+const helperDestPath = path.join(homePath, '.chromeless', 'chromium-data', id, 'chromeless-helper');
 
 const browserId = engine.split('/')[0];
 const useTabs = !url || engine.endsWith('/tabs'); // if no url is defined (multisite) then always use tabs option
