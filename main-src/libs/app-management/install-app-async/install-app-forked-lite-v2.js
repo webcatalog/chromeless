@@ -61,6 +61,16 @@ const browserConstants = {
     userDataDir: path.join('Google', 'Chrome'),
     execFile: 'Google Chrome',
   },
+  chromeBeta: {
+    appDir: 'Google Chrome Beta.app',
+    userDataDir: path.join('Google', 'Chrome Beta'),
+    execFile: 'Google Chrome Beta',
+  },
+  chromeDev: {
+    appDir: 'Google Chrome Beta.app',
+    userDataDir: path.join('Google', 'Chrome Beta'),
+    execFile: 'Google Chrome Beta',
+  },
   chromeCanary: {
     appDir: 'Google Chrome Canary.app',
     userDataDir: path.join('Google', 'Chrome Canary'),

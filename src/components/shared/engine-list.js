@@ -15,6 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 
 import HelpIcon from '@material-ui/icons/Help';
@@ -22,7 +23,6 @@ import HelpIcon from '@material-ui/icons/Help';
 import connectComponent from '../../helpers/connect-component';
 
 import braveIcon from '../../assets/brave.png';
-import chromeCanaryIcon from '../../assets/chrome-canary.png';
 import chromeIcon from '../../assets/chrome.png';
 import chromiumIcon from '../../assets/chromium.png';
 import coccocIcon from '../../assets/coccoc.png';
@@ -198,63 +198,6 @@ const EngineList = ({
         </ListItemSecondaryAction>
       )}
     </ListItem>
-    {window.process.platform === 'darwin' && (
-      <ListItem
-        dense
-        button
-        onClick={() => {
-          if (engine.startsWith('chromeCanary')) return;
-          onEngineSelected('chromeCanary');
-        }}
-        selected={engine.startsWith('chromeCanary')}
-      >
-        <ListItemAvatar className={classes.smallListItemAvatar}>
-          <Avatar alt="Google Chrome Canary" src={chromeCanaryIcon} className={classes.smallAvatar} />
-        </ListItemAvatar>
-        <ListItemText
-          primary={(
-            <Grid container direction="row" alignItems="center" spacing={1}>
-              <Grid item>
-                <Typography variant="body2" noWrap>
-                  Google Chrome Canary
-                </Typography>
-              </Grid>
-              <Grid item>
-                <HelpTooltip
-                  title={(
-                    <Typography variant="body2" color="textPrimary">
-                      {getDesc('chromeCanary', 'Google Chrome Canary')}
-                    </Typography>
-                  )}
-                >
-                  <CustomHelpIcon fontSize="small" color="disabled" />
-                </HelpTooltip>
-              </Grid>
-            </Grid>
-          )}
-        />
-        {!isMultisite && (
-          <ListItemSecondaryAction>
-            <ToggleButtonGroup
-              value={engine}
-              exclusive
-              onChange={(_, val) => {
-                if (!val) return;
-                onEngineSelected(val);
-              }}
-              size="small"
-            >
-              <ToggleButton value="chromeCanary" classes={{ root: classes.toggleButton }}>
-                Standard
-              </ToggleButton>
-              <ToggleButton value="chromeCanary/tabs" classes={{ root: classes.toggleButton }}>
-                Tabbed
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </ListItemSecondaryAction>
-        )}
-      </ListItem>
-    )}
     {window.process.platform !== 'win32' && (
       <ListItem
         dense
@@ -746,6 +689,64 @@ const EngineList = ({
               size="small"
             >
               <ToggleButton value="firefox/tabs" classes={{ root: classes.toggleButton }}>
+                Tabbed
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </ListItemSecondaryAction>
+        )}
+      </ListItem>
+    )}
+    <Divider />
+    {window.process.platform !== 'linux' && (
+      <ListItem
+        dense
+        button
+        onClick={() => {
+          if (engine.startsWith('chromeCanary')) return;
+          onEngineSelected('chromeCanary');
+        }}
+        selected={engine.startsWith('chromeCanary')}
+      >
+        <ListItemAvatar className={classes.smallListItemAvatar}>
+          <Avatar alt="Google Chrome Canary" src={chromeIcon} className={classes.smallAvatar} />
+        </ListItemAvatar>
+        <ListItemText
+          primary={(
+            <Grid container direction="row" alignItems="center" spacing={1}>
+              <Grid item>
+                <Typography variant="body2" noWrap>
+                  Google Chrome Canary
+                </Typography>
+              </Grid>
+              <Grid item>
+                <HelpTooltip
+                  title={(
+                    <Typography variant="body2" color="textPrimary">
+                      {getDesc('chromeCanary', 'Google Chrome Canary')}
+                    </Typography>
+                  )}
+                >
+                  <CustomHelpIcon fontSize="small" color="disabled" />
+                </HelpTooltip>
+              </Grid>
+            </Grid>
+          )}
+        />
+        {!isMultisite && (
+          <ListItemSecondaryAction>
+            <ToggleButtonGroup
+              value={engine}
+              exclusive
+              onChange={(_, val) => {
+                if (!val) return;
+                onEngineSelected(val);
+              }}
+              size="small"
+            >
+              <ToggleButton value="chromeCanary" classes={{ root: classes.toggleButton }}>
+                Standard
+              </ToggleButton>
+              <ToggleButton value="chromeCanary/tabs" classes={{ root: classes.toggleButton }}>
                 Tabbed
               </ToggleButton>
             </ToggleButtonGroup>

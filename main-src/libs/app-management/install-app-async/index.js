@@ -158,6 +158,12 @@ const installAppAsync = (
       if (process.platform === 'win32') {
         if (engine.startsWith('chrome')) {
           browserPath = getWin32ChromePaths()[0];
+        } else if (engine.startsWith('chromeBeta')) {
+          browserPath = getWin32ChromePaths('Beta')[0];
+        } else if (engine.startsWith('chromeDev')) {
+          browserPath = getWin32ChromePaths('Dev')[0];
+        } else if (engine.startsWith('chromeCanary')) {
+          browserPath = getWin32ChromePaths('Canary')[0];
         } else if (engine.startsWith('brave')) {
           browserPath = getWin32BravePaths()[0];
         } else if (engine.startsWith('vivaldi')) {
