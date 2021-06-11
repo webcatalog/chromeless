@@ -219,11 +219,13 @@ const EngineList = ({
         engineVal: 'chromium',
         engineName: 'Chromium',
         iconPath: chromiumIcon,
+        downloadUrl: 'https://www.chromium.org/getting-involved/download-chromium',
       })}
       {window.process.platform !== 'linux' && renderItem({
         engineVal: 'coccoc',
         engineName: 'Cốc Cốc',
         iconPath: coccocIcon,
+        downloadUrl: 'https://coccoc.com/',
       })}
       {renderItem({
         engineVal: 'opera',
@@ -231,6 +233,7 @@ const EngineList = ({
         iconPath: operaIcon,
         disableStandardMode: true,
         defaultMode: 'tabbed',
+        downloadUrl: 'https://www.opera.com/',
       })}
       {window.process.platform === 'darwin' && !isMultisite && renderItem({
         engineVal: 'webkit',
@@ -244,6 +247,7 @@ const EngineList = ({
         iconPath: firefoxIcon,
         disableStandardMode: true,
         defaultMode: 'tabbed',
+        downloadUrl: 'https://www.mozilla.org/firefox/',
       })}
       <Divider />
       {renderItem({
