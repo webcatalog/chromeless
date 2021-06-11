@@ -117,14 +117,39 @@ const installAppAsync = (
             engineName = 'Microsoft Edge';
             break;
           }
-          case 'chromeCanary':
-          case 'chromeCanary/tabs': {
-            engineName = 'Google Chrome Canary';
+          case 'edgeBeta':
+          case 'edgeBeta/tabs': {
+            engineName = 'Microsoft Edge Beta';
+            break;
+          }
+          case 'edgeDev':
+          case 'edgeDev/tabs': {
+            engineName = 'Microsoft Edge Dev';
+            break;
+          }
+          case 'edgeCanary':
+          case 'edgeCanary/tabs': {
+            engineName = 'Microsoft Edge Canary';
             break;
           }
           case 'chrome':
           case 'chrome/tabs': {
             engineName = 'Google Chrome';
+            break;
+          }
+          case 'chromeBeta':
+          case 'chromeBeta/tabs': {
+            engineName = 'Google Chrome Beta';
+            break;
+          }
+          case 'chromeDev':
+          case 'chromeDev/tabs': {
+            engineName = 'Google Chrome Dev';
+            break;
+          }
+          case 'chromeCanary':
+          case 'chromeCanary/tabs': {
+            engineName = 'Google Chrome Canary';
             break;
           }
           case 'opera':
@@ -170,6 +195,12 @@ const installAppAsync = (
           browserPath = getWin32VivaldiPaths()[0];
         } else if (engine.startsWith('edge')) {
           browserPath = getWin32EdgePaths()[0];
+        } else if (engine.startsWith('edgeBeta')) {
+          browserPath = getWin32EdgePaths('Beta')[0];
+        } else if (engine.startsWith('edgeDev')) {
+          browserPath = getWin32EdgePaths('Dev')[0];
+        } else if (engine.startsWith('edgeCanary')) {
+          browserPath = getWin32EdgePaths('Canary')[0];
         } else if (engine.startsWith('opera')) {
           browserPath = getWin32OperaPaths()[0];
         } else if (engine.startsWith('yandex')) {

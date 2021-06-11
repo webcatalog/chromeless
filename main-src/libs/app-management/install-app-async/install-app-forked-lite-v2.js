@@ -86,6 +86,21 @@ const browserConstants = {
     userDataDir: 'Microsoft Edge',
     execFile: 'Microsoft Edge',
   },
+  edgeBeta: {
+    appDir: 'Microsoft Edge Beta.app',
+    userDataDir: 'Microsoft Edge Beta',
+    execFile: 'Microsoft Edge Beta',
+  },
+  edgeDev: {
+    appDir: 'Microsoft Edge Dev.app',
+    userDataDir: 'Microsoft Edge Dev',
+    execFile: 'Microsoft Edge Dev',
+  },
+  edgeCanary: {
+    appDir: 'Microsoft Edge Canary.app',
+    userDataDir: 'Microsoft Edge Canary',
+    execFile: 'Microsoft Edge Canary',
+  },
   vivaldi: {
     appDir: 'Vivaldi.app',
     userDataDir: 'Vivaldi',

@@ -19,10 +19,13 @@ const canAccess = (file) => {
   }
 };
 
-const getWin32EdgePaths = () => {
+const getWin32EdgePaths = (channelName) => {
   const installations = [];
+
+  const appName = channelName ? `Edge ${channelName}` : 'Edge';
+
   const suffixes = [
-    `${path.sep}Microsoft${path.sep}Edge${path.sep}Application${path.sep}msedge.exe`,
+    `${path.sep}Microsoft${path.sep}${appName}${path.sep}Application${path.sep}msedge.exe`,
   ];
   const prefixes = [process.env.LOCALAPPDATA, process.env.PROGRAMFILES, process.env['PROGRAMFILES(X86)']].filter(Boolean);
 

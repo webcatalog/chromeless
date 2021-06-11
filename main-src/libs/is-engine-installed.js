@@ -165,6 +165,57 @@ const isEngineInstalled = (engine) => {
 
       return false;
     }
+    case 'edgeBeta': {
+      if (process.platform === 'darwin') {
+        const chromePath = path.join('/Applications', 'Microsoft Edge Beta.app');
+        return fs.existsSync(chromePath);
+      }
+
+      if (process.platform === 'linux') {
+        return commandExistsSync('microsoft-edge-beta');
+      }
+
+      if (process.platform === 'win32') {
+        const chromePaths = getWin32EdgePaths('Beta');
+        return chromePaths.length > 0;
+      }
+
+      return false;
+    }
+    case 'edgeDev': {
+      if (process.platform === 'darwin') {
+        const chromePath = path.join('/Applications', 'Microsoft Edge Dev.app');
+        return fs.existsSync(chromePath);
+      }
+
+      if (process.platform === 'linux') {
+        return commandExistsSync('microsoft-edge-dev');
+      }
+
+      if (process.platform === 'win32') {
+        const chromePaths = getWin32EdgePaths('Dev');
+        return chromePaths.length > 0;
+      }
+
+      return false;
+    }
+    case 'edgeCanary': {
+      if (process.platform === 'darwin') {
+        const chromePath = path.join('/Applications', 'Microsoft Edge Canary.app');
+        return fs.existsSync(chromePath);
+      }
+
+      if (process.platform === 'linux') {
+        return commandExistsSync('microsoft-edge-canary');
+      }
+
+      if (process.platform === 'win32') {
+        const chromePaths = getWin32EdgePaths('Canary');
+        return chromePaths.length > 0;
+      }
+
+      return false;
+    }
     case 'opera': {
       if (process.platform === 'darwin') {
         const chromePath = path.join('/Applications', 'Opera.app');

@@ -244,6 +244,18 @@ Promise.resolve()
                 binPath = 'microsoft-edge';
                 break;
               }
+              case 'edgeBeta': {
+                binPath = 'microsoft-edge-beta';
+                break;
+              }
+              case 'edgeDev': {
+                binPath = 'microsoft-edge-dev';
+                break;
+              }
+              case 'edgeCanary': {
+                binPath = 'microsoft-edge-canary';
+                break;
+              }
               case 'brave': {
                 binPath = 'brave-browser';
                 break;

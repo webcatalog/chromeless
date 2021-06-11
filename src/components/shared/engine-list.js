@@ -31,6 +31,9 @@ import chromeCanaryIcon from '../../assets/chrome-canary.png';
 import chromiumIcon from '../../assets/chromium.png';
 import coccocIcon from '../../assets/coccoc.png';
 import edgeIcon from '../../assets/edge.png';
+import edgeBetaIcon from '../../assets/edge-beta.png';
+import edgeDevIcon from '../../assets/edge-dev.png';
+import edgeCanaryIcon from '../../assets/edge-canary.png';
 import firefoxIcon from '../../assets/firefox.png';
 import operaIcon from '../../assets/opera.png';
 import vivaldiIcon from '../../assets/vivaldi.png';
@@ -147,7 +150,7 @@ const EngineList = ({
                     color="disabled"
                     onClick={(e) => {
                       e.stopPropagation();
-                      requestOpenInBrowser('https://google.com');
+                      requestOpenInBrowser(downloadUrl);
                     }}
                   />
                 </Tooltip>
@@ -267,6 +270,24 @@ const EngineList = ({
         engineName: 'Google Chrome Canary',
         iconPath: chromeCanaryIcon,
         downloadUrl: 'https://www.google.com/chrome/canary/',
+      })}
+      {renderItem({
+        engineVal: 'edgeBeta',
+        engineName: 'Microsoft Edge Beta',
+        iconPath: edgeBetaIcon,
+        downloadUrl: 'https://www.microsoftedgeinsider.com/download',
+      })}
+      {renderItem({
+        engineVal: 'edgeDev',
+        engineName: 'Microsoft Edge Dev',
+        iconPath: edgeDevIcon,
+        downloadUrl: 'https://www.microsoftedgeinsider.com/download',
+      })}
+      {renderItem({
+        engineVal: 'edgeCanary',
+        engineName: 'Microsoft Edge Canary',
+        iconPath: edgeCanaryIcon,
+        downloadUrl: 'https://www.microsoftedgeinsider.com/download',
       })}
     </List>
   );
