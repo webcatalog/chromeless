@@ -97,10 +97,53 @@ const isEngineInstalled = (engine) => {
 
       return false;
     }
+    case 'chromeBeta': {
+      if (process.platform === 'darwin') {
+        const chromePath = path.join('/Applications', 'Google Chrome Beta.app');
+        return fs.existsSync(chromePath);
+      }
+
+      if (process.platform === 'linux') {
+        return commandExistsSync('google-chrome-beta');
+      }
+
+      if (process.platform === 'win32') {
+        const chromePaths = getWin32ChromePaths('Beta');
+        return chromePaths.length > 0;
+      }
+
+      return false;
+    }
+    case 'chromeDev': {
+      if (process.platform === 'darwin') {
+        const chromePath = path.join('/Applications', 'Google Chrome Dev.app');
+        return fs.existsSync(chromePath);
+      }
+
+      if (process.platform === 'linux') {
+        return commandExistsSync('google-chrome-dev');
+      }
+
+      if (process.platform === 'win32') {
+        const chromePaths = getWin32ChromePaths('Dev');
+        return chromePaths.length > 0;
+      }
+
+      return false;
+    }
     case 'chromeCanary': {
       if (process.platform === 'darwin') {
         const chromePath = path.join('/Applications', 'Google Chrome Canary.app');
         return fs.existsSync(chromePath);
+      }
+
+      if (process.platform === 'linux') {
+        return commandExistsSync('google-chrome-canary');
+      }
+
+      if (process.platform === 'win32') {
+        const chromePaths = getWin32ChromePaths('Canary');
+        return chromePaths.length > 0;
       }
 
       return false;
@@ -109,6 +152,10 @@ const isEngineInstalled = (engine) => {
       if (process.platform === 'darwin') {
         const chromePath = path.join('/Applications', 'Microsoft Edge.app');
         return fs.existsSync(chromePath);
+      }
+
+      if (process.platform === 'linux') {
+        return commandExistsSync('microsoft-edge');
       }
 
       if (process.platform === 'win32') {
