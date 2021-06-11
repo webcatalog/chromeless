@@ -176,7 +176,7 @@ const installAppAsync = (
       }
 
       const helperPath = process.env.NODE_ENV === 'production'
-        ? path.resolve(__dirname, 'chromeless-helper')
+        ? path.resolve(__dirname, 'chromeless-helper').replace('app.asar', 'app.asar.unpacked') // must use app.asar.unpacked because files copied from asar has wrong permission
         : path.resolve(__dirname, '..', '..', '..', '..', 'public', 'chromeless-helper');
 
       const params = [
@@ -233,7 +233,7 @@ const installAppAsync = (
       const child = fork(scriptPath, params, {
         env: {
           ELECTRON_RUN_AS_NODE: 'true',
-          // ELECTRON_NO_ASAR: 'false',
+          ELECTRON_NO_ASAR: 'true',
           APPDATA: app.getPath('appData'),
         },
       });

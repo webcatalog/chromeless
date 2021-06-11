@@ -206,6 +206,8 @@ const finalPath = process.platform === 'darwin'
   ? path.join(allAppsPath, `${name}.app`)
   : path.join(allAppsPath, name);
 
+const helperDestPath = path.join(resourcesPath, 'chromeless-helper');
+
 const browserId = engine.split('/')[0];
 const useTabs = !url || engine.endsWith('/tabs'); // if no url is defined (multisite) then always use tabs option
 
@@ -297,7 +299,7 @@ Promise.resolve()
         .then(() => fsExtra.ensureDir(appAsarUnpackedPath))
         .then(() => fsExtra.copy(iconPngPath, publicIconPngPath))
         .then(() => fsExtra.copy(iconIcnsPath, publicIconIcnsPath))
-        .then(() => fsExtra.copy(helperPath, path.join(resourcesPath, 'chromeless-helper')))
+        .then(() => fsExtra.copy(helperPath, helperDestPath))
         .then(() => {
           const execFilePath = process.platform === 'darwin'
             ? path.join(contentsPath, 'MacOS', 'chromeless_root_app')

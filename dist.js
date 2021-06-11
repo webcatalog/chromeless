@@ -102,6 +102,7 @@ const opts = {
     productName: 'Chromeless',
     asar: true,
     asarUnpack: [
+      '**/build/chromeless-helper/**/*',
       'default-app-icons/**/*',
       '**/node_modules/regedit/**/*',
       '**/rcedit*.exe',
