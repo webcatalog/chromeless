@@ -63,7 +63,7 @@ const DialogChooseEngine = ({
       <Grid container direction="row" alignItems="center" spacing={1}>
         <Grid item>
           <Typography variant="subtitle1">
-            Choose an Browser Engine for&nbsp;
+            Choose a Browser Engine for&nbsp;
             {name}
           </Typography>
         </Grid>

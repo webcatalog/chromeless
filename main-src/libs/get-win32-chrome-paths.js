@@ -19,11 +19,14 @@ const canAccess = (file) => {
   }
 };
 
-const getWin32ChromePaths = () => {
+const getWin32ChromePaths = (channelName) => {
   const installations = [];
+
+  const appName = channelName ? `Chrome ${channelName}` : 'Chrome';
+
   const suffixes = [
-    `${path.sep}Google${path.sep}Chrome SxS${path.sep}Application${path.sep}chrome.exe`,
-    `${path.sep}Google${path.sep}Chrome${path.sep}Application${path.sep}chrome.exe`,
+    `${path.sep}Google${path.sep}${appName} SxS${path.sep}Application${path.sep}chrome.exe`,
+    `${path.sep}Google${path.sep}${appName}${path.sep}Application${path.sep}chrome.exe`,
   ];
   const prefixes = [process.env.LOCALAPPDATA, process.env.PROGRAMFILES, process.env['PROGRAMFILES(X86)']].filter(Boolean);
 

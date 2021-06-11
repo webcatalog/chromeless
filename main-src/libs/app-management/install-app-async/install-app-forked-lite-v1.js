@@ -228,6 +228,34 @@ Promise.resolve()
                 binPath = 'google-chrome';
                 break;
               }
+              case 'chromeBeta': {
+                binPath = 'google-chrome-beta';
+                break;
+              }
+              case 'chromeDev': {
+                binPath = 'google-chrome-dev';
+                break;
+              }
+              case 'chromeCanary': {
+                binPath = 'google-chrome-canary';
+                break;
+              }
+              case 'edge': {
+                binPath = 'microsoft-edge';
+                break;
+              }
+              case 'edgeBeta': {
+                binPath = 'microsoft-edge-beta';
+                break;
+              }
+              case 'edgeDev': {
+                binPath = 'microsoft-edge-dev';
+                break;
+              }
+              case 'edgeCanary': {
+                binPath = 'microsoft-edge-canary';
+                break;
+              }
               case 'brave': {
                 binPath = 'brave-browser';
                 break;

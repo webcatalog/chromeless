@@ -61,6 +61,16 @@ const browserConstants = {
     userDataDir: path.join('Google', 'Chrome'),
     execFile: 'Google Chrome',
   },
+  chromeBeta: {
+    appDir: 'Google Chrome Beta.app',
+    userDataDir: path.join('Google', 'Chrome Beta'),
+    execFile: 'Google Chrome Beta',
+  },
+  chromeDev: {
+    appDir: 'Google Chrome Beta.app',
+    userDataDir: path.join('Google', 'Chrome Beta'),
+    execFile: 'Google Chrome Beta',
+  },
   chromeCanary: {
     appDir: 'Google Chrome Canary.app',
     userDataDir: path.join('Google', 'Chrome Canary'),
@@ -75,6 +85,21 @@ const browserConstants = {
     appDir: 'Microsoft Edge.app',
     userDataDir: 'Microsoft Edge',
     execFile: 'Microsoft Edge',
+  },
+  edgeBeta: {
+    appDir: 'Microsoft Edge Beta.app',
+    userDataDir: 'Microsoft Edge Beta',
+    execFile: 'Microsoft Edge Beta',
+  },
+  edgeDev: {
+    appDir: 'Microsoft Edge Dev.app',
+    userDataDir: 'Microsoft Edge Dev',
+    execFile: 'Microsoft Edge Dev',
+  },
+  edgeCanary: {
+    appDir: 'Microsoft Edge Canary.app',
+    userDataDir: 'Microsoft Edge Canary',
+    execFile: 'Microsoft Edge Canary',
   },
   vivaldi: {
     appDir: 'Vivaldi.app',

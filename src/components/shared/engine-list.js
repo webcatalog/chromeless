@@ -3,7 +3,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
@@ -15,18 +14,26 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
+import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 
 import HelpIcon from '@material-ui/icons/Help';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 
 import connectComponent from '../../helpers/connect-component';
 
 import braveIcon from '../../assets/brave.png';
-import chromeCanaryIcon from '../../assets/chrome-canary.png';
 import chromeIcon from '../../assets/chrome.png';
+import chromeBetaIcon from '../../assets/chrome-beta.png';
+import chromeDevIcon from '../../assets/chrome-dev.png';
+import chromeCanaryIcon from '../../assets/chrome-canary.png';
 import chromiumIcon from '../../assets/chromium.png';
 import coccocIcon from '../../assets/coccoc.png';
 import edgeIcon from '../../assets/edge.png';
+import edgeBetaIcon from '../../assets/edge-beta.png';
+import edgeDevIcon from '../../assets/edge-dev.png';
+import edgeCanaryIcon from '../../assets/edge-canary.png';
 import firefoxIcon from '../../assets/firefox.png';
 import operaIcon from '../../assets/opera.png';
 import vivaldiIcon from '../../assets/vivaldi.png';
@@ -34,6 +41,10 @@ import webkitIcon from '../../assets/webkit.png';
 import yandexIcon from '../../assets/yandex.png';
 
 import HelpTooltip from './help-tooltip';
+
+import {
+  requestOpenInBrowser,
+} from '../../senders';
 
 const CustomHelpIcon = withStyles((theme) => ({
   fontSizeSmall: {
@@ -79,6 +90,9 @@ const styles = (theme) => ({
   smallListItemAvatar: {
     minWidth: 36,
   },
+  download: {
+    marginLeft: theme.spacing(1),
+  },
 });
 
 const EngineList = ({
@@ -86,675 +100,198 @@ const EngineList = ({
   engine,
   isMultisite,
   onEngineSelected,
-}) => (
-  <List>
+}) => {
+  const renderItem = ({
+    engineVal,
+    engineName,
+    iconPath,
+    disableStandardMode,
+    disableTabbedMode,
+    defaultMode,
+    downloadUrl,
+  }) => (
     <ListItem
       dense
       button
       onClick={() => {
-        if (engine === 'chrome' || engine.startsWith('chrome/')) return;
-        onEngineSelected('chrome');
+        if (engine.startsWith(engineVal)) return;
+        onEngineSelected(disableStandardMode || defaultMode === 'tabbed' ? `${engineVal}/tabs` : engineVal);
       }}
-      selected={engine === 'chrome' || engine.startsWith('chrome/')}
+      selected={engine.startsWith(engineVal)}
     >
       <ListItemAvatar className={classes.smallListItemAvatar}>
-        <Avatar alt="Google Chrome" src={chromeIcon} className={classes.smallAvatar} />
+        <Avatar alt={engineName} src={iconPath} className={classes.smallAvatar} />
       </ListItemAvatar>
       <ListItemText
         primary={(
           <Grid container direction="row" alignItems="center" spacing={1}>
             <Grid item>
               <Typography variant="body2" noWrap>
-                Google Chrome
+                {engineName}
               </Typography>
             </Grid>
             <Grid item>
               <HelpTooltip
                 title={(
                   <Typography variant="body2" color="textPrimary">
-                    {getDesc('chrome', 'Google Chrome')}
+                    {getDesc(engineVal, engineName)}
                   </Typography>
                 )}
               >
                 <CustomHelpIcon fontSize="small" color="disabled" />
               </HelpTooltip>
-            </Grid>
-          </Grid>
-        )}
-      />
-      {!isMultisite && (
-        <ListItemSecondaryAction>
-          <ToggleButtonGroup
-            value={engine}
-            exclusive
-            onChange={(_, val) => {
-              if (!val) return;
-              onEngineSelected(val);
-            }}
-            size="small"
-          >
-            <ToggleButton value="chrome" classes={{ root: classes.toggleButton }}>
-              Standard
-            </ToggleButton>
-            <ToggleButton value="chrome/tabs" classes={{ root: classes.toggleButton }}>
-              Tabbed
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </ListItemSecondaryAction>
-      )}
-    </ListItem>
-    <ListItem
-      dense
-      button
-      onClick={() => {
-        if (engine.startsWith('brave')) return;
-        onEngineSelected('brave');
-      }}
-      selected={engine.startsWith('brave')}
-    >
-      <ListItemAvatar className={classes.smallListItemAvatar}>
-        <Avatar alt="Brave" src={braveIcon} className={classes.smallAvatar} />
-      </ListItemAvatar>
-      <ListItemText
-        primary={(
-          <Grid container direction="row" alignItems="center" spacing={1}>
-            <Grid item>
-              <Typography variant="body2" noWrap>
-                Brave
-              </Typography>
-            </Grid>
-            <Grid item>
-              <HelpTooltip
-                title={(
-                  <Typography variant="body2" color="textPrimary">
-                    {getDesc('brave', 'Brave')}
-                  </Typography>
-                )}
-              >
-                <CustomHelpIcon fontSize="small" color="disabled" />
-              </HelpTooltip>
-            </Grid>
-          </Grid>
-        )}
-      />
-      {!isMultisite && (
-        <ListItemSecondaryAction>
-          <ToggleButtonGroup
-            value={engine}
-            exclusive
-            onChange={(_, val) => {
-              if (!val) return;
-              onEngineSelected(val);
-            }}
-            size="small"
-          >
-            <ToggleButton value="brave" classes={{ root: classes.toggleButton }}>
-              Standard
-            </ToggleButton>
-            <ToggleButton value="brave/tabs" classes={{ root: classes.toggleButton }}>
-              Tabbed
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </ListItemSecondaryAction>
-      )}
-    </ListItem>
-    {window.process.platform === 'darwin' && (
-      <ListItem
-        dense
-        button
-        onClick={() => {
-          if (engine.startsWith('chromeCanary')) return;
-          onEngineSelected('chromeCanary');
-        }}
-        selected={engine.startsWith('chromeCanary')}
-      >
-        <ListItemAvatar className={classes.smallListItemAvatar}>
-          <Avatar alt="Google Chrome Canary" src={chromeCanaryIcon} className={classes.smallAvatar} />
-        </ListItemAvatar>
-        <ListItemText
-          primary={(
-            <Grid container direction="row" alignItems="center" spacing={1}>
-              <Grid item>
-                <Typography variant="body2" noWrap>
-                  Google Chrome Canary
-                </Typography>
-              </Grid>
-              <Grid item>
-                <HelpTooltip
-                  title={(
-                    <Typography variant="body2" color="textPrimary">
-                      {getDesc('chromeCanary', 'Google Chrome Canary')}
-                    </Typography>
-                  )}
+              {downloadUrl && (
+                <Tooltip
+                  title="Download Browser"
                 >
-                  <CustomHelpIcon fontSize="small" color="disabled" />
-                </HelpTooltip>
-              </Grid>
-            </Grid>
-          )}
-        />
-        {!isMultisite && (
-          <ListItemSecondaryAction>
-            <ToggleButtonGroup
-              value={engine}
-              exclusive
-              onChange={(_, val) => {
-                if (!val) return;
-                onEngineSelected(val);
-              }}
-              size="small"
-            >
-              <ToggleButton value="chromeCanary" classes={{ root: classes.toggleButton }}>
-                Standard
-              </ToggleButton>
-              <ToggleButton value="chromeCanary/tabs" classes={{ root: classes.toggleButton }}>
-                Tabbed
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </ListItemSecondaryAction>
-        )}
-      </ListItem>
-    )}
-    {window.process.platform !== 'win32' && (
-      <ListItem
-        dense
-        button
-        onClick={() => {
-          if (engine.startsWith('chromium')) return;
-          onEngineSelected('chromium');
-        }}
-        selected={engine.startsWith('chromium')}
-      >
-        <ListItemAvatar className={classes.smallListItemAvatar}>
-          <Avatar alt="Chromium" src={chromiumIcon} className={classes.smallAvatar} />
-        </ListItemAvatar>
-        <ListItemText
-          primary={(
-            <Grid container direction="row" alignItems="center" spacing={1}>
-              <Grid item>
-                <Typography variant="body2" noWrap>
-                  Chromium
-                </Typography>
-              </Grid>
-              <Grid item>
-                <HelpTooltip
-                  title={(
-                    <Typography variant="body2" color="textPrimary">
-                      {getDesc('chromium', 'Chromium')}
-                    </Typography>
-                  )}
-                >
-                  <CustomHelpIcon fontSize="small" color="disabled" />
-                </HelpTooltip>
-              </Grid>
-            </Grid>
-          )}
-        />
-        {!isMultisite && (
-          <ListItemSecondaryAction>
-            <ToggleButtonGroup
-              value={engine}
-              exclusive
-              onChange={(_, val) => {
-                if (!val) return;
-                onEngineSelected(val);
-              }}
-              size="small"
-            >
-              <ToggleButton value="chromium" classes={{ root: classes.toggleButton }}>
-                Standard
-              </ToggleButton>
-              <ToggleButton value="chromium/tabs" classes={{ root: classes.toggleButton }}>
-                Tabbed
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </ListItemSecondaryAction>
-        )}
-      </ListItem>
-    )}
-    {window.process.platform !== 'linux' && (
-      <ListItem
-        dense
-        button
-        onClick={() => {
-          if (engine.startsWith('coccoc')) return;
-          onEngineSelected('coccoc');
-        }}
-        selected={engine.startsWith('coccoc')}
-      >
-        <ListItemAvatar className={classes.smallListItemAvatar}>
-          <Avatar alt="Cốc Cốc" src={coccocIcon} className={classes.smallAvatar} />
-        </ListItemAvatar>
-        <ListItemText
-          primary={(
-            <Grid container direction="row" alignItems="center" spacing={1}>
-              <Grid item>
-                <Typography variant="body2" noWrap>
-                  Cốc Cốc
-                </Typography>
-              </Grid>
-              <Grid item>
-                <HelpTooltip
-                  title={(
-                    <Typography variant="body2" color="textPrimary">
-                      {getDesc('coccoc', 'Cốc Cốc')}
-                    </Typography>
-                  )}
-                >
-                  <CustomHelpIcon fontSize="small" color="disabled" />
-                </HelpTooltip>
-              </Grid>
-            </Grid>
-          )}
-        />
-        {!isMultisite && (
-          <ListItemSecondaryAction>
-            <ToggleButtonGroup
-              value={engine}
-              exclusive
-              onChange={(_, val) => {
-                if (!val) return;
-                onEngineSelected(val);
-              }}
-              size="small"
-            >
-              <ToggleButton value="coccoc" classes={{ root: classes.toggleButton }}>
-                Standard
-              </ToggleButton>
-              <ToggleButton value="coccoc/tabs" classes={{ root: classes.toggleButton }}>
-                Tabbed
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </ListItemSecondaryAction>
-        )}
-      </ListItem>
-    )}
-    {window.process.platform !== 'linux' && (
-      <ListItem
-        dense
-        button
-        onClick={() => {
-          if (engine.startsWith('edge')) return;
-          onEngineSelected('edge');
-        }}
-        selected={engine.startsWith('edge')}
-      >
-        <ListItemAvatar className={classes.smallListItemAvatar}>
-          <Avatar alt="Microsoft Edge" src={edgeIcon} className={classes.smallAvatar} />
-        </ListItemAvatar>
-        <ListItemText
-          primary={(
-            <Grid container direction="row" alignItems="center" spacing={1}>
-              <Grid item>
-                <Typography variant="body2" noWrap>
-                  Microsoft Edge
-                </Typography>
-              </Grid>
-              <Grid item>
-                <HelpTooltip
-                  title={(
-                    <Typography variant="body2" color="textPrimary">
-                      {getDesc('edge', 'Microsoft Edge')}
-                    </Typography>
-                  )}
-                >
-                  <CustomHelpIcon fontSize="small" color="disabled" />
-                </HelpTooltip>
-              </Grid>
-            </Grid>
-          )}
-        />
-        {!isMultisite && (
-          <ListItemSecondaryAction>
-            <ToggleButtonGroup
-              value={engine}
-              exclusive
-              onChange={(_, val) => {
-                if (!val) return;
-                onEngineSelected(val);
-              }}
-              size="small"
-            >
-              <ToggleButton value="edge" classes={{ root: classes.toggleButton }}>
-                Standard
-              </ToggleButton>
-              <ToggleButton value="edge/tabs" classes={{ root: classes.toggleButton }}>
-                Tabbed
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </ListItemSecondaryAction>
-        )}
-      </ListItem>
-    )}
-    <ListItem
-      dense
-      button
-      onClick={() => onEngineSelected('opera/tabs')}
-      selected={engine === 'opera/tabs'}
-    >
-      <ListItemAvatar className={classes.smallListItemAvatar}>
-        <Avatar alt="Opera" src={operaIcon} className={classes.smallAvatar} />
-      </ListItemAvatar>
-      <ListItemText
-        primary={(
-          <Grid container direction="row" alignItems="center" spacing={1}>
-            <Grid item>
-              <Typography variant="body2" noWrap>
-                Opera
-              </Typography>
-            </Grid>
-            <Grid item>
-              <HelpTooltip
-                title={(
-                  <Typography variant="body2" color="textPrimary">
-                    {getDesc('opera', 'Opera')}
-                  </Typography>
-                )}
-              >
-                <CustomHelpIcon fontSize="small" color="disabled" />
-              </HelpTooltip>
-            </Grid>
-          </Grid>
-        )}
-      />
-      {!isMultisite && (
-        <ListItemSecondaryAction>
-          <ToggleButtonGroup
-            value={engine}
-            exclusive
-            onChange={(_, val) => {
-              if (!val) return;
-              onEngineSelected(val);
-            }}
-            size="small"
-          >
-            <ToggleButton value="opera/tabs" classes={{ root: classes.toggleButton }}>
-              Tabbed
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </ListItemSecondaryAction>
-      )}
-    </ListItem>
-    <ListItem
-      dense
-      button
-      onClick={() => {
-        if (engine.startsWith('vivaldi')) return;
-        onEngineSelected('vivaldi');
-      }}
-      selected={engine.startsWith('vivaldi')}
-    >
-      <ListItemAvatar className={classes.smallListItemAvatar}>
-        <Avatar alt="Vivaldi" src={vivaldiIcon} className={classes.smallAvatar} />
-      </ListItemAvatar>
-      <ListItemText
-        primary={(
-          <Grid container direction="row" alignItems="center" spacing={1}>
-            <Grid item>
-              <Typography variant="body2" noWrap>
-                Vivaldi
-              </Typography>
-            </Grid>
-            <Grid item>
-              <HelpTooltip
-                title={(
-                  <Typography variant="body2" color="textPrimary">
-                    {getDesc('vivaldi', 'Vivaldi')}
-                  </Typography>
-                )}
-              >
-                <CustomHelpIcon fontSize="small" color="disabled" />
-              </HelpTooltip>
-            </Grid>
-          </Grid>
-        )}
-      />
-      {!isMultisite && (
-        <ListItemSecondaryAction>
-          <ToggleButtonGroup
-            value={engine}
-            exclusive
-            onChange={(_, val) => {
-              if (!val) return;
-              onEngineSelected(val);
-            }}
-            size="small"
-          >
-            <ToggleButton value="vivaldi" classes={{ root: classes.toggleButton }}>
-              Standard
-            </ToggleButton>
-            <ToggleButton value="vivaldi/tabs" classes={{ root: classes.toggleButton }}>
-              Tabbed
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </ListItemSecondaryAction>
-      )}
-    </ListItem>
-    <ListItem
-      dense
-      button
-      onClick={() => {
-        if (engine.startsWith('yandex')) return;
-        onEngineSelected('yandex');
-      }}
-      selected={engine.startsWith('yandex')}
-    >
-      <ListItemAvatar className={classes.smallListItemAvatar}>
-        <Avatar alt="Yandex" src={yandexIcon} className={classes.smallAvatar} />
-      </ListItemAvatar>
-      <ListItemText
-        primary={(
-          <Grid container direction="row" alignItems="center" spacing={1}>
-            <Grid item>
-              <Typography variant="body2" noWrap>
-                Yandex Browser
-              </Typography>
-            </Grid>
-            <Grid item>
-              <HelpTooltip
-                title={(
-                  <Typography variant="body2" color="textPrimary">
-                    {getDesc('yandex', 'Yandex Browser')}
-                  </Typography>
-                )}
-              >
-                <CustomHelpIcon fontSize="small" color="disabled" />
-              </HelpTooltip>
-            </Grid>
-          </Grid>
-        )}
-      />
-      {!isMultisite && (
-        <ListItemSecondaryAction>
-          <ToggleButtonGroup
-            value={engine}
-            exclusive
-            onChange={(_, val) => {
-              if (!val) return;
-              onEngineSelected(val);
-            }}
-            size="small"
-          >
-            <ToggleButton value="yandex" classes={{ root: classes.toggleButton }}>
-              Standard
-            </ToggleButton>
-            <ToggleButton value="yandex/tabs" classes={{ root: classes.toggleButton }}>
-              Tabbed
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </ListItemSecondaryAction>
-      )}
-    </ListItem>
-    {window.process.platform === 'darwin' && (
-      <>
-        {isMultisite ? (
-          <HelpTooltip
-            title={(
-              <Typography variant="body2" color="textPrimary">
-                This app is incompatible with WebKit.
-              </Typography>
-            )}
-          >
-            <ListItem
-              dense
-              button
-              onClick={() => null}
-              selected={engine === 'webkit'}
-              className={classnames(classes.disabledListItem)}
-            >
-              <ListItemAvatar className={classes.smallListItemAvatar}>
-                <Avatar alt="WebKit (part of Safari)" src={webkitIcon} className={classes.smallAvatar} />
-              </ListItemAvatar>
-              <ListItemText
-                primary={(
-                  <Grid container direction="row" alignItems="center" spacing={1}>
-                    <Grid item>
-                      <Typography variant="body2" noWrap>
-                        WebKit (part of Safari)
-                      </Typography>
-                    </Grid>
-                    <Grid>
-                      <HelpTooltip
-                        title={(
-                          <Typography variant="body2" color="textPrimary">
-                            {getDesc('webkit', 'WebKit')}
-                          </Typography>
-                        )}
-                      >
-                        <CustomHelpIcon fontSize="small" color="disabled" />
-                      </HelpTooltip>
-                    </Grid>
-                  </Grid>
-                )}
-              />
-              {!isMultisite && (
-                <ListItemSecondaryAction>
-                  <ToggleButtonGroup
-                    value={engine}
-                    exclusive
-                    onChange={(_, val) => {
-                      if (!val) return;
-                      onEngineSelected(val);
+                  <CloudDownloadIcon
+                    className={classes.download}
+                    fontSize="small"
+                    color="disabled"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      requestOpenInBrowser(downloadUrl);
                     }}
-                    size="small"
-                  >
-                    <ToggleButton value="webkit" classes={{ root: classes.toggleButton }}>
-                      Standard
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </ListItemSecondaryAction>
+                  />
+                </Tooltip>
               )}
-            </ListItem>
-          </HelpTooltip>
-        ) : (
-          <ListItem
-            dense
-            button
-            onClick={() => onEngineSelected('webkit')}
-            selected={engine === 'webkit'}
-          >
-            <ListItemAvatar className={classes.smallListItemAvatar}>
-              <Avatar alt="WebKit (part of Safari)" src={webkitIcon} className={classes.smallAvatar} />
-            </ListItemAvatar>
-            <ListItemText
-              primary={(
-                <Grid container direction="row" alignItems="center" spacing={1}>
-                  <Grid item>
-                    <Typography variant="body2" noWrap>
-                      WebKit (part of Safari)
-                    </Typography>
-                  </Grid>
-                  <Grid>
-                    <HelpTooltip
-                      title={(
-                        <Typography variant="body2" color="textPrimary">
-                          {getDesc('webkit', 'WebKit')}
-                        </Typography>
-                      )}
-                    >
-                      <CustomHelpIcon fontSize="small" color="disabled" />
-                    </HelpTooltip>
-                  </Grid>
-                </Grid>
-              )}
-            />
-            {!isMultisite && (
-              <ListItemSecondaryAction>
-                <ToggleButtonGroup
-                  value={engine}
-                  exclusive
-                  onChange={(_, val) => {
-                    if (!val) return;
-                    onEngineSelected(val);
-                  }}
-                  size="small"
-                >
-                  <ToggleButton value="webkit" classes={{ root: classes.toggleButton }}>
-                    Standard
-                  </ToggleButton>
-                </ToggleButtonGroup>
-              </ListItemSecondaryAction>
-            )}
-          </ListItem>
-        )}
-      </>
-    )}
-    {window.process.platform !== 'linux' && (
-      <ListItem
-        dense
-        button
-        onClick={() => {
-          if (engine === 'firefox' || engine.startsWith('firefox/')) return;
-          onEngineSelected('firefox/tabs');
-        }}
-        selected={engine === 'firefox' || engine.startsWith('firefox/')}
-      >
-        <ListItemAvatar className={classes.smallListItemAvatar}>
-          <Avatar alt="Mozilla Firefox" src={firefoxIcon} className={classes.smallAvatar} />
-        </ListItemAvatar>
-        <ListItemText
-          primary={(
-            <Grid container direction="row" alignItems="center" spacing={1}>
-              <Grid item>
-                <Typography variant="body2" noWrap>
-                  Mozilla Firefox (experimental)
-                </Typography>
-              </Grid>
-              <Grid item>
-                <HelpTooltip
-                  title={(
-                    <Typography variant="body2" color="textPrimary">
-                      {getDesc('firefox', 'Mozilla Firefox')}
-                    </Typography>
-                  )}
-                >
-                  <CustomHelpIcon fontSize="small" color="disabled" />
-                </HelpTooltip>
-              </Grid>
             </Grid>
-          )}
-        />
-        {!isMultisite && (
-          <ListItemSecondaryAction>
-            <ToggleButtonGroup
-              value={engine}
-              exclusive
-              onChange={(_, val) => {
-                if (!val) return;
-                onEngineSelected(val);
-              }}
-              size="small"
-            >
-              <ToggleButton value="firefox/tabs" classes={{ root: classes.toggleButton }}>
+          </Grid>
+        )}
+      />
+      {!isMultisite && (
+        <ListItemSecondaryAction>
+          <ToggleButtonGroup
+            value={engine}
+            exclusive
+            onChange={(_, val) => {
+              if (!val) return;
+              onEngineSelected(val);
+            }}
+            size="small"
+          >
+            {!disableStandardMode && (
+              <ToggleButton value={engineVal} classes={{ root: classes.toggleButton }}>
+                Standard
+              </ToggleButton>
+            )}
+            {!disableTabbedMode && (
+              <ToggleButton value={`${engineVal}/tabs`} classes={{ root: classes.toggleButton }}>
                 Tabbed
               </ToggleButton>
-            </ToggleButtonGroup>
-          </ListItemSecondaryAction>
-        )}
-      </ListItem>
-    )}
-  </List>
-);
+            )}
+          </ToggleButtonGroup>
+        </ListItemSecondaryAction>
+      )}
+    </ListItem>
+  );
+
+  return (
+    <List>
+      {renderItem({
+        engineVal: 'chrome',
+        engineName: 'Google Chrome',
+        iconPath: chromeIcon,
+        downloadUrl: 'https://www.google.com/chrome/',
+      })}
+      {renderItem({
+        engineVal: 'edge',
+        engineName: 'Microsoft Edge',
+        iconPath: edgeIcon,
+        downloadUrl: 'https://www.microsoft.com/edge',
+      })}
+      {renderItem({
+        engineVal: 'brave',
+        engineName: 'Brave',
+        iconPath: braveIcon,
+        downloadUrl: 'https://brave.com/',
+      })}
+      {renderItem({
+        engineVal: 'vivaldi',
+        engineName: 'Vivaldi',
+        iconPath: vivaldiIcon,
+        downloadUrl: 'https://vivaldi.com/',
+      })}
+      {renderItem({
+        engineVal: 'yandex',
+        engineName: 'Yandex Browser',
+        iconPath: yandexIcon,
+        downloadUrl: 'https://browser.yandex.com/',
+      })}
+      {window.process.platform !== 'win32' && renderItem({
+        engineVal: 'chromium',
+        engineName: 'Chromium',
+        iconPath: chromiumIcon,
+        downloadUrl: 'https://www.chromium.org/getting-involved/download-chromium',
+      })}
+      {window.process.platform !== 'linux' && renderItem({
+        engineVal: 'coccoc',
+        engineName: 'Cốc Cốc',
+        iconPath: coccocIcon,
+        downloadUrl: 'https://coccoc.com/',
+      })}
+      {renderItem({
+        engineVal: 'opera',
+        engineName: 'Opera',
+        iconPath: operaIcon,
+        disableStandardMode: true,
+        defaultMode: 'tabbed',
+        downloadUrl: 'https://www.opera.com/',
+      })}
+      {window.process.platform === 'darwin' && !isMultisite && renderItem({
+        engineVal: 'webkit',
+        engineName: 'WebKit (part of Safari)',
+        iconPath: webkitIcon,
+        disableTabbedMode: true,
+      })}
+      {window.process.platform !== 'linux' && renderItem({
+        engineVal: 'firefox',
+        engineName: 'Mozilla Firefox (experimental)',
+        iconPath: firefoxIcon,
+        disableStandardMode: true,
+        defaultMode: 'tabbed',
+        downloadUrl: 'https://www.mozilla.org/firefox/',
+      })}
+      <Divider />
+      {renderItem({
+        engineVal: 'chromeBeta',
+        engineName: 'Google Chrome Beta',
+        iconPath: chromeBetaIcon,
+        downloadUrl: 'https://www.google.com/chrome/beta/',
+      })}
+      {renderItem({
+        engineVal: 'chromeDev',
+        engineName: 'Google Chrome Dev',
+        iconPath: chromeDevIcon,
+        downloadUrl: 'https://www.google.com/chrome/dev/',
+      })}
+      {renderItem({
+        engineVal: 'chromeCanary',
+        engineName: 'Google Chrome Canary',
+        iconPath: chromeCanaryIcon,
+        downloadUrl: 'https://www.google.com/chrome/canary/',
+      })}
+      {renderItem({
+        engineVal: 'edgeBeta',
+        engineName: 'Microsoft Edge Beta',
+        iconPath: edgeBetaIcon,
+        downloadUrl: 'https://www.microsoftedgeinsider.com/download',
+      })}
+      {renderItem({
+        engineVal: 'edgeDev',
+        engineName: 'Microsoft Edge Dev',
+        iconPath: edgeDevIcon,
+        downloadUrl: 'https://www.microsoftedgeinsider.com/download',
+      })}
+      {renderItem({
+        engineVal: 'edgeCanary',
+        engineName: 'Microsoft Edge Canary',
+        iconPath: edgeCanaryIcon,
+        downloadUrl: 'https://www.microsoftedgeinsider.com/download',
+      })}
+    </List>
+  );
+};
 
 EngineList.defaultProps = {
   engine: '',
