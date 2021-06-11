@@ -175,6 +175,10 @@ const installAppAsync = (
         }
       }
 
+      const helperPath = process.env.NODE_ENV === 'production'
+        ? path.resolve(__dirname, 'chromeless-helper')
+        : path.resolve(__dirname, '..', '..', '..', '..', 'public', 'chromeless-helper');
+
       const params = [
         '--engine',
         engine,
@@ -186,6 +190,8 @@ const installAppAsync = (
         icon,
         '--opts',
         JSON.stringify(opts),
+        '--helperPath',
+        helperPath,
         '--homePath',
         app.getPath('home'),
         '--appDataPath',
@@ -227,7 +233,7 @@ const installAppAsync = (
       const child = fork(scriptPath, params, {
         env: {
           ELECTRON_RUN_AS_NODE: 'true',
-          ELECTRON_NO_ASAR: 'true',
+          // ELECTRON_NO_ASAR: 'false',
           APPDATA: app.getPath('appData'),
         },
       });

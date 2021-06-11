@@ -40,6 +40,7 @@ const {
   icon,
   homePath,
   installationPath,
+  helperPath,
   username,
 } = argv;
 const opts = JSON.parse(argv.opts);
@@ -296,6 +297,7 @@ Promise.resolve()
         .then(() => fsExtra.ensureDir(appAsarUnpackedPath))
         .then(() => fsExtra.copy(iconPngPath, publicIconPngPath))
         .then(() => fsExtra.copy(iconIcnsPath, publicIconIcnsPath))
+        .then(() => fsExtra.copy(helperPath, path.join(resourcesPath, 'chromeless-helper')))
         .then(() => {
           const execFilePath = process.platform === 'darwin'
             ? path.join(contentsPath, 'MacOS', 'chromeless_root_app')
@@ -344,7 +346,7 @@ else
   Tabs="${url || ''}"
 fi
 
-open -n "$PWD"/${addSlash(name)}.app --args $Tabs --no-sandbox --test-type --user-data-dir="$HOME"/Library/Application\\ Support/Chromeless/ChromiumProfiles/${id}
+open -n "$PWD"/${addSlash(name)}.app --args $Tabs --no-sandbox --test-type --user-data-dir="$HOME"/Library/Application\\ Support/Chromeless/ChromiumProfiles/${id} --load-extension="$PWD"/chromeless-helper
 `;
           } else {
             execFileContent = `#!/bin/sh
@@ -366,7 +368,7 @@ if [ -n "$pgrepResult" ]; then
   exit
 fi
 
-open -n "$PWD"/${addSlash(name)}.app --args --no-sandbox --test-type --app="${url}" --user-data-dir="$HOME"/Library/Application\\ Support/Chromeless/ChromiumProfiles/${id}
+open -n "$PWD"/${addSlash(name)}.app --args --no-sandbox --test-type --app="${url}" --user-data-dir="$HOME"/Library/Application\\ Support/Chromeless/ChromiumProfiles/${id} --load-extension="$PWD"/chromeless-helper
 `;
           }
           return fsExtra.outputFile(execFilePath, execFileContent)
