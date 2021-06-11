@@ -8,6 +8,7 @@
     "scripts": ["background.js"]
   },
   "permissions": [
+    "sessions",
     "webRequest",
     "webRequestBlocking",
     "<all_urls>",

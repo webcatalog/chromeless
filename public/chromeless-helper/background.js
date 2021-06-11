@@ -21,5 +21,30 @@ browser.webRequest.onBeforeSendHeaders.addListener((details) => {
   blockingResponse.requestHeaders = requestHeaders;
   return blockingResponse;
 }, {
-  urls: [ "https://accounts.google.com/*" ]
+  urls: ['https://accounts.google.com/*'],
 }, ['requestHeaders', 'blocking']);
+
+// restore window properly
+let lastWindowSessionID;
+browser.windows.onCreated.addListener((details) => {
+  if (!lastWindowSessionID) return;
+
+  lastWindowSessionID = null;
+  browser.windows.getAll((windows) => {
+    if (windows.length === 1) {
+      browser.windows.remove(details.id);
+      browser.sessions.restore(lastWindowSessionID);
+    }
+  });
+});
+browser.sessions.onChanged.addListener(() => {
+  if (lastWindowSessionID) return;
+
+  browser.sessions.getRecentlyClosed({ maxResults: 1 }, (sessions) => {
+    if (sessions.length === 0) return;
+    const session = sessions[0];
+    if (session.window != null) {
+      lastWindowSessionID = session.window.sessionId;
+    }
+  });
+});
