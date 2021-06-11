@@ -175,6 +175,10 @@ const installAppAsync = (
         }
       }
 
+      const helperPath = process.env.NODE_ENV === 'production'
+        ? path.resolve(__dirname, 'chromeless-helper').replace('app.asar', 'app.asar.unpacked') // must use app.asar.unpacked because files copied from asar has wrong permission
+        : path.resolve(__dirname, '..', '..', '..', '..', 'public', 'chromeless-helper');
+
       const params = [
         '--engine',
         engine,
@@ -186,6 +190,8 @@ const installAppAsync = (
         icon,
         '--opts',
         JSON.stringify(opts),
+        '--helperPath',
+        helperPath,
         '--homePath',
         app.getPath('home'),
         '--appDataPath',
@@ -274,12 +280,13 @@ const installAppAsync = (
           }
         } else {
           const chromiumDataPath = path.join(app.getPath('home'), '.chromeless', 'chromium-data', id);
+          const helperDestPath = path.join(chromiumDataPath, 'chromeless-helper');
           if (!url) { // multiple websites mode
-            args = `--user-data-dir="${chromiumDataPath}"`;
+            args = `--user-data-dir="${chromiumDataPath}" --load-extension="${helperDestPath}"`;
           } else if (engine.endsWith('/tabs')) {
-            args = `--user-data-dir="${chromiumDataPath}" "${url}"`;
+            args = `--user-data-dir="${chromiumDataPath}" "${url}" --load-extension="${helperDestPath}"`;
           } else {
-            args = `--class "${name}" --user-data-dir="${chromiumDataPath}" --app="${url}"`;
+            args = `--class "${name}" --user-data-dir="${chromiumDataPath}" --app="${url}" --load-extension="${helperDestPath}"`;
           }
         }
 

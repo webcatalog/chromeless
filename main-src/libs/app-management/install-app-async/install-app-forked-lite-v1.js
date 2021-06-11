@@ -40,6 +40,7 @@ const {
   name,
   url,
   icon,
+  helperPath,
   homePath,
   installationPath,
   requireAdmin,
@@ -100,6 +101,8 @@ const allAppsPath = installationPath.replace('~', homePath);
 const finalPath = process.platform === 'darwin'
   ? path.join(allAppsPath, `${name}.app`)
   : path.join(allAppsPath, name);
+
+const helperDestPath = path.join(resourcesPath, 'chromeless-helper');
 
 const firefoxProfileId = `chromeless-${id}`;
 
@@ -250,11 +253,11 @@ Promise.resolve()
 
             let args;
             if (!url) { // multiple websites mode
-              args = `--user-data-dir="${chromiumDataPath}"`;
+              args = `--user-data-dir="${chromiumDataPath}" --load-extension="${helperDestPath}"`;
             } else if (engine.endsWith('/tabs')) {
-              args = `--user-data-dir="${chromiumDataPath}" "${url}"`;
+              args = `--user-data-dir="${chromiumDataPath}" "${url}" --load-extension="${helperDestPath}"`;
             } else {
-              args = `--class "${name}" --user-data-dir="${chromiumDataPath}" --app="${url}"`;
+              args = `--class "${name}" --user-data-dir="${chromiumDataPath}" --app="${url}" --load-extension="${helperDestPath}"`;
             }
 
             command = `${binPath} ${args};`;
@@ -329,6 +332,7 @@ ${command}`;
 
     return Promise.reject(new Error('Unsupported platform'));
   })
+  .then(() => fsExtra.copy(helperPath, helperDestPath))
   .then(() => {
     const packageJson = JSON.stringify({
       version: '1.5.0',
