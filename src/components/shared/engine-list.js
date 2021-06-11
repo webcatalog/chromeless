@@ -14,15 +14,20 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 
 import HelpIcon from '@material-ui/icons/Help';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 
 import connectComponent from '../../helpers/connect-component';
 
 import braveIcon from '../../assets/brave.png';
 import chromeIcon from '../../assets/chrome.png';
+import chromeBetaIcon from '../../assets/chrome-beta.png';
+import chromeDevIcon from '../../assets/chrome-dev.png';
+import chromeCanaryIcon from '../../assets/chrome-canary.png';
 import chromiumIcon from '../../assets/chromium.png';
 import coccocIcon from '../../assets/coccoc.png';
 import edgeIcon from '../../assets/edge.png';
@@ -33,6 +38,10 @@ import webkitIcon from '../../assets/webkit.png';
 import yandexIcon from '../../assets/yandex.png';
 
 import HelpTooltip from './help-tooltip';
+
+import {
+  requestOpenInBrowser,
+} from '../../senders';
 
 const CustomHelpIcon = withStyles((theme) => ({
   fontSizeSmall: {
@@ -78,6 +87,9 @@ const styles = (theme) => ({
   smallListItemAvatar: {
     minWidth: 36,
   },
+  download: {
+    marginLeft: theme.spacing(1),
+  },
 });
 
 const EngineList = ({
@@ -87,7 +99,13 @@ const EngineList = ({
   onEngineSelected,
 }) => {
   const renderItem = ({
-    engineVal, engineName, iconPath, disableStandardMode, disableTabbedMode, defaultMode,
+    engineVal,
+    engineName,
+    iconPath,
+    disableStandardMode,
+    disableTabbedMode,
+    defaultMode,
+    downloadUrl,
   }) => (
     <ListItem
       dense
@@ -119,6 +137,21 @@ const EngineList = ({
               >
                 <CustomHelpIcon fontSize="small" color="disabled" />
               </HelpTooltip>
+              {downloadUrl && (
+                <Tooltip
+                  title="Download Browser"
+                >
+                  <CloudDownloadIcon
+                    className={classes.download}
+                    fontSize="small"
+                    color="disabled"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      requestOpenInBrowser('https://google.com');
+                    }}
+                  />
+                </Tooltip>
+              )}
             </Grid>
           </Grid>
         )}
@@ -156,26 +189,31 @@ const EngineList = ({
         engineVal: 'chrome',
         engineName: 'Google Chrome',
         iconPath: chromeIcon,
+        downloadUrl: 'https://www.google.com/chrome/',
       })}
       {renderItem({
         engineVal: 'edge',
         engineName: 'Microsoft Edge',
         iconPath: edgeIcon,
+        downloadUrl: 'https://www.microsoft.com/edge',
       })}
       {renderItem({
         engineVal: 'brave',
         engineName: 'Brave',
         iconPath: braveIcon,
+        downloadUrl: 'https://brave.com/',
       })}
       {renderItem({
         engineVal: 'vivaldi',
         engineName: 'Vivaldi',
         iconPath: vivaldiIcon,
+        downloadUrl: 'https://vivaldi.com/',
       })}
       {renderItem({
         engineVal: 'yandex',
         engineName: 'Yandex Browser',
         iconPath: yandexIcon,
+        downloadUrl: 'https://browser.yandex.com/',
       })}
       {window.process.platform !== 'win32' && renderItem({
         engineVal: 'chromium',
@@ -211,17 +249,20 @@ const EngineList = ({
       {renderItem({
         engineVal: 'chromeBeta',
         engineName: 'Google Chrome Beta',
-        iconPath: chromeIcon,
+        iconPath: chromeBetaIcon,
+        downloadUrl: 'https://www.google.com/chrome/beta/',
       })}
       {renderItem({
         engineVal: 'chromeDev',
         engineName: 'Google Chrome Dev',
-        iconPath: chromeIcon,
+        iconPath: chromeDevIcon,
+        downloadUrl: 'https://www.google.com/chrome/dev/',
       })}
       {renderItem({
         engineVal: 'chromeCanary',
         engineName: 'Google Chrome Canary',
-        iconPath: chromeIcon,
+        iconPath: chromeCanaryIcon,
+        downloadUrl: 'https://www.google.com/chrome/canary/',
       })}
     </List>
   );
