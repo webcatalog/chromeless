@@ -363,7 +363,7 @@ ${command}`;
   .then(() => fsExtra.copy(helperPath, helperDestPath))
   .then(() => {
     const packageJson = JSON.stringify({
-      version: '1.7.0',
+      version: '1.8.0',
     });
     return fsExtra.writeFile(packageJsonPath, packageJson);
   })

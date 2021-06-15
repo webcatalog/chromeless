@@ -31,10 +31,10 @@ export const isOutdatedApp = (id, state) => {
   // app is Chromium/Firefox-based
   // check if app is installed with the latest version of forked-script-v2.js
   if (window.process.platform === 'darwin') {
-    return semver.lt(v, '2.10.0');
+    return semver.lt(v, '2.11.0');
   }
   // check if app is installed with the latest version of forked-script-v1.js
-  return semver.lt(v, '1.7.0');
+  return semver.lt(v, '1.8.0');
 };
 
 export const isCancelableApp = (id, state) => {

@@ -1,7 +1,7 @@
 {
   "name": "Chromeless",
   "description": "Turn Any Websites into Site-specific Browsers",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "engines": {
     "node": ">=14.0.0 <15.0.0"
   },
