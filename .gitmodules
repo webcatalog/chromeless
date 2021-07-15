@@ -1,3 +1,0 @@
-[submodule "docs/_sass/bulma"]
-	path = docs/_sass/bulma
-	url = git@github.com:jgthms/bulma.git
