@@ -53,7 +53,6 @@ import DefinedAppBar from './defined-app-bar';
 import webcatalogIconPng from '../../../assets/products/webcatalog-mac-icon-128@2x.png';
 import translatiumIconPng from '../../../assets/products/translatium-mac-icon-128@2x.png';
 import singleboxIconPng from '../../../assets/products/singlebox-mac-icon-128@2x.png';
-import chromelessIconPng from '../../../assets/products/chromeless-mac-icon-128@2x.png';
 import cloveryIconPng from '../../../assets/products/clovery-mac-icon-128@2x.png';
 import switchbarIconPng from '../../../assets/products/switchbar-mac-icon-128@2x.png';
 
@@ -819,29 +818,6 @@ const Preferences = ({
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
                         All Google Apps in One
-                      </Typography>
-                    </div>
-                  </div>
-                </div>
-                <ChevronRightIcon color="action" />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                onClick={() => requestOpenInBrowser(`https://chromeless.app?utm_source=${utmSource}`)}
-                className={classes.listItemPromotion}
-              >
-                <div className={classes.promotionBlock}>
-                  <div className={classes.promotionLeft}>
-                    <img src={chromelessIconPng} alt="Chromeless" className={classes.appIcon} />
-                  </div>
-                  <div className={classes.promotionRight}>
-                    <div>
-                      <Typography variant="body1" className={classes.appTitle}>
-                        Chromeless
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        Create Chromium-based Apps
                       </Typography>
                     </div>
                   </div>

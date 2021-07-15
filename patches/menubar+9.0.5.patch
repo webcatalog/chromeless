@@ -1,5 +1,5 @@
 diff --git a/node_modules/menubar/lib/Menubar.js b/node_modules/menubar/lib/Menubar.js
-index c2621f4..7174857 100644
+index 558399c..486509e 100644
 --- a/node_modules/menubar/lib/Menubar.js
 +++ b/node_modules/menubar/lib/Menubar.js
 @@ -353,7 +353,10 @@ var Menubar = /** @class */ (function (_super) {
