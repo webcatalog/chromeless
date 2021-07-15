@@ -1,0 +1,133 @@
+@import "./bulma/sass/utilities/initial-variables"
+@import "./bulma/sass/utilities/functions"
+
+// set font-weight to only 400, 600 (to load less font data)
+$weight-light: 400
+$weight-normal: 400
+$weight-medium: 400
+$weight-semibold: 600
+$weight-bold: 600
+
+$green: #00796B
+$cyan: #1976d2
+$link: $green
+$family-sans-serif: 'Inter', $family-sans-serif
+
+@import "./bulma/sass/utilities/derived-variables"
+
+$footer-background-color: #fff
+$dropdown-item-active-background-color: $background
+$dropdown-item-active-color: $scheme-invert
+
+@import "./bulma/bulma.sass"
+
+html
+  height: 100%
+
+body
+  display: flex
+  flex-direction: column
+  min-height: 100%
+  // fix BUG: columns.is-variable overflow on iOS Safari
+  // https://github.com/jgthms/bulma/issues/1540
+  overflow-x: hidden
+
+main
+  flex-grow: 1
+
+picture
+  line-height: 1
+
+.app-icon-header
+  width: 128px
+  height: 128px
+
+.demo-header
+  max-width: #{'min(100%, 600px)'}
+  max-height: 600px
+  width: auto
+  height: auto
+
+.demo-main
+  max-width: 500px
+  width: 100%
+
+.store-badge
+  height: 60px
+  margin: 16px 0
+
+.landing-header-body
+  padding: 3rem 1.5rem
+  +widescreen
+    padding-top: 1rem
+    padding-bottom: 1rem
+
+.faqs-content
+  h5
+    margin-bottom: 0
+
+.linkedin-icon:not(:hover)
+  color: #0077b5
+
+.github-icon:not(:hover)
+  color: #000
+
+.twitter-icon:not(:hover)
+  color: #1DA1F2
+
+.cookie-notice
+  width: 100%
+  max-width: 512px
+  padding: 12px
+  position: fixed
+  left: 0
+  bottom: 0
+  .buttons
+    margin-top: 12px
+
+.features
+  max-width: 760px !important
+
+.navbar-item-more-apps
+  .button-app-grid
+    border: none
+    padding-left: 7px
+    padding-right: 7px
+    img
+      max-height: 24px
+  .dropdown-content
+    box-shadow: #{'0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%)'}
+    max-height: calc(100vh - 200px)
+    overflow-y: auto
+  .app-item
+    padding-right: 1.5rem !important
+    &:not(:last-child)
+      border-bottom: 1px solid $grey-lightest
+    .image
+      img
+        max-height: unset
+    .media-content
+      height: 64px
+      display: flex
+      align-items: center
+
+.modal-download
+  padding: 50px 20px 10px 20px
+  background: #fff
+  border-radius: 4px
+  button.delete
+    position: absolute
+    right: 10px
+    top: 10px
+
+.browser-icon
+  width: 120px
+
+.footer
+  padding: 1.5rem
+  .container
+    margin: 0 auto
+  a
+    color: #000
+    &:hover
+      color: $blue
