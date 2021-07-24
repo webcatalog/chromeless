@@ -25,7 +25,6 @@ const getForkedScriptsConfig = () => {
       __dirname: false,
     },
     entry: {
-      'install-app-forked-lite-v1': path.join(__dirname, 'main-src', 'libs', 'app-management', 'install-app-async', 'install-app-forked-lite-v1.js'),
       'install-app-forked-lite-v2': path.join(__dirname, 'main-src', 'libs', 'app-management', 'install-app-async', 'install-app-forked-lite-v2.js'),
       'uninstall-app-forked': path.join(__dirname, 'main-src', 'libs', 'app-management', 'uninstall-app-async', 'uninstall-app-forked.js'),
     },

@@ -1,5 +1,0 @@
----
----
-{
-    "version": "{{ site.webkit_wrapper_version_prerelease }}"
-}
