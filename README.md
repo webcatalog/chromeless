@@ -4,7 +4,7 @@
 |---|
 |[![macOS](https://github.com/webcatalog/chromeless/workflows/macOS/badge.svg)](https://github.com/webcatalog/chromeless/actions?query=workflow:%22macOS%22)|
 
-**[Chromeless](https://chromeless.app)** - Turn Any Websites into Chromeless Apps.
+**[Chromeless](https://chromeless.app)** - Turn Any Websites into Chromium-based Apps.
 
 ---
 
