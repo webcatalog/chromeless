@@ -21,13 +21,6 @@ export const isOutdatedApp = (id, state) => {
 
   const v = appDetails.version;
 
-  // app is WebKit based
-  if (appDetails.engine === 'webkit') {
-    const latestV = state.general.latestWebkitWrapperVersion;
-    if (!v) return true;
-    return semver.lt(v, latestV);
-  }
-
   // app is Chromium/Firefox-based
   // check if app is installed with the latest version of forked-script-v2.js
   if (window.process.platform === 'darwin') {

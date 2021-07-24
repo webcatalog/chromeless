@@ -14,7 +14,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Chromeless
-description: Chromeless is a free tool for Mac, PC & Linux computers that allows you to create Chromium-based or WebKit-based apps from any websites.
+description: Chromeless is a free Mac app that allows you to create Chromium-based apps from any websites.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://chromeless.app" # the base hostname & protocol for your site, e.g. http://example.com
 

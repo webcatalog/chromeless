@@ -14,8 +14,6 @@ On the other hand, **the source code is freely available** for use, modification
 ---
 
 ## Development
-This repository only contains the source code of the Chromeless app. If you'd like to contribute to the code that powers WebKit-based app, check out <https://github.com/webcatalog/webkit-wrapper>.
-
 For the app to be fully functional, set these environment variables:
 ```
 REACT_APP_ELASTIC_CLOUD_APP_SEARCH_SEARCH_KEY=

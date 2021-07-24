@@ -9,8 +9,6 @@ import Typography from '@material-ui/core/Typography';
 
 import connectComponent from '../../../helpers/connect-component';
 
-import { fetchLatestTemplateVersionAsync } from '../../../state/general/actions';
-
 import EnhancedAppBar from '../../shared/enhanced-app-bar';
 
 const styles = () => ({
@@ -37,19 +35,14 @@ DefinedAppBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const actionCreators = {
-  fetchLatestTemplateVersionAsync,
-};
-
 const mapStateToProps = (state) => ({
   activeQuery: state.installed.activeQuery,
-  fetchingLatestTemplateVersion: state.general.fetchingLatestTemplateVersion,
   sortInstalledAppBy: state.preferences.sortInstalledAppBy,
 });
 
 export default connectComponent(
   DefinedAppBar,
   mapStateToProps,
-  actionCreators,
+  null,
   styles,
 );
