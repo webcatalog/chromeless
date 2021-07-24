@@ -203,10 +203,6 @@ export const create = () => (dispatch, getState) => {
   const protocolledUrl = isUrl(url) ? url : `http://${url}`;
 
   const opts = {};
-  if (window.process.platform === 'linux') {
-    opts.freedesktopMainCategory = form.freedesktopMainCategory;
-    opts.freedesktopAdditionalCategory = form.freedesktopAdditionalCategory;
-  }
 
   // custom app ID makes it hard to identify app directories in Finder
   // see https://github.com/webcatalog/webcatalog-app/issues/1327

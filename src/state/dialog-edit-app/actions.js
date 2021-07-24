@@ -198,11 +198,6 @@ export const save = () => (dispatch, getState) => {
   } = form;
 
   const opts = { ...form.opts };
-  if (window.process.platform === 'linux') {
-    opts.freedesktopMainCategory = form.opts.freedesktopMainCategory || 'Network';
-    opts.freedesktopAdditionalCategory = form.opts.freedesktopAdditionalCategory == null
-      ? 'WebBrowser' : form.opts.freedesktopAdditionalCategory;
-  }
 
   const validatedChanges = validate(form, getValidationRules(urlDisabled));
   if (hasErrors(validatedChanges)) {

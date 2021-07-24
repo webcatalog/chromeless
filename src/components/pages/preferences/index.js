@@ -329,31 +329,27 @@ const Preferences = ({
                   />
                 </ListItemSecondaryAction>
               </ListItem>
-              {window.process.platform !== 'linux' && (
-                <>
-                  <Divider />
-                  <ListItem>
-                    <ListItemText primary="Open at login" />
-                    <Select
-                      value={openAtLogin}
-                      onChange={(e) => requestSetSystemPreference('openAtLogin', e.target.value)}
-                      variant="filled"
-                      disableUnderline
-                      margin="dense"
-                      classes={{
-                        root: classes.select,
-                      }}
-                      className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
-                    >
-                      <MenuItem dense value="yes">Yes</MenuItem>
-                      {window.process.platform !== 'win32' && (
-                        <MenuItem dense value="yes-hidden">Yes, but minimized</MenuItem>
-                      )}
-                      <MenuItem dense value="no">No</MenuItem>
-                    </Select>
-                  </ListItem>
-                </>
-              )}
+              <Divider />
+              <ListItem>
+                <ListItemText primary="Open at login" />
+                <Select
+                  value={openAtLogin}
+                  onChange={(e) => requestSetSystemPreference('openAtLogin', e.target.value)}
+                  variant="filled"
+                  disableUnderline
+                  margin="dense"
+                  classes={{
+                    root: classes.select,
+                  }}
+                  className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
+                >
+                  <MenuItem dense value="yes">Yes</MenuItem>
+                  {window.process.platform !== 'win32' && (
+                    <MenuItem dense value="yes-hidden">Yes, but minimized</MenuItem>
+                  )}
+                  <MenuItem dense value="no">No</MenuItem>
+                </Select>
+              </ListItem>
             </List>
           </Paper>
 
@@ -504,25 +500,6 @@ const Preferences = ({
                         }}
                       >
                         /Applications/Chromeless Apps
-                      </MenuItem>,
-                    ]
-                  )}
-                  {window.process.platform === 'linux' && (
-                    [
-                      (installationPath !== '~/.chromeless') && (
-                        <MenuItem dense key="installation-path-menu-item">
-                          {installationPath}
-                        </MenuItem>
-                      ),
-                      <MenuItem
-                        dense
-                        key="default-installation-path-menu-item"
-                        value={{
-                          installationPath: '~/.chromeless',
-                          requireAdmin: false,
-                        }}
-                      >
-                        ~/.chromeless (default)
                       </MenuItem>,
                     ]
                   )}

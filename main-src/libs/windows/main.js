@@ -44,8 +44,7 @@ const createAsync = () => new Promise((resolve) => {
     // https://github.com/electron/electron/issues/22137#issuecomment-586105622
     // https://github.com/atomery/translatium/issues/164
     const tray = new Tray(nativeImage.createEmpty());
-    // icon template is not supported on Windows & Linux
-    const iconFileName = process.platform === 'darwin' ? 'menubarTemplate.png' : 'menubar.png';
+    const iconFileName = 'menubarTemplate.png';
     let iconPath;
     if (process.env.NODE_ENV === 'production') {
       iconPath = path.resolve(__dirname, 'images', iconFileName);
@@ -164,15 +163,6 @@ const createAsync = () => new Promise((resolve) => {
     defaultHeight: 768,
   });
 
-  let icon;
-  if (process.platform === 'linux') {
-    if (process.env.NODE_ENV === 'production') {
-      icon = path.resolve(__dirname, 'images', 'icon.png');
-    } else {
-      icon = path.resolve(__dirname, '..', '..', 'images', 'icon.png');
-    }
-  }
-
   const winOpts = {
     backgroundColor: '#FFF',
     x: mainWindowState.x,
@@ -193,12 +183,6 @@ const createAsync = () => new Promise((resolve) => {
       preload: path.join(__dirname, 'preload-main.js'),
     },
   };
-  // winOpts.icon cannot be set to undefined
-  // as it'd crash Electron on macOS
-  // https://github.com/electron/electron/issues/27303#issuecomment-759501184
-  if (icon) {
-    winOpts.icon = icon;
-  }
   win = new BrowserWindow(winOpts);
 
   mainWindowState.manage(win);

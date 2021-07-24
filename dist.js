@@ -34,66 +34,13 @@ const verifyNotarizationAsync = (filePath) => new Promise((resolve, reject) => {
   });
 });
 
-// run each signing task at once
-let codeSigningPromise = Promise.resolve();
-const hsmCodeSignAsync = (filePath) => {
-  codeSigningPromise = codeSigningPromise
-    .then(() => new Promise((resolve, reject) => {
-      const {
-        AZURE_KEY_VAULT_CLIENT_ID,
-        AZURE_KEY_VAULT_CLIENT_SECRET,
-        AZURE_KEY_VAULT_URI,
-        AZURE_KEY_VAULT_CERT_NAME,
-      } = process.env;
-
-      console.log('Signing', filePath);
-      const command = `azuresigntool sign -kvu ${AZURE_KEY_VAULT_URI} -kvc ${AZURE_KEY_VAULT_CERT_NAME} -kvi ${AZURE_KEY_VAULT_CLIENT_ID} -kvs ${AZURE_KEY_VAULT_CLIENT_SECRET} -tr http://rfc3161timestamp.globalsign.com/advanced -td sha256 '${filePath}'`;
-      exec(command, { shell: 'powershell.exe' }, (e, stdout, stderr) => {
-        if (e instanceof Error) {
-          console.log(stdout);
-          reject(e);
-          return;
-        }
-
-        if (stderr) {
-          reject(new Error(stderr));
-          return;
-        }
-
-        if (stdout.indexOf('Signing completed successfully') > -1) {
-          resolve(stdout);
-        } else {
-          reject(new Error(stdout));
-        }
-      });
-    }));
-  return codeSigningPromise;
-};
-
 const arch = process.env.TEMPLATE_ARCH || 'x64';
 
 if ((['x64', 'arm64'].indexOf(arch) < 0)) {
   console.log(`${process.platform} ${arch} is not supported.`);
 }
 
-console.log(`Building for: ${process.platform} ${process.platform === 'darwin' ? 'x64+arm64' : arch}`);
-
-let targets;
-switch (process.platform) {
-  case 'darwin': {
-    targets = Platform.MAC.createTarget(['zip', 'dmg'], Arch.x64, Arch.arm64);
-    break;
-  }
-  case 'win32': {
-    targets = Platform.WINDOWS.createTarget(['nsis'], Arch[arch]);
-    break;
-  }
-  default:
-  case 'linux': {
-    targets = Platform.LINUX.createTarget(['AppImage', 'tar.gz'], Arch[arch]);
-    break;
-  }
-}
+const targets = Platform.MAC.createTarget(['zip', 'dmg'], Arch.x64, Arch.arm64);
 
 const opts = {
   targets,
@@ -126,10 +73,6 @@ const opts = {
     directories: {
       buildResources: 'build-resources',
     },
-    win: {
-      // https://www.electron.build/configuration/win.html#how-do-delegate-code-signing
-      sign: (configuration) => hsmCodeSignAsync(configuration.path),
-    },
     mac: {
       category: 'public.app-category.utilities',
       hardenedRuntime: true,
@@ -138,14 +81,6 @@ const opts = {
       entitlements: 'build-resources/entitlements.mac.plist',
       entitlementsInherit: 'build-resources/entitlements.mac.plist',
     },
-    linux: {
-      category: 'Utility',
-      packageCategory: 'utils',
-    },
-    nsis: arch === 'arm64' ? {
-      // eslint-disable-next-line no-template-curly-in-string
-      artifactName: 'Chromeless-Setup-${version}-arm64.${ext}',
-    } : undefined,
     afterSign: (context) => {
       // Only notarize app when forced in pull requests or when releasing using tag
       const shouldNotarize = process.platform === 'darwin' && context.electronPlatformName === 'darwin' && process.env.CI_BUILD_TAG;

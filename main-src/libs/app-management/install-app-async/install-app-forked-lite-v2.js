@@ -199,12 +199,6 @@ const getAppFolderName = () => {
   if (process.platform === 'darwin') {
     return `${name}.app`;
   }
-  if (process.platform === 'linux') {
-    return `${name}-linux-x64`;
-  }
-  if (process.platform === 'win32') {
-    return `${name}-win32-x64`;
-  }
   throw Error('Unsupported platform');
 };
 

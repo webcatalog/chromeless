@@ -11,7 +11,6 @@ const envPaths = require('env-paths');
 const { getPreferences } = require('../../preferences');
 const sendToAllWindows = require('../../send-to-all-windows');
 const isEngineInstalled = require('../../is-engine-installed');
-const getFreedesktopCategory = require('../../get-freedesktop-category');
 
 const prepareWebkitWrapperAsync = require('../prepare-webkit-wrapper-async');
 
@@ -23,14 +22,6 @@ const installAppAsync = (
   let browserPath;
 
   const opts = { ..._opts };
-  if (process.platform === 'linux') {
-    if (opts.freedesktopMainCategory == null
-      || opts.freedesktopAdditionalCategory == null) {
-      const val = getFreedesktopCategory(opts.category);
-      opts.freedesktopMainCategory = val.freedesktopMainCategory;
-      opts.freedesktopAdditionalCategory = val.freedesktopAdditionalCategory;
-    }
-  }
 
   const {
     installationPath,

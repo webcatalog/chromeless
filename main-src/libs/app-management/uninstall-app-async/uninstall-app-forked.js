@@ -144,21 +144,7 @@ Promise.resolve()
     if (engine.startsWith('firefox')) {
       const profileId = `chromeless-${id}`;
 
-      let firefoxUserDataPath;
-      switch (process.platform) {
-        case 'darwin': {
-          firefoxUserDataPath = path.join(homePath, 'Library', 'Application Support', 'Firefox');
-          break;
-        }
-        case 'linux': {
-          firefoxUserDataPath = path.join(homePath, '.mozilla', 'firefox');
-          break;
-        }
-        case 'win32':
-        default: {
-          firefoxUserDataPath = path.join(appDataPath, 'Mozilla', 'Firefox');
-        }
-      }
+      const firefoxUserDataPath = path.join(homePath, 'Library', 'Application Support', 'Firefox');
       const profilesIniPath = path.join(firefoxUserDataPath, 'profiles.ini');
 
       return fsExtra.pathExists(profilesIniPath)
