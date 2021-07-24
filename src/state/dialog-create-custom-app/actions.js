@@ -57,15 +57,14 @@ export const getWebsiteIconUrlFromSwifttypeAsync = (url, name) => {
         url: { weight: 5 },
       },
       result_fields: {
-        icon: window.process.platform === 'win32' ? undefined : { raw: {} },
-        icon_unplated: window.process.platform === 'win32' ? { raw: {} } : undefined,
+        icon: { raw: {} },
       },
       page: { size: 1 },
     })
     .then((res) => {
       if (res.rawResults.length < 1) return null;
       const app = res.rawResults[0];
-      return window.process.platform === 'win32' ? app.icon_unplated.raw : app.icon.raw;
+      return app.icon.raw;
     })
     .catch(() => null);
 };

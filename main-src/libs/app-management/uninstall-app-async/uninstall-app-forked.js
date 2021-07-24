@@ -23,7 +23,6 @@ const os = require('os');
 
 const yargsParser = process.env.NODE_ENV === 'production' ? require('yargs-parser').default : require('yargs-parser');
 
-const checkPathInUseAsync = require('../check-path-in-use-async');
 const getRelatedPaths = require('../get-related-paths');
 
 // id, name, username might only contain numbers
@@ -106,15 +105,6 @@ const relatedPaths = getRelatedPaths({
 });
 
 Promise.resolve()
-  .then(() => {
-    if (process.platform === 'win32') {
-      return checkPathInUseAsync(dotAppPath);
-    }
-    // skip this check on Mac & Linux
-    // as on Unix, it's possible to replace files even when running
-    // https://askubuntu.com/questions/44339/how-does-updating-running-application-binaries-during-an-upgrade-work
-    return false;
-  })
   .then(() => {
     if (requireAdmin === 'true') {
       return checkExistsAndRemoveWithSudo(dotAppPath);

@@ -18,18 +18,13 @@ const getDefaultInstallationPath = () => {
   throw Error('Unsupported platform');
 };
 
-const getDefaultEngine = () => {
-  if (process.platform === 'win32') return 'edge';
-  return 'chrome';
-};
-
 const defaultPreferences = {
   allowPrerelease: Boolean(semver.prerelease(app.getVersion())),
   alwaysOnTop: false, // for menubar
   attachToMenubar: false,
   defaultHome: 'home',
   installationPath: getDefaultInstallationPath(),
-  preferredEngine: getDefaultEngine(),
+  preferredEngine: 'chrome',
   requireAdmin: false,
   sentry: true,
   sortInstalledAppBy: 'last-updated',

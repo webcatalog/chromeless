@@ -66,10 +66,10 @@ const styles = (theme) => ({
     textOverflow: 'ellipsis',
   },
   paperIcon: {
-    width: window.process.platform === 'win32' ? 48 : 56,
-    height: window.process.platform === 'win32' ? 48 : 56,
-    marginTop: window.process.platform === 'win32' ? 4 : 0,
-    marginBottom: window.process.platform === 'win32' ? 4 : 0,
+    width: 56,
+    height: 56,
+    marginTop: 0,
+    marginBottom: 0,
     userSelect: 'none',
   },
   actionContainer: {

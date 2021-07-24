@@ -114,10 +114,8 @@ const Home = ({
             name: { raw: {} },
             url: { raw: {} },
             category: { raw: {} },
-            icon: window.process.platform === 'win32' ? undefined : { raw: {} },
-            icon_128: window.process.platform === 'win32' ? undefined : { raw: {} },
-            icon_unplated: window.process.platform === 'win32' ? { raw: {} } : undefined,
-            icon_unplated_128: window.process.platform === 'win32' ? { raw: {} } : undefined,
+            icon: { raw: {} },
+            icon_128: { raw: {} },
           },
         },
       }}
@@ -206,10 +204,8 @@ const Home = ({
                           name={app.name.raw}
                           url={app.url.raw}
                           category={app.category.raw}
-                          icon={window.process.platform === 'win32' // use unplated icon for Windows
-                            ? app.icon_unplated.raw : app.icon.raw}
-                          iconThumbnail={window.process.platform === 'win32' // use unplated icon for Windows
-                            ? app.icon_unplated_128.raw : app.icon_128.raw}
+                          icon={app.icon.raw}
+                          iconThumbnail={app.icon_128.raw}
                         />
                       ))}
                       <Grid item xs={12} container justify="center">

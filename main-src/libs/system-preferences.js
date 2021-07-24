@@ -5,7 +5,6 @@
 // It can be retrieved and changed using Electron APIs
 
 const { app } = require('electron');
-const settings = require('electron-settings');
 
 const sendToAllWindows = require('./send-to-all-windows');
 
@@ -38,13 +37,6 @@ const setSystemPreference = (name, value) => {
           openAtLogin: value.startsWith('yes'),
           openAsHidden: value === 'yes-hidden', // only for macOS
         });
-      }
-
-      if (process.platform === 'win32') {
-        app.setLoginItemSettings({
-          openAtLogin: value.startsWith('yes'),
-        });
-        settings.setSync('systemPreferences.openAtLogin', value);
       }
       break;
     }

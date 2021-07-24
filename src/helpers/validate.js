@@ -27,14 +27,8 @@ const kits = {
   filePath: (val, ruleVal, fieldName) => {
     if (!ruleVal) return null;
     // https://stackoverflow.com/questions/1976007/what-characters-are-forbidden-in-windows-and-linux-directory-names
-    // win32
-    if (window.process.platform === 'win32') {
-      if (val.match(/[\\/:*?"<>|\000-\031]/)) {
-        return '{fieldName} cannot contain any of the following characters: \\ / : * ? " < > | or non-printable characters.'
-          .replace('{fieldName}', fieldName);
-      }
     // eslint-disable-next-line react/destructuring-assignment
-    } else if (val.match(/[/:\000]/)) {
+    if (val.match(/[/:\000]/)) {
       // unix
       return '{fieldName} cannot contain any of the following characters: / : or NUL.'
         .replace('{fieldName}', fieldName);

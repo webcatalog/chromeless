@@ -135,12 +135,6 @@ const styles = (theme) => ({
   },
 });
 
-const getFileManagerName = () => {
-  if (window.process.platform === 'darwin') return 'Finder';
-  if (window.process.platform === 'win32') return 'File Explorer';
-  return 'file manager';
-};
-
 const formatBytes = (bytes, decimals = 2) => {
   if (bytes === 0) return '0 Bytes';
 
@@ -344,9 +338,7 @@ const Preferences = ({
                   className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
                 >
                   <MenuItem dense value="yes">Yes</MenuItem>
-                  {window.process.platform !== 'win32' && (
-                    <MenuItem dense value="yes-hidden">Yes, but minimized</MenuItem>
-                  )}
+                  <MenuItem dense value="yes-hidden">Yes, but minimized</MenuItem>
                   <MenuItem dense value="no">No</MenuItem>
                 </Select>
               </ListItem>
@@ -455,26 +447,7 @@ const Preferences = ({
                   className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
                   disabled={installingAppCount > 0}
                 >
-                  {window.process.platform === 'win32' && (
-                    [
-                      (installationPath !== `${window.remote.app.getPath('home')}\\Chromeless Apps`) && (
-                        <MenuItem dense key="installation-path-menu-item" value={null}>
-                          {installationPath}
-                        </MenuItem>
-                      ),
-                      <MenuItem
-                        dense
-                        key="default-installation-path-menu-item"
-                        value={{
-                          installationPath: `${window.remote.app.getPath('home')}\\Chromeless Apps`,
-                          requireAdmin: false,
-                        }}
-                      >
-                        {`${window.remote.app.getPath('home')}\\Chromeless Apps`}
-                      </MenuItem>,
-                    ]
-                  )}
-                  {window.process.platform === 'darwin' && (
+                  {(
                     [
                       (installationPath !== '~/Applications/Chromeless Apps' && installationPath !== '/Applications/WebCatalog Apps') && (
                         <MenuItem dense key="installation-path-menu-item" value={null}>
@@ -509,7 +482,7 @@ const Preferences = ({
                 </Select>
               </ListItem>
               <ListItem button onClick={requestOpenInstallLocation}>
-                <ListItemText primary={`Open installation path in ${getFileManagerName()}`} />
+                <ListItemText primary="Open installation path in Finder" />
                 <ChevronRightIcon color="action" />
               </ListItem>
               <Divider />
