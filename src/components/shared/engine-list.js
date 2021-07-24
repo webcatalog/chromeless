@@ -218,13 +218,13 @@ const EngineList = ({
         iconPath: yandexIcon,
         downloadUrl: 'https://browser.yandex.com/',
       })}
-      {window.process.platform !== 'win32' && renderItem({
+      {renderItem({
         engineVal: 'chromium',
         engineName: 'Chromium',
         iconPath: chromiumIcon,
         downloadUrl: 'https://www.chromium.org/getting-involved/download-chromium',
       })}
-      {window.process.platform !== 'linux' && renderItem({
+      {renderItem({
         engineVal: 'coccoc',
         engineName: 'Cốc Cốc',
         iconPath: coccocIcon,
@@ -244,7 +244,7 @@ const EngineList = ({
         iconPath: webkitIcon,
         disableTabbedMode: true,
       })}
-      {window.process.platform !== 'linux' && renderItem({
+      {renderItem({
         engineVal: 'firefox',
         engineName: 'Mozilla Firefox (experimental)',
         iconPath: firefoxIcon,

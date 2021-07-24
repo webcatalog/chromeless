@@ -10,9 +10,7 @@ const getRelatedPaths = ({
   appObj,
   installationPath,
   homePath,
-  appDataPath,
   userDataPath,
-  desktopPath,
   // installationPath = getPreference('installationPath'),
   // homePath = app.getPath('home'),
 }) => {
@@ -47,21 +45,7 @@ const getRelatedPaths = ({
     case 'firefox': {
       const profileId = `chromeless-${id}`;
 
-      let firefoxUserDataPath;
-      switch (process.platform) {
-        case 'darwin': {
-          firefoxUserDataPath = path.join(homePath, 'Library', 'Application Support', 'Firefox');
-          break;
-        }
-        case 'linux': {
-          firefoxUserDataPath = path.join(homePath, '.mozilla', 'firefox');
-          break;
-        }
-        case 'win32':
-        default: {
-          firefoxUserDataPath = path.join(appDataPath, 'Mozilla', 'Firefox');
-        }
-      }
+      const firefoxUserDataPath = path.join(homePath, 'Library', 'Application Support', 'Firefox');
       const profilesIniPath = path.join(firefoxUserDataPath, 'profiles.ini');
 
       const exists = fsExtra.pathExistsSync(profilesIniPath);
@@ -125,19 +109,6 @@ const getRelatedPaths = ({
         });
       }
     }
-  }
-
-  // Shortcuts
-  if (process.platform === 'linux') {
-    const desktopFilePath = path.join(homePath, '.local', 'share', 'applications', `chromeless-${id}.desktop`);
-    relatedPaths.push({ path: desktopFilePath, type: 'shortcut' });
-  } else if (process.platform === 'win32') {
-    const startMenuPath = path.join(homePath, 'AppData', 'Roaming', 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Chromeless Apps');
-    const startMenuShortcutPath = path.join(startMenuPath, `${name}.lnk`);
-    const desktopShortcutPath = path.join(desktopPath, `${name}.lnk`);
-
-    relatedPaths.push({ path: startMenuShortcutPath, type: 'shortcut' });
-    relatedPaths.push({ path: desktopShortcutPath, type: 'shortcut' });
   }
 
   return relatedPaths;

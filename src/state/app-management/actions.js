@@ -9,8 +9,6 @@ import {
   SORT_APPS,
 } from '../../constants/actions';
 
-import appSearch from '../../app-search';
-
 import {
   isNameExisted,
   getOutdatedAppsAsList,
@@ -67,38 +65,12 @@ export const installApp = (engine, id, name, url, icon, opts) => (dispatch, getS
 };
 
 export const updateApp = (id, _name, _url, _icon, _opts) => async (dispatch, getState) => {
-  // on Linux
-  // opts.category is needed for WebCatalog to set correct freedesktop.org categories
-  // but prior to v27.x, "opts.category" value is not included in app.json
-  // so we try to get from the server
   const appObj = getState().appManagement.apps[id];
   const { engine } = appObj;
   const name = _name || appObj.name;
   const url = _url !== undefined ? _url : appObj.url; // url can be null
   const icon = _icon || appObj.icon;
   const opts = { ...appObj.opts, ..._opts };
-
-  if (window.process.platform === 'linux'
-    && !id.startsWith('custom-')
-    && opts.category == null) {
-    await appSearch
-      .search('', {
-        filters: {
-          id: [id],
-        },
-        result_fields: {
-          category: { raw: {} },
-        },
-      })
-      .then((res) => {
-        const app = res.rawResults[0];
-        opts.category = app.category.raw;
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err);
-      });
-  }
 
   requestUpdateApp(engine, id, name, url, icon, opts);
 };

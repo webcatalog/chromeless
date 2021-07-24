@@ -23,7 +23,6 @@ const os = require('os');
 
 const yargsParser = process.env.NODE_ENV === 'production' ? require('yargs-parser').default : require('yargs-parser');
 
-const checkPathInUseAsync = require('../check-path-in-use-async');
 const getRelatedPaths = require('../get-related-paths');
 
 // id, name, username might only contain numbers
@@ -107,15 +106,6 @@ const relatedPaths = getRelatedPaths({
 
 Promise.resolve()
   .then(() => {
-    if (process.platform === 'win32') {
-      return checkPathInUseAsync(dotAppPath);
-    }
-    // skip this check on Mac & Linux
-    // as on Unix, it's possible to replace files even when running
-    // https://askubuntu.com/questions/44339/how-does-updating-running-application-binaries-during-an-upgrade-work
-    return false;
-  })
-  .then(() => {
     if (requireAdmin === 'true') {
       return checkExistsAndRemoveWithSudo(dotAppPath);
     }
@@ -144,21 +134,7 @@ Promise.resolve()
     if (engine.startsWith('firefox')) {
       const profileId = `chromeless-${id}`;
 
-      let firefoxUserDataPath;
-      switch (process.platform) {
-        case 'darwin': {
-          firefoxUserDataPath = path.join(homePath, 'Library', 'Application Support', 'Firefox');
-          break;
-        }
-        case 'linux': {
-          firefoxUserDataPath = path.join(homePath, '.mozilla', 'firefox');
-          break;
-        }
-        case 'win32':
-        default: {
-          firefoxUserDataPath = path.join(appDataPath, 'Mozilla', 'Firefox');
-        }
-      }
+      const firefoxUserDataPath = path.join(homePath, 'Library', 'Application Support', 'Firefox');
       const profilesIniPath = path.join(firefoxUserDataPath, 'profiles.ini');
 
       return fsExtra.pathExists(profilesIniPath)

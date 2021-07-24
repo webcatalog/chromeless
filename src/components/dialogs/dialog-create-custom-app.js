@@ -9,12 +9,9 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
-import Link from '@material-ui/core/Link';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
@@ -22,13 +19,6 @@ import Typography from '@material-ui/core/Typography';
 
 import connectComponent from '../../helpers/connect-component';
 import isUrl from '../../helpers/is-url';
-
-import freedesktopMainCategories from '../../constants/freedesktop-main-categories';
-import freedesktopAdditionalCategories from '../../constants/freedesktop-additional-categories';
-
-import {
-  requestOpenInBrowser,
-} from '../../senders';
 
 import {
   close,
@@ -75,8 +65,6 @@ const DialogCreateCustomApp = (props) => {
   const {
     classes,
     downloadingIcon,
-    freedesktopAdditionalCategory,
-    freedesktopMainCategory,
     icon,
     internetIcon,
     name,
@@ -212,64 +200,6 @@ const DialogCreateCustomApp = (props) => {
             </Button>
           </Grid>
         </Grid>
-        {window.process.platform === 'linux' && (
-          <>
-            <br />
-            <Divider />
-            <FormControl variant="outlined" fullWidth margin="normal">
-              <InputLabel id="input-main-category-label">Main Category</InputLabel>
-              <Select
-                id="input-main-category"
-                labelId="input-main-category-label"
-                value={freedesktopMainCategory}
-                onChange={(event) => onUpdateForm({
-                  freedesktopMainCategory: event.target.value,
-                  freedesktopAdditionalCategory: '',
-                })}
-                label="Type"
-                margin="dense"
-              >
-                {freedesktopMainCategories
-                  .map((val) => (
-                    <MenuItem key={val} value={val}>{val}</MenuItem>
-                  ))}
-              </Select>
-            </FormControl>
-            <FormControl variant="outlined" fullWidth margin="normal">
-              <InputLabel id="input-additional-category-label">Additional Category</InputLabel>
-              <Select
-                id="input-additional-category"
-                labelId="input-additional-category-label"
-                value={freedesktopAdditionalCategory === '' ? '_' : freedesktopAdditionalCategory}
-                onChange={(event) => onUpdateForm({
-                  freedesktopAdditionalCategory: event.target.value === '_' ? '' : event.target.value,
-                })}
-                label="Type"
-                margin="dense"
-              >
-                <MenuItem value="_">(blank)</MenuItem>
-                {freedesktopAdditionalCategories
-                  .filter((val) => (!val.relatedMainCategories
-                      || val.relatedMainCategories.includes(freedesktopMainCategory)))
-                  .map((val) => (
-                    <MenuItem key={val.name} value={val.name}>{val.name}</MenuItem>
-                  ))}
-              </Select>
-              <FormHelperText>
-                <span>
-                  Specify which section of the system application menu this app belongs to.&nbsp;
-                </span>
-                <Link
-                  onClick={() => requestOpenInBrowser('https://specifications.freedesktop.org/menu-spec/latest/apa.html')}
-                  className={classes.link}
-                >
-                  Learn more about Freedesktop.org specifications
-                </Link>
-                <span>.</span>
-              </FormHelperText>
-            </FormControl>
-          </>
-        )}
       </DialogContent>
       <DialogActions className={classes.dialogActions}>
         <Button
@@ -289,8 +219,6 @@ const DialogCreateCustomApp = (props) => {
 };
 
 DialogCreateCustomApp.defaultProps = {
-  freedesktopAdditionalCategory: '',
-  freedesktopMainCategory: 'Network',
   icon: null,
   internetIcon: null,
   name: '',
@@ -302,8 +230,6 @@ DialogCreateCustomApp.defaultProps = {
 DialogCreateCustomApp.propTypes = {
   classes: PropTypes.object.isRequired,
   downloadingIcon: PropTypes.bool.isRequired,
-  freedesktopAdditionalCategory: PropTypes.string,
-  freedesktopMainCategory: PropTypes.string,
   icon: PropTypes.string,
   internetIcon: PropTypes.string,
   name: PropTypes.string,
@@ -324,8 +250,6 @@ const mapStateToProps = (state) => {
     downloadingIcon,
     open,
     form: {
-      freedesktopAdditionalCategory,
-      freedesktopMainCategory,
       icon,
       internetIcon,
       name,
@@ -338,8 +262,6 @@ const mapStateToProps = (state) => {
 
   return {
     downloadingIcon,
-    freedesktopAdditionalCategory,
-    freedesktopMainCategory,
     icon,
     internetIcon,
     name,

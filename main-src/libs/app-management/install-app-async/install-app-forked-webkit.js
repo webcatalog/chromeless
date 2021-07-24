@@ -71,12 +71,6 @@ const getAppFolderName = () => {
   if (process.platform === 'darwin') {
     return `${name}.app`;
   }
-  if (process.platform === 'linux') {
-    return `${name}-linux-x64`;
-  }
-  if (process.platform === 'win32') {
-    return `${name}-win32-x64`;
-  }
   throw Error('Unsupported platform');
 };
 
@@ -125,9 +119,7 @@ Promise.resolve()
     // try to get fresh icon from catalog if possible
     if (!id.startsWith('custom-')) {
       // use unplated icon on Windows
-      const catalogIconUrl = process.platform === 'win32'
-        ? `https://storage.webcatalog.app/catalog/${id}/${id}-icon-unplated.png`
-        : `https://storage.webcatalog.app/catalog/${id}/${id}-icon.png`;
+      const catalogIconUrl = `https://storage.webcatalog.app/catalog/${id}/${id}-icon.png`;
       return downloadAsync(catalogIconUrl, iconPngPath)
         .catch(() => fsExtra.copy(icon, iconPngPath)); // fallback if fails
     }
@@ -140,12 +132,11 @@ Promise.resolve()
       ? [16, 32, 64, 128, 256, 512, 1024]
       : [16, 24, 32, 48, 64, 128, 256];
 
-    const p = (process.platform === 'darwin' || process.platform === 'win32')
-      ? sizes.map((size) => img
-        .clone()
-        .resize(size, size)
-        .quality(100)
-        .writeAsync(path.join(buildResourcesPath, `${size}.png`))) : [];
+    const p = sizes.map((size) => img
+      .clone()
+      .resize(size, size)
+      .quality(100)
+      .writeAsync(path.join(buildResourcesPath, `${size}.png`)));
 
     return Promise.all(p)
       .then(() => {

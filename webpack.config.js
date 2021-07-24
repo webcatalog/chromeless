@@ -81,12 +81,6 @@ const getElectronMainConfig = () => {
       to: path.join(__dirname, 'build', 'images'),
     },
   ];
-  if (process.platform === 'win32') {
-    patterns.push({
-      from: path.join(__dirname, 'node_modules', 'windows-shortcuts', 'lib', 'shortcut', 'Shortcut.exe'),
-      to: path.join(__dirname, 'build', 'shortcut', 'Shortcut.exe'),
-    });
-  }
   plugins.push(new CopyPlugin({ patterns }));
 
   return {

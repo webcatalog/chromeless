@@ -90,18 +90,16 @@ const DialogSetInstallationPath = (props) => {
             ),
           }}
         />
-        {window.process.platform !== 'win32' && (
-          <FormControlLabel
-            control={(
-              <Checkbox
-                disabled={installationPath === '~/Applications/Chromeless Apps' || installationPath === '/Applications/Chromeless Apps'}
-                checked={installationPath === '~/Applications/Chromeless Apps' || installationPath === '/Applications/Chromeless Apps' ? false : requireAdmin}
-                onChange={(e) => onUpdateForm({ requireAdmin: e.target.checked })}
-              />
-            )}
-            label="Require sudo for installation"
-          />
-        )}
+        <FormControlLabel
+          control={(
+            <Checkbox
+              disabled={installationPath === '~/Applications/Chromeless Apps' || installationPath === '/Applications/Chromeless Apps'}
+              checked={installationPath === '~/Applications/Chromeless Apps' || installationPath === '/Applications/Chromeless Apps' ? false : requireAdmin}
+              onChange={(e) => onUpdateForm({ requireAdmin: e.target.checked })}
+            />
+          )}
+          label="Require sudo for installation"
+        />
       </DialogContent>
       <DialogActions className={classes.dialogActions}>
         <Button

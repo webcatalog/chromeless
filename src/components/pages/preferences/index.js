@@ -135,12 +135,6 @@ const styles = (theme) => ({
   },
 });
 
-const getFileManagerName = () => {
-  if (window.process.platform === 'darwin') return 'Finder';
-  if (window.process.platform === 'win32') return 'File Explorer';
-  return 'file manager';
-};
-
 const formatBytes = (bytes, decimals = 2) => {
   if (bytes === 0) return '0 Bytes';
 
@@ -179,10 +173,7 @@ const Preferences = ({
   alwaysOnTop,
   appCount,
   attachToMenubar,
-  autoHideMenuBar,
   classes,
-  createDesktopShortcut,
-  createStartMenuShortcut,
   defaultHome,
   installationPath,
   installingAppCount,
@@ -198,7 +189,6 @@ const Preferences = ({
   updaterInfo,
   updaterStatus,
   useHardwareAcceleration,
-  useSystemTitleBar,
 }) => {
   const utmSource = 'chromeless_app';
   const sections = {
@@ -333,31 +323,25 @@ const Preferences = ({
                   />
                 </ListItemSecondaryAction>
               </ListItem>
-              {window.process.platform !== 'linux' && (
-                <>
-                  <Divider />
-                  <ListItem>
-                    <ListItemText primary="Open at login" />
-                    <Select
-                      value={openAtLogin}
-                      onChange={(e) => requestSetSystemPreference('openAtLogin', e.target.value)}
-                      variant="filled"
-                      disableUnderline
-                      margin="dense"
-                      classes={{
-                        root: classes.select,
-                      }}
-                      className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
-                    >
-                      <MenuItem dense value="yes">Yes</MenuItem>
-                      {window.process.platform !== 'win32' && (
-                        <MenuItem dense value="yes-hidden">Yes, but minimized</MenuItem>
-                      )}
-                      <MenuItem dense value="no">No</MenuItem>
-                    </Select>
-                  </ListItem>
-                </>
-              )}
+              <Divider />
+              <ListItem>
+                <ListItemText primary="Open at login" />
+                <Select
+                  value={openAtLogin}
+                  onChange={(e) => requestSetSystemPreference('openAtLogin', e.target.value)}
+                  variant="filled"
+                  disableUnderline
+                  margin="dense"
+                  classes={{
+                    root: classes.select,
+                  }}
+                  className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
+                >
+                  <MenuItem dense value="yes">Yes</MenuItem>
+                  <MenuItem dense value="yes-hidden">Yes, but minimized</MenuItem>
+                  <MenuItem dense value="no">No</MenuItem>
+                </Select>
+              </ListItem>
             </List>
           </Paper>
 
@@ -384,45 +368,6 @@ const Preferences = ({
                   <MenuItem dense value="dark">Dark</MenuItem>
                 </Select>
               </ListItem>
-              {window.process.platform !== 'darwin' && (
-                <>
-                  <Divider />
-                  <ListItem>
-                    <ListItemText
-                      primary="Use system title bar and borders"
-                    />
-                    <ListItemSecondaryAction>
-                      <Switch
-                        edge="end"
-                        color="primary"
-                        checked={useSystemTitleBar}
-                        onChange={(e) => {
-                          requestSetPreference('useSystemTitleBar', e.target.checked);
-                          enqueueRequestRestartSnackbar();
-                        }}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText
-                      primary="Hide menu bar automatically"
-                      secondary="Auto hide the menu bar unless the Alt key is pressed."
-                    />
-                    <ListItemSecondaryAction>
-                      <Switch
-                        edge="end"
-                        color="primary"
-                        disabled={!useSystemTitleBar}
-                        checked={useSystemTitleBar && autoHideMenuBar}
-                        onChange={(e) => {
-                          requestSetPreference('autoHideMenuBar', e.target.checked);
-                          enqueueRequestRestartSnackbar();
-                        }}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </>
-              )}
             </List>
           </Paper>
 
@@ -502,26 +447,7 @@ const Preferences = ({
                   className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
                   disabled={installingAppCount > 0}
                 >
-                  {window.process.platform === 'win32' && (
-                    [
-                      (installationPath !== `${window.remote.app.getPath('home')}\\Chromeless Apps`) && (
-                        <MenuItem dense key="installation-path-menu-item" value={null}>
-                          {installationPath}
-                        </MenuItem>
-                      ),
-                      <MenuItem
-                        dense
-                        key="default-installation-path-menu-item"
-                        value={{
-                          installationPath: `${window.remote.app.getPath('home')}\\Chromeless Apps`,
-                          requireAdmin: false,
-                        }}
-                      >
-                        {`${window.remote.app.getPath('home')}\\Chromeless Apps`}
-                      </MenuItem>,
-                    ]
-                  )}
-                  {window.process.platform === 'darwin' && (
+                  {(
                     [
                       (installationPath !== '~/Applications/Chromeless Apps' && installationPath !== '/Applications/WebCatalog Apps') && (
                         <MenuItem dense key="installation-path-menu-item" value={null}>
@@ -550,70 +476,15 @@ const Preferences = ({
                       </MenuItem>,
                     ]
                   )}
-                  {window.process.platform === 'linux' && (
-                    [
-                      (installationPath !== '~/.chromeless') && (
-                        <MenuItem dense key="installation-path-menu-item">
-                          {installationPath}
-                        </MenuItem>
-                      ),
-                      <MenuItem
-                        dense
-                        key="default-installation-path-menu-item"
-                        value={{
-                          installationPath: '~/.chromeless',
-                          requireAdmin: false,
-                        }}
-                      >
-                        ~/.chromeless (default)
-                      </MenuItem>,
-                    ]
-                  )}
                   <MenuItem dense onClick={onOpenDialogSetInstallationPath}>
                     Custom
                   </MenuItem>
                 </Select>
               </ListItem>
               <ListItem button onClick={requestOpenInstallLocation}>
-                <ListItemText primary={`Open installation path in ${getFileManagerName()}`} />
+                <ListItemText primary="Open installation path in Finder" />
                 <ChevronRightIcon color="action" />
               </ListItem>
-              {window.process.platform === 'win32' && (
-                <>
-                  <Divider />
-                  <ListItem>
-                    <ListItemText
-                      primary="Automatically create desktop shortcuts for newly installed apps"
-                    />
-                    <ListItemSecondaryAction>
-                      <Switch
-                        edge="end"
-                        color="primary"
-                        checked={createDesktopShortcut}
-                        onChange={(e) => {
-                          requestSetPreference('createDesktopShortcut', e.target.checked);
-                        }}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <Divider />
-                  <ListItem>
-                    <ListItemText
-                      primary="Automatically create Start Menu shortcuts for newly installed apps"
-                    />
-                    <ListItemSecondaryAction>
-                      <Switch
-                        edge="end"
-                        color="primary"
-                        checked={createStartMenuShortcut}
-                        onChange={(e) => {
-                          requestSetPreference('createStartMenuShortcut', e.target.checked);
-                        }}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </>
-              )}
               <Divider />
               <ListItem>
                 <ListItemText
@@ -879,10 +750,7 @@ Preferences.propTypes = {
   alwaysOnTop: PropTypes.bool.isRequired,
   appCount: PropTypes.number.isRequired,
   attachToMenubar: PropTypes.bool.isRequired,
-  autoHideMenuBar: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired,
-  createDesktopShortcut: PropTypes.bool.isRequired,
-  createStartMenuShortcut: PropTypes.bool.isRequired,
   defaultHome: PropTypes.string.isRequired,
   installationPath: PropTypes.string.isRequired,
   installingAppCount: PropTypes.number.isRequired,
@@ -898,7 +766,6 @@ Preferences.propTypes = {
   updaterInfo: PropTypes.object,
   updaterStatus: PropTypes.string,
   useHardwareAcceleration: PropTypes.bool.isRequired,
-  useSystemTitleBar: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -906,9 +773,6 @@ const mapStateToProps = (state) => ({
   alwaysOnTop: state.preferences.alwaysOnTop,
   appCount: Object.keys(state.appManagement.apps).length,
   attachToMenubar: state.preferences.attachToMenubar,
-  autoHideMenuBar: state.preferences.autoHideMenuBar,
-  createDesktopShortcut: state.preferences.createDesktopShortcut,
-  createStartMenuShortcut: state.preferences.createStartMenuShortcut,
   defaultHome: state.preferences.defaultHome,
   installationPath: state.preferences.installationPath,
   installingAppCount: getInstallingAppsAsList(state).length,
@@ -920,7 +784,6 @@ const mapStateToProps = (state) => ({
   updaterInfo: state.updater.info,
   updaterStatus: state.updater.status,
   useHardwareAcceleration: state.preferences.useHardwareAcceleration,
-  useSystemTitleBar: state.preferences.useSystemTitleBar,
 });
 
 const actionCreators = {
