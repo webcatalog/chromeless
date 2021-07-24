@@ -7,7 +7,6 @@ const settings = require('electron-settings');
 const { app, nativeTheme } = require('electron');
 
 const sendToAllWindows = require('./send-to-all-windows');
-const isWindows10 = require('./is-windows-10');
 
 // scope
 const v = '2018';
@@ -15,12 +14,6 @@ const v = '2018';
 const getDefaultInstallationPath = () => {
   if (process.platform === 'darwin') {
     return path.join('~', 'Applications', 'Chromeless Apps');
-  }
-  if (process.platform === 'linux') {
-    return '~/.chromeless';
-  }
-  if (process.platform === 'win32') {
-    return path.join(app.getPath('home'), 'Chromeless Apps');
   }
   throw Error('Unsupported platform');
 };
@@ -34,9 +27,6 @@ const defaultPreferences = {
   allowPrerelease: Boolean(semver.prerelease(app.getVersion())),
   alwaysOnTop: false, // for menubar
   attachToMenubar: false,
-  autoHideMenuBar: false,
-  createDesktopShortcut: true,
-  createStartMenuShortcut: true,
   defaultHome: 'home',
   installationPath: getDefaultInstallationPath(),
   preferredEngine: getDefaultEngine(),
@@ -45,11 +35,6 @@ const defaultPreferences = {
   sortInstalledAppBy: 'last-updated',
   themeSource: 'system',
   useHardwareAcceleration: true,
-  // use system title bar by default on Windows 8 & Windows 7
-  // because on Windows 10, it's normally for apps not to have border
-  // but on prior versions of Windows, apps have border
-  // system title bar pref is required for the app have the native border
-  useSystemTitleBar: process.platform === 'win32' && !isWindows10(),
 };
 
 let cachedPreferences = null;

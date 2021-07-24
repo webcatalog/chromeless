@@ -179,10 +179,7 @@ const Preferences = ({
   alwaysOnTop,
   appCount,
   attachToMenubar,
-  autoHideMenuBar,
   classes,
-  createDesktopShortcut,
-  createStartMenuShortcut,
   defaultHome,
   installationPath,
   installingAppCount,
@@ -198,7 +195,6 @@ const Preferences = ({
   updaterInfo,
   updaterStatus,
   useHardwareAcceleration,
-  useSystemTitleBar,
 }) => {
   const utmSource = 'chromeless_app';
   const sections = {
@@ -384,45 +380,6 @@ const Preferences = ({
                   <MenuItem dense value="dark">Dark</MenuItem>
                 </Select>
               </ListItem>
-              {window.process.platform !== 'darwin' && (
-                <>
-                  <Divider />
-                  <ListItem>
-                    <ListItemText
-                      primary="Use system title bar and borders"
-                    />
-                    <ListItemSecondaryAction>
-                      <Switch
-                        edge="end"
-                        color="primary"
-                        checked={useSystemTitleBar}
-                        onChange={(e) => {
-                          requestSetPreference('useSystemTitleBar', e.target.checked);
-                          enqueueRequestRestartSnackbar();
-                        }}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText
-                      primary="Hide menu bar automatically"
-                      secondary="Auto hide the menu bar unless the Alt key is pressed."
-                    />
-                    <ListItemSecondaryAction>
-                      <Switch
-                        edge="end"
-                        color="primary"
-                        disabled={!useSystemTitleBar}
-                        checked={useSystemTitleBar && autoHideMenuBar}
-                        onChange={(e) => {
-                          requestSetPreference('autoHideMenuBar', e.target.checked);
-                          enqueueRequestRestartSnackbar();
-                        }}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </>
-              )}
             </List>
           </Paper>
 
@@ -578,42 +535,6 @@ const Preferences = ({
                 <ListItemText primary={`Open installation path in ${getFileManagerName()}`} />
                 <ChevronRightIcon color="action" />
               </ListItem>
-              {window.process.platform === 'win32' && (
-                <>
-                  <Divider />
-                  <ListItem>
-                    <ListItemText
-                      primary="Automatically create desktop shortcuts for newly installed apps"
-                    />
-                    <ListItemSecondaryAction>
-                      <Switch
-                        edge="end"
-                        color="primary"
-                        checked={createDesktopShortcut}
-                        onChange={(e) => {
-                          requestSetPreference('createDesktopShortcut', e.target.checked);
-                        }}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <Divider />
-                  <ListItem>
-                    <ListItemText
-                      primary="Automatically create Start Menu shortcuts for newly installed apps"
-                    />
-                    <ListItemSecondaryAction>
-                      <Switch
-                        edge="end"
-                        color="primary"
-                        checked={createStartMenuShortcut}
-                        onChange={(e) => {
-                          requestSetPreference('createStartMenuShortcut', e.target.checked);
-                        }}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </>
-              )}
               <Divider />
               <ListItem>
                 <ListItemText
@@ -879,10 +800,7 @@ Preferences.propTypes = {
   alwaysOnTop: PropTypes.bool.isRequired,
   appCount: PropTypes.number.isRequired,
   attachToMenubar: PropTypes.bool.isRequired,
-  autoHideMenuBar: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired,
-  createDesktopShortcut: PropTypes.bool.isRequired,
-  createStartMenuShortcut: PropTypes.bool.isRequired,
   defaultHome: PropTypes.string.isRequired,
   installationPath: PropTypes.string.isRequired,
   installingAppCount: PropTypes.number.isRequired,
@@ -898,7 +816,6 @@ Preferences.propTypes = {
   updaterInfo: PropTypes.object,
   updaterStatus: PropTypes.string,
   useHardwareAcceleration: PropTypes.bool.isRequired,
-  useSystemTitleBar: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -906,9 +823,6 @@ const mapStateToProps = (state) => ({
   alwaysOnTop: state.preferences.alwaysOnTop,
   appCount: Object.keys(state.appManagement.apps).length,
   attachToMenubar: state.preferences.attachToMenubar,
-  autoHideMenuBar: state.preferences.autoHideMenuBar,
-  createDesktopShortcut: state.preferences.createDesktopShortcut,
-  createStartMenuShortcut: state.preferences.createStartMenuShortcut,
   defaultHome: state.preferences.defaultHome,
   installationPath: state.preferences.installationPath,
   installingAppCount: getInstallingAppsAsList(state).length,
@@ -920,7 +834,6 @@ const mapStateToProps = (state) => ({
   updaterInfo: state.updater.info,
   updaterStatus: state.updater.status,
   useHardwareAcceleration: state.preferences.useHardwareAcceleration,
-  useSystemTitleBar: state.preferences.useSystemTitleBar,
 });
 
 const actionCreators = {

@@ -15,7 +15,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { requestShowAppMenu } from '../../senders';
 
 import connectComponent from '../../helpers/connect-component';
-import getStaticGlobal from '../../helpers/get-static-global';
 
 const LEFT_RIGHT_WIDTH = window.process.platform !== 'darwin' ? 160 : 100;
 const TOOLBAR_HEIGHT = 32;
@@ -102,10 +101,8 @@ const styles = (theme) => ({
 const EnhancedAppBar = ({
   center,
   classes,
-  isMaximized,
   shouldUseDarkColors,
 }) => {
-  const useSystemTitleBar = getStaticGlobal('useSystemTitleBar');
   const onDoubleClick = (e) => {
     // feature: double click on title bar to expand #656
     // https://github.com/webcatalog/webcatalog-app/issues/656
@@ -120,9 +117,8 @@ const EnhancedAppBar = ({
     }
   };
 
-  const shouldShowMenuButton = window.process.platform === 'darwin'
-    ? window.mode === 'menubar' // on Mac, only show the button in menu bar mode
-    : (window.mode === 'menubar' || !useSystemTitleBar);
+  // // on Mac, only show the button in menu bar mode
+  const shouldShowMenuButton = window.mode === 'menubar';
 
   return (
     <AppBar
@@ -153,67 +149,7 @@ const EnhancedAppBar = ({
         <div className={classes.center} onDoubleClick={onDoubleClick}>
           {center}
         </div>
-        <div className={classes.right} onDoubleClick={onDoubleClick}>
-          {window.process.platform !== 'darwin' && !useSystemTitleBar && (
-            <div className={classes.windowsControl}>
-              <button
-                className={classes.windowsIconBg}
-                type="button"
-                aria-label="Minimize"
-                tabIndex="-1" // normally, windows buttons is not navigable by keyboard
-                onClick={(e) => {
-                  e.stopPropagation();
-                  const browserWindow = window.remote.getCurrentWindow();
-                  browserWindow.minimize();
-                }}
-              >
-                <div className={classnames(classes.windowsIcon, classes.windowsIconMinimize)} />
-              </button>
-              {window.mode !== 'menubar' && (
-                <button
-                  className={classes.windowsIconBg}
-                  type="button"
-                  aria-label={isMaximized ? 'Unmaximize' : 'Maximize'}
-                  tabIndex="-1" // normally, windows buttons is not navigable by keyboard
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const browserWindow = window.remote.getCurrentWindow();
-                    if (browserWindow.isMaximized()) {
-                      browserWindow.unmaximize();
-                    } else {
-                      browserWindow.maximize();
-                    }
-                  }}
-                >
-                  <div
-                    className={classnames(
-                      classes.windowsIcon,
-                      isMaximized && classes.windowsIconUnmaximize,
-                      !isMaximized && classes.windowsIconMaximize,
-                    )}
-                  />
-                </button>
-              )}
-              {window.mode !== 'menubar' && (
-                <button
-                  className={classes.windowsIconBg}
-                  type="button"
-                  aria-label={isMaximized ? 'Unmaximize' : 'Maximize'}
-                  tabIndex="-1" // normally, windows buttons is not navigable by keyboard
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const browserWindow = window.remote.getCurrentWindow();
-                    browserWindow.close();
-                  }}
-                >
-                  <div
-                    className={classnames(classes.windowsIcon, classes.windowsIconClose)}
-                  />
-                </button>
-              )}
-            </div>
-          )}
-        </div>
+        <div className={classes.right} onDoubleClick={onDoubleClick} />
       </Toolbar>
     </AppBar>
   );
@@ -226,12 +162,10 @@ EnhancedAppBar.defaultProps = {
 EnhancedAppBar.propTypes = {
   center: PropTypes.node,
   classes: PropTypes.object.isRequired,
-  isMaximized: PropTypes.bool.isRequired,
   shouldUseDarkColors: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  isMaximized: state.general.isMaximized,
   shouldUseDarkColors: state.general.shouldUseDarkColors,
 });
 

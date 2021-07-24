@@ -183,8 +183,7 @@ const createAsync = () => new Promise((resolve) => {
     minHeight: 500,
     titleBarStyle: 'hiddenInset',
     show: false,
-    frame: process.platform === 'darwin' || global.useSystemTitleBar,
-    autoHideMenuBar: global.useSystemTitleBar && getPreference('autoHideMenuBar'),
+    frame: true,
     alwaysOnTop: getPreference('alwaysOnTop'),
     webPreferences: {
       enableRemoteModule: true,

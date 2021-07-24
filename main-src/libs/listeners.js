@@ -234,11 +234,7 @@ const loadListeners = () => {
               let displayedIcon;
               // display latest icon from WebCatalog
               if (!id.startsWith('custom-')) {
-                if (process.platform === 'win32') {
-                  displayedIcon = `https://storage.webcatalog.app/catalog/${id}/${id}-icon-unplated-128.webp`;
-                } else {
-                  displayedIcon = `https://storage.webcatalog.app/catalog/${id}/${id}-icon-128.webp`;
-                }
+                displayedIcon = `https://storage.webcatalog.app/catalog/${id}/${id}-icon-128.webp`;
               }
 
               send(e.sender, 'set-app', id, {

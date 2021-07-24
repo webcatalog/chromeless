@@ -4,14 +4,6 @@
 |---|
 |[![macOS](https://github.com/webcatalog/chromeless/workflows/macOS/badge.svg)](https://github.com/webcatalog/chromeless/actions?query=workflow:%22macOS%22)|
 
-|Linux (x64)|Linux (arm64)|
-|---|---|
-|[![Linux (x64)](https://github.com/webcatalog/chromeless/workflows/Linux%20(x64)/badge.svg)](https://github.com/webcatalog/chromeless/actions?query=workflow%3A%22Linux+%28x64%29%22)|[![Linux (arm64)](https://github.com/webcatalog/chromeless/workflows/Linux%20(arm64)/badge.svg)](https://github.com/webcatalog/chromeless/actions?query=workflow%3A%22Linux+%28arm64%29%22)|
-
-|Windows (x64)|
-|---|
-|[![Windows (x64)](https://github.com/webcatalog/chromeless/workflows/Windows%20(x64)/badge.svg)](https://github.com/webcatalog/chromeless/actions?query=workflow%3A%22Windows+%28x64%29%22)|
-
 **[Chromeless](https://chromeless.app)** - Turn Any Websites into Chromeless Apps.
 
 ---
