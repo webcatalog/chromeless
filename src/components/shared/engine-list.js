@@ -37,7 +37,6 @@ import edgeCanaryIcon from '../../assets/edge-canary.png';
 import firefoxIcon from '../../assets/firefox.png';
 import operaIcon from '../../assets/opera.png';
 import vivaldiIcon from '../../assets/vivaldi.png';
-import webkitIcon from '../../assets/webkit.png';
 import yandexIcon from '../../assets/yandex.png';
 
 import HelpTooltip from './help-tooltip';
@@ -53,10 +52,6 @@ const CustomHelpIcon = withStyles((theme) => ({
 }))(HelpIcon);
 
 const getDesc = (engineCode, browserName) => {
-  if (engineCode === 'webkit') {
-    return `This option creates lightweight ${browserName}-based app, optimized to save memory & battery.`;
-  }
-
   const standardDesc = `This option creates bare-bone ${browserName}-based app${engineCode !== 'firefox' ? ' with WebExtension support' : ''}.`;
   const tabbedDesc = `This option creates ${browserName}-based app with traditional browser user interface, tab and WebExtension support.`;
   if (engineCode === 'opera' || engineCode.startsWith('firefox')) {
@@ -237,12 +232,6 @@ const EngineList = ({
         disableStandardMode: true,
         defaultMode: 'tabbed',
         downloadUrl: 'https://www.opera.com/',
-      })}
-      {window.process.platform === 'darwin' && !isMultisite && renderItem({
-        engineVal: 'webkit',
-        engineName: 'WebKit (part of Safari)',
-        iconPath: webkitIcon,
-        disableTabbedMode: true,
       })}
       {renderItem({
         engineVal: 'firefox',

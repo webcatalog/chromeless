@@ -60,9 +60,6 @@ const getEngineName = (engine) => {
     case 'firefox/tabs': {
       return 'Mozilla Firefox (tabbed)';
     }
-    case 'webkit': {
-      return 'WebKit';
-    }
     default: {
       return 'Unknown Engine';
     }
