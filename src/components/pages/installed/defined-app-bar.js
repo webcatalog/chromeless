@@ -47,7 +47,7 @@ const DefinedAppBar = ({
         <SearchBox />
         <div>
           <Button
-            variant="link"
+            variant="text"
             color="inherit"
             className={classnames(classes.noDrag, classes.addButton)}
             startIcon={<AddIcon fontSize="small" />}

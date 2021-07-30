@@ -26,6 +26,7 @@ import {
   updateForm,
   updateFormOpts,
 } from '../../state/dialog-edit-app/actions';
+import { open as openDialogCreateCustomApp } from '../../state/dialog-create-custom-app/actions';
 
 import defaultIcon from '../../assets/default-icon.png';
 
@@ -48,6 +49,10 @@ const styles = (theme) => ({
     borderTop: `1px solid ${theme.palette.divider}`,
     margin: 0,
     padding: theme.spacing(1),
+    display: 'flex',
+  },
+  dialogActionsLeft: {
+    flex: 1,
   },
   buttonBot: {
     marginTop: theme.spacing(1),
@@ -81,6 +86,7 @@ const DialogEditApp = (props) => {
     url,
     urlDisabled,
     urlError,
+    onOpenDialogCreateCustomApp,
   } = props;
 
   let iconPath = defaultIcon;
@@ -106,7 +112,7 @@ const DialogEditApp = (props) => {
           fullWidth
           id="name"
           label="Name"
-          helperText="This cannot be changed."
+          helperText={`This cannot be changed. To customize the name, clone "${name}".`}
           margin="normal"
           onChange={(e) => onUpdateForm({ name: e.target.value })}
           value={name}
@@ -124,7 +130,7 @@ const DialogEditApp = (props) => {
             error={Boolean(urlError)}
           />
         )}
-        <Grid container spacing={1} className={classes.grid}>
+        <Grid container spacing={1} className={classes.grid} wrap="nowrap">
           <Grid item xs={12} sm="auto">
             <div className={classes.iconContainer}>
               <img src={iconPath} alt={name} className={classes.icon} />
@@ -136,7 +142,8 @@ const DialogEditApp = (props) => {
                 variant="body2"
                 className={classnames(classes.caption, classes.captionDisabled)}
               >
-                This app icon is managed by Chromeless and is not editable.
+                This app icon is managed by WebCatalog and is not editable. To customize the icon,
+                {` clone "${name}".`}
               </Typography>
             </Grid>
           ) : (
@@ -201,20 +208,37 @@ const DialogEditApp = (props) => {
         </Grid>
       </DialogContent>
       <DialogActions className={classes.dialogActions}>
-        <Button
-          onClick={onClose}
-        >
-          Cancel
-        </Button>
-        <Tooltip title="This action'll also update this app to the latest version">
+        <div className={classes.dialogActionsLeft}>
           <Button
-            color="primary"
-            onClick={onSave}
-            disabled={!savable}
+            onClick={() => {
+              onClose();
+              onOpenDialogCreateCustomApp({
+                name: `${name} 2`,
+                url,
+                urlDisabled: Boolean(!url),
+                icon,
+              });
+            }}
           >
-            Save
+            Clone
           </Button>
-        </Tooltip>
+        </div>
+        <div>
+          <Button
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
+          <Tooltip title="This action'll also update this app to the latest version">
+            <Button
+              color="primary"
+              onClick={onSave}
+              disabled={!savable}
+            >
+              Save
+            </Button>
+          </Tooltip>
+        </div>
       </DialogActions>
     </Dialog>
   );
@@ -241,6 +265,7 @@ DialogEditApp.propTypes = {
   onClose: PropTypes.func.isRequired,
   onGetIconFromInternet: PropTypes.func.isRequired,
   onGetIconFromAppSearch: PropTypes.func.isRequired,
+  onOpenDialogCreateCustomApp: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   onUpdateForm: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
@@ -289,6 +314,7 @@ const actionCreators = {
   getIconFromAppSearch,
   updateForm,
   updateFormOpts,
+  openDialogCreateCustomApp,
 };
 
 export default connectComponent(

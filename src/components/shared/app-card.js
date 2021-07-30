@@ -9,12 +9,14 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import connectComponent from '../../helpers/connect-component';
 import isUrl from '../../helpers/is-url';
 import getEngineName from '../../helpers/get-engine-name';
+import getEngineIcon from '../../helpers/get-engine-icon';
 
 import {
   INSTALLED,
@@ -93,7 +95,12 @@ const styles = (theme) => ({
     position: 'absolute',
     top: theme.spacing(1),
     left: theme.spacing(1),
-    color: theme.palette.text.secondary,
+    height: 20,
+    width: 20,
+    opacity: 0.75,
+    '&:hover': {
+      opacity: 1,
+    },
   },
 });
 
@@ -122,6 +129,9 @@ const AppCard = (props) => {
   if (category) {
     combinedOpts.category = category;
   }
+
+  const engineName = engine ? getEngineName(engine) : '';
+  const engineIcon = engine ? getEngineIcon(engine) : null;
 
   const showMenu = () => {
     const template = [
@@ -174,7 +184,7 @@ const AppCard = (props) => {
         visible: Boolean(engine && version),
       },
       {
-        label: `Powered by ${getEngineName(engine)} (implementation ${version})`,
+        label: `Powered by ${engineName} (implementation ${version})`,
         enabled: false,
         visible: Boolean(engine && version),
       },
@@ -298,6 +308,11 @@ const AppCard = (props) => {
         <div className={classes.actionContainer}>
           {renderActionsElement()}
         </div>
+        {engineIcon && (
+          <Tooltip title={`Powered by ${engineName}${version ? ` (implementation ${version})` : ''}`}>
+            <img src={engineIcon} alt={engineName} className={classes.topLeft} />
+          </Tooltip>
+        )}
         <IconButton
           size="small"
           aria-label={`More Options for ${name}`}
