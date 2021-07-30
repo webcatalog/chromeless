@@ -15,7 +15,6 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
-import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 
 import HelpIcon from '@material-ui/icons/Help';
@@ -23,24 +22,9 @@ import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 
 import connectComponent from '../../helpers/connect-component';
 
-import braveIcon from '../../assets/brave.png';
-import chromeIcon from '../../assets/chrome.png';
-import chromeBetaIcon from '../../assets/chrome-beta.png';
-import chromeDevIcon from '../../assets/chrome-dev.png';
-import chromeCanaryIcon from '../../assets/chrome-canary.png';
-import chromiumIcon from '../../assets/chromium.png';
-import coccocIcon from '../../assets/coccoc.png';
-import edgeIcon from '../../assets/edge.png';
-import edgeBetaIcon from '../../assets/edge-beta.png';
-import edgeDevIcon from '../../assets/edge-dev.png';
-import edgeCanaryIcon from '../../assets/edge-canary.png';
-import firefoxIcon from '../../assets/firefox.png';
-import operaIcon from '../../assets/opera.png';
-import vivaldiIcon from '../../assets/vivaldi.png';
-import webkitIcon from '../../assets/webkit.png';
-import yandexIcon from '../../assets/yandex.png';
-
 import HelpTooltip from './help-tooltip';
+
+import engines from '../../constants/engines';
 
 import {
   requestOpenInBrowser,
@@ -188,106 +172,15 @@ const EngineList = ({
 
   return (
     <List>
-      {renderItem({
-        engineVal: 'chrome',
-        engineName: 'Google Chrome',
-        iconPath: chromeIcon,
-        downloadUrl: 'https://www.google.com/chrome/',
-      })}
-      {renderItem({
-        engineVal: 'edge',
-        engineName: 'Microsoft Edge',
-        iconPath: edgeIcon,
-        downloadUrl: 'https://www.microsoft.com/edge',
-      })}
-      {renderItem({
-        engineVal: 'brave',
-        engineName: 'Brave',
-        iconPath: braveIcon,
-        downloadUrl: 'https://brave.com/',
-      })}
-      {renderItem({
-        engineVal: 'vivaldi',
-        engineName: 'Vivaldi',
-        iconPath: vivaldiIcon,
-        downloadUrl: 'https://vivaldi.com/',
-      })}
-      {renderItem({
-        engineVal: 'yandex',
-        engineName: 'Yandex Browser',
-        iconPath: yandexIcon,
-        downloadUrl: 'https://browser.yandex.com/',
-      })}
-      {renderItem({
-        engineVal: 'chromium',
-        engineName: 'Chromium',
-        iconPath: chromiumIcon,
-        downloadUrl: 'https://www.chromium.org/getting-involved/download-chromium',
-      })}
-      {renderItem({
-        engineVal: 'coccoc',
-        engineName: 'Cốc Cốc',
-        iconPath: coccocIcon,
-        downloadUrl: 'https://coccoc.com/',
-      })}
-      {renderItem({
-        engineVal: 'opera',
-        engineName: 'Opera',
-        iconPath: operaIcon,
-        disableStandardMode: true,
-        defaultMode: 'tabbed',
-        downloadUrl: 'https://www.opera.com/',
-      })}
-      {window.process.platform === 'darwin' && !isMultisite && renderItem({
-        engineVal: 'webkit',
-        engineName: 'WebKit (part of Safari)',
-        iconPath: webkitIcon,
-        disableTabbedMode: true,
-      })}
-      {renderItem({
-        engineVal: 'firefox',
-        engineName: 'Mozilla Firefox (experimental)',
-        iconPath: firefoxIcon,
-        disableStandardMode: true,
-        defaultMode: 'tabbed',
-        downloadUrl: 'https://www.mozilla.org/firefox/',
-      })}
-      <Divider />
-      {renderItem({
-        engineVal: 'chromeBeta',
-        engineName: 'Google Chrome Beta',
-        iconPath: chromeBetaIcon,
-        downloadUrl: 'https://www.google.com/chrome/beta/',
-      })}
-      {renderItem({
-        engineVal: 'chromeDev',
-        engineName: 'Google Chrome Dev',
-        iconPath: chromeDevIcon,
-        downloadUrl: 'https://www.google.com/chrome/dev/',
-      })}
-      {renderItem({
-        engineVal: 'chromeCanary',
-        engineName: 'Google Chrome Canary',
-        iconPath: chromeCanaryIcon,
-        downloadUrl: 'https://www.google.com/chrome/canary/',
-      })}
-      {renderItem({
-        engineVal: 'edgeBeta',
-        engineName: 'Microsoft Edge Beta',
-        iconPath: edgeBetaIcon,
-        downloadUrl: 'https://www.microsoftedgeinsider.com/download',
-      })}
-      {renderItem({
-        engineVal: 'edgeDev',
-        engineName: 'Microsoft Edge Dev',
-        iconPath: edgeDevIcon,
-        downloadUrl: 'https://www.microsoftedgeinsider.com/download',
-      })}
-      {renderItem({
-        engineVal: 'edgeCanary',
-        engineName: 'Microsoft Edge Canary',
-        iconPath: edgeCanaryIcon,
-        downloadUrl: 'https://www.microsoftedgeinsider.com/download',
+      {Object.keys(engines).map((engineVal) => {
+        const engineObj = {
+          engineVal,
+          ...engines[engineVal],
+        };
+
+        if (engines[engineVal].disableMultisiteMode && isMultisite) return null;
+
+        return renderItem(engineObj);
       })}
     </List>
   );
