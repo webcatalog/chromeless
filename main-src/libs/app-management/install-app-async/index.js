@@ -12,6 +12,8 @@ const { getPreferences } = require('../../preferences');
 const sendToAllWindows = require('../../send-to-all-windows');
 const isEngineInstalled = require('../../is-engine-installed');
 
+const prepareWebkitWrapperAsync = require('../prepare-webkit-wrapper-async');
+
 const installAppAsync = (
   engine, id, name, url, icon, _opts = {},
 ) => {
@@ -36,6 +38,14 @@ const installAppAsync = (
         percent: 0,
         desc: null,
       });
+
+      if (engine === 'webkit') {
+        return prepareWebkitWrapperAsync()
+          .then((latestTemplateVersion) => {
+            v = latestTemplateVersion;
+            scriptFileName = 'install-app-forked-webkit.js';
+          });
+      }
 
       // use v2 script on Mac
       scriptFileName = 'install-app-forked-lite-v2.js';

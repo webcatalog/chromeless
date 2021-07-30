@@ -14,6 +14,7 @@ import SortIcon from '@material-ui/icons/Sort';
 
 import connectComponent from '../../../helpers/connect-component';
 
+import { fetchLatestTemplateVersionAsync } from '../../../state/general/actions';
 import { getOutdatedAppsAsList } from '../../../state/app-management/utils';
 import { updateAllApps } from '../../../state/app-management/actions';
 
@@ -56,6 +57,8 @@ const styles = (theme) => ({
 const Toolbar = ({
   activeQuery,
   classes,
+  fetchingLatestTemplateVersion,
+  onFetchLatestTemplateVersionAsync,
   onUpdateAllApps,
   outdatedAppCount,
   sortInstalledAppBy,
@@ -115,8 +118,10 @@ const Toolbar = ({
           size="small"
           aria-label="Refresh"
           onClick={() => {
+            onFetchLatestTemplateVersionAsync();
             requestGetInstalledApps();
           }}
+          disabled={fetchingLatestTemplateVersion}
         >
           <RefreshIcon fontSize="small" />
         </IconButton>
@@ -132,17 +137,21 @@ Toolbar.defaultProps = {
 Toolbar.propTypes = {
   activeQuery: PropTypes.string,
   classes: PropTypes.object.isRequired,
+  fetchingLatestTemplateVersion: PropTypes.bool.isRequired,
+  onFetchLatestTemplateVersionAsync: PropTypes.func.isRequired,
   onUpdateAllApps: PropTypes.func.isRequired,
   outdatedAppCount: PropTypes.number.isRequired,
   sortInstalledAppBy: PropTypes.string.isRequired,
 };
 
 const actionCreators = {
+  fetchLatestTemplateVersionAsync,
   updateAllApps,
 };
 
 const mapStateToProps = (state) => ({
   activeQuery: state.installed.activeQuery,
+  fetchingLatestTemplateVersion: state.general.fetchingLatestTemplateVersion,
   sortInstalledAppBy: state.preferences.sortInstalledAppBy,
   outdatedAppCount: getOutdatedAppsAsList(state).length,
 });

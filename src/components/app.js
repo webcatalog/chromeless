@@ -30,6 +30,8 @@ import {
   requestCheckForUpdates,
 } from '../senders';
 
+import { fetchLatestTemplateVersionAsync } from '../state/general/actions';
+
 const styles = (theme) => ({
   root: {
     display: 'flex',
@@ -58,6 +60,12 @@ class App extends React.Component {
   componentDidMount() {
     requestCheckForUpdates(true); // isSilent = true
     requestGetInstalledApps();
+
+    const { onFetchLatestTemplateVersionAsync } = this.props;
+    onFetchLatestTemplateVersionAsync();
+    this.updaterTimer = setTimeout(() => {
+      onFetchLatestTemplateVersionAsync();
+    }, 15 * 60 * 1000); // recheck every 15 minutes
   }
 
   componentWillUnmount() {
@@ -102,6 +110,7 @@ class App extends React.Component {
 App.propTypes = {
   classes: PropTypes.object.isRequired,
   route: PropTypes.string.isRequired,
+  onFetchLatestTemplateVersionAsync: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -109,9 +118,13 @@ const mapStateToProps = (state) => ({
   route: state.router.route,
 });
 
+const actionCreators = {
+  fetchLatestTemplateVersionAsync,
+};
+
 export default connectComponent(
   App,
   mapStateToProps,
-  null,
+  actionCreators,
   styles,
 );
