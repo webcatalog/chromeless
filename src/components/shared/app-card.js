@@ -32,6 +32,10 @@ import {
   requestUninstallApp,
 } from '../../senders';
 
+import {
+  getRelatedPathsAsync,
+} from '../../invokers';
+
 import { isOutdatedApp } from '../../state/app-management/utils';
 import { updateApp } from '../../state/app-management/actions';
 import { open as openDialogChooseEngine } from '../../state/dialog-choose-engine/actions';
@@ -174,6 +178,25 @@ const AppCard = (props) => {
         label: 'Reinstall (Repair)',
         visible: status === INSTALLED && !isOutdated,
         click: () => onUpdateApp(id),
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Show App in Finder',
+        visible: status === INSTALLED,
+        click: async () => {
+          const relatedPaths = await getRelatedPathsAsync({ id, name, engine });
+          window.remote.shell.showItemInFolder(relatedPaths[0].path);
+        },
+      },
+      {
+        label: 'Show Data Directory in Finder',
+        visible: status === INSTALLED,
+        click: async () => {
+          const relatedPaths = await getRelatedPathsAsync({ id, name, engine });
+          window.remote.shell.showItemInFolder(relatedPaths[1].path);
+        },
       },
       {
         type: 'separator',
