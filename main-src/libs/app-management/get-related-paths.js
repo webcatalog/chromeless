@@ -42,6 +42,7 @@ const getRelatedPaths = ({
       });
       break;
     }
+    case 'firefox/tabs':
     case 'firefox': {
       const profileId = `chromeless-${id}`;
 
