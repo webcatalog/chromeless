@@ -30,9 +30,13 @@ browser.windows.onCreated.addListener((details) => {
   // prevent opening new tabbed window when clicking on dock icon
   // https://github.com/webcatalog/chromeless/issues/59
   if (!lastWindowSessionID) {
-    browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs[0] && tabs[0].pendingUrl === 'chrome://newtab/') {
-        browser.windows.remove(details.id);
+    browser.windows.getAll((windows) => {
+      if (windows.length > 1) {
+        browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          if (tabs[0] && tabs[0].pendingUrl === 'chrome://newtab/') {
+            browser.windows.remove(details.id);
+          }
+        });
       }
     });
     return;
