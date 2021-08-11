@@ -27,8 +27,18 @@ browser.webRequest.onBeforeSendHeaders.addListener((details) => {
 // restore window properly
 let lastWindowSessionID;
 browser.windows.onCreated.addListener((details) => {
-  if (!lastWindowSessionID) return;
+  // prevent opening new tabbed window when clicking on dock icon
+  // https://github.com/webcatalog/chromeless/issues/59
+  if (!lastWindowSessionID) {
+    browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0] && tabs[0].pendingUrl === 'chrome://newtab/') {
+        browser.windows.remove(details.id);
+      }
+    });
+    return;
+  }
 
+  // restore closed window
   lastWindowSessionID = null;
   browser.windows.getAll((windows) => {
     if (windows.length === 1) {
@@ -37,6 +47,7 @@ browser.windows.onCreated.addListener((details) => {
     }
   });
 });
+
 browser.sessions.onChanged.addListener(() => {
   if (lastWindowSessionID) return;
 
