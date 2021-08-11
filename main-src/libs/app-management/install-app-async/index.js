@@ -49,7 +49,7 @@ const installAppAsync = (
 
       // use v2 script on Mac
       scriptFileName = 'install-app-forked-lite-v2.js';
-      v = '2.11.0';
+      v = '2.12.0';
 
       return null;
     })
