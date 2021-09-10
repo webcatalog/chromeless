@@ -40,7 +40,11 @@ if ((['x64', 'arm64'].indexOf(arch) < 0)) {
   console.log(`${process.platform} ${arch} is not supported.`);
 }
 
-const targets = Platform.MAC.createTarget(['zip', 'dmg'], Arch.x64, Arch.arm64);
+// use Arch.universal because
+// electron-updater 4.3.10 -> 4.5.1 has a bug preventing
+// Intel-based Macs from updating if there exists Arch.arm64 builds
+// https://github.com/electron-userland/electron-builder/pull/6212
+const targets = Platform.MAC.createTarget(['zip', 'dmg'], Arch.universal);
 
 const opts = {
   targets,
