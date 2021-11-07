@@ -10,9 +10,20 @@ const envPaths = require('env-paths');
 
 const { getPreferences } = require('../../preferences');
 const sendToAllWindows = require('../../send-to-all-windows');
-const isEngineInstalled = require('../../is-engine-installed');
+const getEngineInfo = require('./get-engine-info');
+const getEngineAppPath = require('./get-engine-app-path');
 
 const prepareWebkitWrapperAsync = require('../prepare-webkit-wrapper-async');
+
+const isEngineInstalled = (engine) => {
+  if (engine === 'webkit') return true;
+
+  if (getEngineAppPath(engine, app.getPath('home'))) {
+    return true;
+  }
+
+  return false;
+};
 
 const installAppAsync = (
   engine, id, name, url, icon, _opts = {},
@@ -53,89 +64,10 @@ const installAppAsync = (
 
       return null;
     })
-    .then(() => new Promise((resolve, reject) => {
+    .then(async () => new Promise((resolve, reject) => {
       if (!isEngineInstalled(engine)) {
-        let engineName;
-        switch (engine) {
-          case 'chromium':
-          case 'chromium/tabs': {
-            engineName = 'Chromium';
-            break;
-          }
-          case 'brave':
-          case 'brave/tabs': {
-            engineName = 'Brave';
-            break;
-          }
-          case 'vivaldi':
-          case 'vivaldi/tabs': {
-            engineName = 'Vivaldi';
-            break;
-          }
-          case 'edge':
-          case 'edge/tabs': {
-            engineName = 'Microsoft Edge';
-            break;
-          }
-          case 'edgeBeta':
-          case 'edgeBeta/tabs': {
-            engineName = 'Microsoft Edge Beta';
-            break;
-          }
-          case 'edgeDev':
-          case 'edgeDev/tabs': {
-            engineName = 'Microsoft Edge Dev';
-            break;
-          }
-          case 'edgeCanary':
-          case 'edgeCanary/tabs': {
-            engineName = 'Microsoft Edge Canary';
-            break;
-          }
-          case 'chrome':
-          case 'chrome/tabs': {
-            engineName = 'Google Chrome';
-            break;
-          }
-          case 'chromeBeta':
-          case 'chromeBeta/tabs': {
-            engineName = 'Google Chrome Beta';
-            break;
-          }
-          case 'chromeDev':
-          case 'chromeDev/tabs': {
-            engineName = 'Google Chrome Dev';
-            break;
-          }
-          case 'chromeCanary':
-          case 'chromeCanary/tabs': {
-            engineName = 'Google Chrome Canary';
-            break;
-          }
-          case 'opera':
-          case 'opera/tabs': {
-            engineName = 'Opera';
-            break;
-          }
-          case 'yandex':
-          case 'yandex/tabs': {
-            engineName = 'Yandex Browser';
-            break;
-          }
-          case 'coccoc':
-          case 'coccoc/tabs': {
-            engineName = 'Cốc Cốc';
-            break;
-          }
-          case 'firefox':
-          case 'firefox/tabs': {
-            engineName = 'Mozilla Firefox';
-            break;
-          }
-          default: {
-            engineName = 'Browser';
-          }
-        }
+        const engineInfo = getEngineInfo(engine);
+        const engineName = engineInfo ? engineInfo.name : 'Browser';
         reject(new Error(`${engineName} is not installed.`));
         return;
       }

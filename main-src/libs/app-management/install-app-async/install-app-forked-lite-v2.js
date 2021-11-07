@@ -26,6 +26,8 @@ const sudo = require('sudo-prompt');
 
 const execAsync = require('../../exec-async');
 const downloadAsync = require('../../download-async');
+const getEngineInfo = require('./get-engine-info');
+const getEngineAppPath = require('./get-engine-app-path');
 
 // id, name, username might only contain numbers
 // causing yargsParser to parse them correctly as Number instead of String
@@ -48,84 +50,6 @@ const opts = JSON.parse(argv.opts);
 const isStandardInstallationPath = installationPath === '~/Applications/Chromeless Apps'
 || installationPath === '/Applications/Chromeless Apps';
 const requireAdmin = isStandardInstallationPath ? false : argv.requireAdmin;
-
-const browserConstants = {
-  brave: {
-    appDir: 'Brave Browser.app',
-    userDataDir: path.join('BraveSoftware', 'Brave-Browser'),
-    execFile: 'Brave Browser',
-  },
-  chrome: {
-    appDir: 'Google Chrome.app',
-    userDataDir: path.join('Google', 'Chrome'),
-    execFile: 'Google Chrome',
-  },
-  chromeBeta: {
-    appDir: 'Google Chrome Beta.app',
-    userDataDir: path.join('Google', 'Chrome Beta'),
-    execFile: 'Google Chrome Beta',
-  },
-  chromeDev: {
-    appDir: 'Google Chrome Beta.app',
-    userDataDir: path.join('Google', 'Chrome Beta'),
-    execFile: 'Google Chrome Beta',
-  },
-  chromeCanary: {
-    appDir: 'Google Chrome Canary.app',
-    userDataDir: path.join('Google', 'Chrome Canary'),
-    execFile: 'Google Chrome Canary',
-  },
-  chromium: {
-    appDir: 'Chromium.app',
-    userDataDir: 'Chromium',
-    execFile: 'Chromium',
-  },
-  edge: {
-    appDir: 'Microsoft Edge.app',
-    userDataDir: 'Microsoft Edge',
-    execFile: 'Microsoft Edge',
-  },
-  edgeBeta: {
-    appDir: 'Microsoft Edge Beta.app',
-    userDataDir: 'Microsoft Edge Beta',
-    execFile: 'Microsoft Edge Beta',
-  },
-  edgeDev: {
-    appDir: 'Microsoft Edge Dev.app',
-    userDataDir: 'Microsoft Edge Dev',
-    execFile: 'Microsoft Edge Dev',
-  },
-  edgeCanary: {
-    appDir: 'Microsoft Edge Canary.app',
-    userDataDir: 'Microsoft Edge Canary',
-    execFile: 'Microsoft Edge Canary',
-  },
-  vivaldi: {
-    appDir: 'Vivaldi.app',
-    userDataDir: 'Vivaldi',
-    execFile: 'Vivaldi',
-  },
-  opera: {
-    appDir: 'Opera.app',
-    userDataDir: 'com.operasoftware.Opera',
-    execFile: 'Opera',
-  },
-  yandex: {
-    appDir: 'Yandex.app',
-    userDataDir: 'Yandex',
-    execFile: 'Yandex',
-  },
-  coccoc: {
-    appDir: 'CocCoc.app',
-    userDataDir: 'Coccoc',
-    execFile: 'CocCoc',
-  },
-  firefox: {
-    appDir: 'Firefox.app',
-    userDataDir: 'Firefox',
-    execFile: 'firefox',
-  },
-};
 
 const unescapeString = (str) => str.replace(/\\"/gmi, '"');
 
@@ -228,12 +152,13 @@ const helperDestPath = path.join(resourcesPath, 'chromeless-helper');
 
 const browserId = engine.split('/')[0];
 const useTabs = !url || engine.endsWith('/tabs'); // if no url is defined (multisite) then always use tabs option
-
 const firefoxProfileId = `chromeless-${id}`;
+
+const engineInfo = getEngineInfo(engine);
 
 Promise.resolve()
   .then(() => {
-    if (!browserConstants[browserId]) {
+    if (!engineInfo) {
       return Promise.reject(new Error('Engine is not supported.'));
     }
     return null;
@@ -328,7 +253,7 @@ cd "$DIR";
 cd ..;
 cd Resources;
 
-cp -rf ~/Library/Application\\ Support/${addSlash(browserConstants[browserId].userDataDir)}/NativeMessagingHosts ~/Library/Application\\ Support/Chromeless/ChromiumProfiles/${id}/NativeMessagingHosts
+cp -rf ~/Library/Application\\ Support/${addSlash(engineInfo.userDataDir)}/NativeMessagingHosts ~/Library/Application\\ Support/Chromeless/ChromiumProfiles/${id}/NativeMessagingHosts
 
 pgrepResult=$(pgrep -f "$DIR/${addSlash(name)}.app")
 numProc=$(echo "$pgrepResult" | wc -l)
@@ -336,7 +261,7 @@ if [ $numProc -ge 2 ]
   then
   exit;
 fi
-pgrepResult=$(pgrep -f "$PWD"/${addSlash(name)}.app/Contents/MacOS/${addSlash(browserConstants[browserId].execFile)})
+pgrepResult=$(pgrep -f "$PWD"/${addSlash(name)}.app/Contents/MacOS/${addSlash(engineInfo.execFile)})
 if [ -n "$pgrepResult" ]; then
   exit
 fi
@@ -357,7 +282,7 @@ cd "$DIR";
 cd ..;
 cd Resources;
 
-cp -rf ~/Library/Application\\ Support/${addSlash(browserConstants[browserId].userDataDir)}/NativeMessagingHosts ~/Library/Application\\ Support/Chromeless/ChromiumProfiles/${id}/NativeMessagingHosts
+cp -rf ~/Library/Application\\ Support/${addSlash(engineInfo.userDataDir)}/NativeMessagingHosts ~/Library/Application\\ Support/Chromeless/ChromiumProfiles/${id}/NativeMessagingHosts
 
 pgrepResult=$(pgrep -f "$DIR/${addSlash(name)}.app")
 numProc=$(echo "$pgrepResult" | wc -l)
@@ -365,7 +290,7 @@ if [ $numProc -ge 2 ]
   then
   exit;
 fi
-pgrepResult=$(pgrep -f "$PWD"/${addSlash(name)}.app/Contents/MacOS/${addSlash(browserConstants[browserId].execFile)})
+pgrepResult=$(pgrep -f "$PWD"/${addSlash(name)}.app/Contents/MacOS/${addSlash(engineInfo.execFile)})
 if [ -n "$pgrepResult" ]; then
   exit
 fi
@@ -421,16 +346,17 @@ open -n "$PWD"/${addSlash(name)}.app --args --no-sandbox --test-type --app="${ur
           }
         })
         .then(() => {
+          const browserPath = getEngineAppPath(engine, homePath);
+
           // for Firefox
           // duplicate the whole app
           if (browserId === 'firefox') {
-            const browserPath = path.join('/Applications', browserConstants[browserId].appDir);
             const clonedBrowserPath = path.join(resourcesPath, `${name}.app`);
             return fsExtra.copy(browserPath, clonedBrowserPath)
               // create Firefox profile for the app
               .then(() => {
                 // https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options
-                const execPath = path.join('/Applications', browserConstants[browserId].appDir, 'Contents', 'MacOS', 'firefox');
+                const execPath = path.join(browserPath, 'Contents', 'MacOS', 'firefox');
                 return execAsync(`"${execPath}" -CreateProfile ${firefoxProfileId}`);
               })
               // enable flag for ssb (site-specific-browser) (Firefox experimental feature)
@@ -449,7 +375,6 @@ open -n "$PWD"/${addSlash(name)}.app --args --no-sandbox --test-type --app="${ur
           // init cloned Chromium app
           const clonedBrowserPath = path.join(resourcesPath, `${name}.app`);
           const clonedBrowserContentsPath = path.join(clonedBrowserPath, 'Contents');
-          const browserPath = path.join('/Applications', browserConstants[browserId].appDir);
           const browserContentsPath = path.join(browserPath, 'Contents');
 
           const p = [];
