@@ -10,6 +10,9 @@ const {
   protocol,
 } = require('electron');
 const fs = require('fs');
+const electronRemote = require('@electron/remote/main');
+
+electronRemote.initialize();
 
 const settings = require('electron-settings');
 
