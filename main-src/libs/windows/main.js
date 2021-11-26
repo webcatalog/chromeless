@@ -13,6 +13,7 @@ const path = require('path');
 const windowStateKeeper = require('electron-window-state');
 const { menubar } = require('menubar');
 const contextMenu = require('electron-context-menu');
+const electronRemote = require('@electron/remote/main');
 
 const sendToAllWindows = require('../send-to-all-windows');
 const { getPreference } = require('../preferences');
@@ -184,6 +185,7 @@ const createAsync = () => new Promise((resolve) => {
     },
   };
   win = new BrowserWindow(winOpts);
+  electronRemote.enable(win.webContents);
 
   mainWindowState.manage(win);
 

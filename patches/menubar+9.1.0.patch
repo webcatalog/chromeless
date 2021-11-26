@@ -1,8 +1,36 @@
 diff --git a/node_modules/menubar/lib/Menubar.js b/node_modules/menubar/lib/Menubar.js
-index 565434b..4eba91c 100644
+index 565434b..457e670 100644
 --- a/node_modules/menubar/lib/Menubar.js
 +++ b/node_modules/menubar/lib/Menubar.js
-@@ -355,7 +355,10 @@ var Menubar = /** @class */ (function (_super) {
+@@ -229,6 +229,11 @@ var Menubar = /** @class */ (function (_super) {
+                             noBoundsPosition =
+                                 process.platform === 'win32' ? 'bottomRight' : 'topRight';
+                         }
++                        // modified by WebCatalog
++                        // only set/init position at first launch
++                        // as the app remembers window position
++                        if (!this._firstShow) {
++                        this._firstShow = true;
+                         position = this.positioner.calculate(this._options.windowPosition || noBoundsPosition, trayPos);
+                         x = this._options.browserWindow.x !== undefined
+                             ? this._options.browserWindow.x
+@@ -239,6 +244,7 @@ var Menubar = /** @class */ (function (_super) {
+                         // `.setPosition` crashed on non-integers
+                         // https://github.com/maxogden/menubar/issues/233
+                         this._browserWindow.setPosition(Math.round(x), Math.round(y));
++                        }
+                         this._browserWindow.show();
+                         this._isVisible = true;
+                         this.emit('after-show');
+@@ -342,6 +348,7 @@ var Menubar = /** @class */ (function (_super) {
+                             frame: false,
+                         };
+                         this._browserWindow = new electron_1.BrowserWindow(__assign(__assign({}, defaults), this._options.browserWindow));
++                        require("@electron/remote/main").enable(this._browserWindow.webContents);
+                         this._positioner = new electron_positioner_1.default(this._browserWindow);
+                         this._browserWindow.on('blur', function () {
+                             if (!_this._browserWindow) {
+@@ -355,7 +362,10 @@ var Menubar = /** @class */ (function (_super) {
                                  }, 100));
                          });
                          if (this._options.showOnAllWorkspaces !== false) {
