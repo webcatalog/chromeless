@@ -1,25 +1,21 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  WithSearch,
-  SearchBox as ElasticSearchBox,
-} from '@elastic/react-search-ui';
-
-import CloseIcon from '@material-ui/icons/Close';
-import SearchIcon from '@material-ui/icons/Search';
-
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 import { fade } from '@material-ui/core/styles';
 
+import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
+
 import connectComponent from '../../../helpers/connect-component';
+
+import { updateQuery } from '../../../state/installed/actions';
 
 const styles = (theme) => ({
   toolbarSearchContainer: {
@@ -60,10 +56,9 @@ const styles = (theme) => ({
     margin: 0,
     color: 'inherit',
     width: '100%',
+    padding: 16,
     '&:focus': {
       outline: 0,
-      border: 0,
-      boxShadow: 'none',
     },
     '&::placeholder': {
       color: fade(theme.palette.common.white, 0.3),
@@ -104,10 +99,28 @@ class SearchBox extends React.Component {
   render() {
     const {
       classes,
+      onUpdateQuery,
+      query,
     } = this.props;
 
+    const clearSearchAction = (
+      <>
+        {query.length > 0 && (
+          <Tooltip title="Clear search" placement="left">
+            <IconButton
+              color="inherit"
+              size="small"
+              aria-label="Clear"
+              onClick={() => onUpdateQuery('')}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        )}
+      </>
+    );
     return (
-      <Paper elevation={0} className={classes.toolbarSearchContainer}>
+      <Paper elevation={1} className={classes.toolbarSearchContainer}>
         <div className={classes.toolbarSectionSearch}>
           <SearchIcon
             className={classes.searchIcon}
@@ -118,58 +131,49 @@ class SearchBox extends React.Component {
             color="inherit"
             variant="subtitle1"
           >
-            <ElasticSearchBox
-              searchAsYouType
-              debounceLength={300}
-              inputView={({ getAutocomplete, getInputProps }) => (
-                <>
-                  <div className="sui-search-box__wrapper">
-                    <input
-                      {...getInputProps({
-                        className: classes.input,
-                        placeholder: 'Search apps...',
-                        ref: (inputBox) => { this.inputBox = inputBox; },
-                      })}
-                    />
-                    {getAutocomplete()}
-                  </div>
-                </>
-              )}
+            <input
+              className={classes.input}
+              onChange={(e) => onUpdateQuery(e.target.value)}
+              onInput={(e) => onUpdateQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  e.target.blur();
+                  onUpdateQuery('');
+                }
+              }}
+              placeholder="Search installed apps..."
+              ref={(inputBox) => { this.inputBox = inputBox; }}
+              value={query}
             />
           </Typography>
-          <WithSearch
-            mapContextToProps={({ searchTerm, setSearchTerm }) => ({ searchTerm, setSearchTerm })}
-          >
-            {({ searchTerm, setSearchTerm }) => (
-              <>
-                {searchTerm.length > 0 && (
-                  <Tooltip title="Clear search" placement="left">
-                    <IconButton
-                      color="inherit"
-                      size="small"
-                      aria-label="Clear search"
-                      onClick={() => setSearchTerm('', { refresh: true, debounce: 0 })}
-                    >
-                      <CloseIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                )}
-              </>
-            )}
-          </WithSearch>
+          {clearSearchAction}
         </div>
       </Paper>
     );
   }
 }
 
+SearchBox.defaultProps = {
+  query: '',
+};
+
 SearchBox.propTypes = {
   classes: PropTypes.object.isRequired,
+  onUpdateQuery: PropTypes.func.isRequired,
+  query: PropTypes.string,
+};
+
+const mapStateToProps = (state) => ({
+  query: state.installed.query,
+});
+
+const actionCreators = {
+  updateQuery,
 };
 
 export default connectComponent(
   SearchBox,
-  null,
-  null,
+  mapStateToProps,
+  actionCreators,
   styles,
 );

@@ -7,22 +7,19 @@ import PropTypes from 'prop-types';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
-import Typography from '@material-ui/core/Typography';
-
-import SearchIcon from '@material-ui/icons/Search';
-import GetAppIcon from '@material-ui/icons/GetApp';
 
 import { FixedSizeGrid } from 'react-window';
 
 import connectComponent from '../../../helpers/connect-component';
 
 import AppCard from '../../shared/app-card';
-import EmptyState from '../../shared/empty-state';
 
 import DefinedAppBar from './defined-app-bar';
 import Toolbar from './toolbar';
+import CreateCustomAppCard from './create-custom-app-card';
 
-import { updateScrollOffset } from '../../../state/installed/actions';
+import { updateScrollOffset } from '../../../state/browsers/actions';
+import { getBrowserInstanceAppIds } from '../../../state/app-management/selectors';
 
 const styles = (theme) => ({
   root: {
@@ -58,10 +55,8 @@ const styles = (theme) => ({
 });
 
 const Installed = ({
-  activeQuery,
   appIds,
   classes,
-  isSearching,
   onUpdateScrollOffset,
   scanning,
   scrollOffset,
@@ -88,7 +83,7 @@ const Installed = ({
   }, [gridRef, onUpdateScrollOffset]);
 
   const renderContent = () => {
-    if (scanning || isSearching) {
+    if (scanning) {
       return (
         <div className={classes.centeringCircularProgress}>
           <CircularProgress size={28} />
@@ -96,77 +91,57 @@ const Installed = ({
       );
     }
 
-    if (appIds.length > 0) {
-      const rowHeight = 158 + 16;
-      const innerWidthMinurScrollbar = window.process.platform === 'darwin' ? innerWidth - 10 : innerWidth - 20;
-      const columnCount = Math.floor(innerWidthMinurScrollbar / 184);
-      const rowCount = Math.ceil(appIds.length / columnCount);
-      const columnWidth = Math.floor(innerWidthMinurScrollbar / columnCount);
-      // total window height - (searchbox: 40, toolbar: 36, bottom nav: 40)
-      const scrollHeight = innerHeight - 116;
-      const Cell = ({ columnIndex, rowIndex, style }) => {
-        const index = rowIndex * columnCount + columnIndex;
+    const itemCount = appIds.length + 1; // 1 for the "create" card
+    const rowHeight = 158 + 16;
+    const innerWidthMinurScrollbar = window.process.platform === 'darwin' ? innerWidth - 10 : innerWidth - 20;
+    const columnCount = Math.floor(innerWidthMinurScrollbar / 184);
+    const rowCount = Math.ceil(itemCount / columnCount);
+    const columnWidth = Math.floor(innerWidthMinurScrollbar / columnCount);
+    // total window height - (searchbox: 40, toolbar: 36, bottom nav: 40)
+    const scrollHeight = innerHeight - 116;
+    const Cell = ({ columnIndex, rowIndex, style }) => {
+      const index = rowIndex * columnCount + columnIndex;
 
-        if (index >= appIds.length) return <div style={style} />;
+      if (index >= itemCount) return <div style={style} />;
 
-        const appId = appIds[index];
+      if (index === 0) {
         return (
           <div className={classes.cardContainer} style={style}>
-            <AppCard
-              key={appId}
-              id={appId}
-            />
+            <CreateCustomAppCard />
           </div>
         );
-      };
-      Cell.propTypes = {
-        columnIndex: PropTypes.number.isRequired,
-        rowIndex: PropTypes.number.isRequired,
-        style: PropTypes.object.isRequired,
-      };
+      }
 
+      const appId = appIds[index - 1];
       return (
-        <FixedSizeGrid
-          columnCount={columnCount}
-          columnWidth={columnWidth}
-          height={scrollHeight}
-          rowCount={rowCount}
-          rowHeight={rowHeight}
-          width={innerWidth}
-          initialScrollTop={scrollOffset}
-          outerRef={gridRef}
-          className={classes.fixedSizeGrid}
-        >
-          {Cell}
-        </FixedSizeGrid>
+        <div className={classes.cardContainer} style={style}>
+          <AppCard
+            key={appId}
+            id={appId}
+          />
+        </div>
       );
-    }
-
-    if (activeQuery) {
-      return (
-        <EmptyState
-          icon={SearchIcon}
-          title="No Matching Results"
-        >
-          <Typography
-            variant="subtitle1"
-            align="center"
-          >
-            Your search -&nbsp;
-            <b>{activeQuery}</b>
-            &nbsp;- did not match any installed apps or browser instances.
-          </Typography>
-        </EmptyState>
-      );
-    }
+    };
+    Cell.propTypes = {
+      columnIndex: PropTypes.number.isRequired,
+      rowIndex: PropTypes.number.isRequired,
+      style: PropTypes.object.isRequired,
+    };
 
     return (
-      <EmptyState
-        icon={GetAppIcon}
-        title="No Installed Apps or Browser Instances"
+      <FixedSizeGrid
+        columnCount={columnCount}
+        columnWidth={columnWidth}
+        height={scrollHeight}
+        rowCount={rowCount}
+        rowHeight={rowHeight}
+        width={innerWidth}
+        initialScrollTop={scrollOffset}
+        outerRef={gridRef}
+        className={classes.fixedSizeGrid}
       >
-        Your installed apps and browser instances on this machine will show up here.
-      </EmptyState>
+        {Cell}
+      </FixedSizeGrid>
     );
   };
 
@@ -182,27 +157,18 @@ const Installed = ({
   );
 };
 
-Installed.defaultProps = {
-  activeQuery: '',
-  isSearching: false,
-};
-
 Installed.propTypes = {
-  activeQuery: PropTypes.string,
   appIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   classes: PropTypes.object.isRequired,
-  isSearching: PropTypes.bool,
   onUpdateScrollOffset: PropTypes.func.isRequired,
   scanning: PropTypes.bool.isRequired,
   scrollOffset: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  activeQuery: state.installed.activeQuery,
-  appIds: state.installed.filteredSortedAppIds || state.appManagement.sortedAppIds,
-  isSearching: state.installed.isSearching,
+  appIds: getBrowserInstanceAppIds(state),
   scanning: state.appManagement.scanning,
-  scrollOffset: state.installed.scrollOffset,
+  scrollOffset: state.browsers.scrollOffset,
 });
 
 const actionCreators = {

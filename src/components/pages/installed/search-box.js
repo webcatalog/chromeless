@@ -37,7 +37,6 @@ const styles = (theme) => ({
     margin: '0 auto',
   },
   searchBarText: {
-    lineHeight: 1.5,
     padding: '0 4px',
     flex: 1,
     userSelect: 'none',
@@ -142,7 +141,7 @@ class SearchBox extends React.Component {
                   onUpdateQuery('');
                 }
               }}
-              placeholder="Search installed apps..."
+              placeholder="Search installed apps and browser instances..."
               ref={(inputBox) => { this.inputBox = inputBox; }}
               value={query}
             />

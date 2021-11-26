@@ -12,6 +12,7 @@ import SnackbarTrigger from './root/snackbar-trigger';
 import Installed from './pages/installed';
 import Home from './pages/home';
 import Preferences from './pages/preferences';
+import Browsers from './pages/browsers';
 
 import DialogAbout from './dialogs/dialog-about';
 import DialogChooseEngine from './dialogs/dialog-choose-engine';
@@ -24,6 +25,7 @@ import DialogSetPreferredEngine from './dialogs/dialog-set-preferred-engine';
 import {
   ROUTE_PREFERENCES,
   ROUTE_INSTALLED,
+  ROUTE_BROWSERS,
 } from '../constants/routes';
 import {
   requestGetInstalledApps,
@@ -81,6 +83,9 @@ class App extends React.Component {
         break;
       case ROUTE_INSTALLED:
         pageContent = <Installed key="installed" />;
+        break;
+      case ROUTE_BROWSERS:
+        pageContent = <Browsers key="browsers" />;
         break;
       default:
         pageContent = <Home key="home" />;

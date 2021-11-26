@@ -4,11 +4,6 @@
 /* eslint-disable no-constant-condition */
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
-
-import Button from '@material-ui/core/Button';
-
-import AddIcon from '@material-ui/icons/Add';
 
 import connectComponent from '../../../helpers/connect-component';
 
@@ -39,24 +34,11 @@ const styles = (theme) => ({
 
 const DefinedAppBar = ({
   classes,
-  onOpenDialogCreateCustomApp,
 }) => (
   <EnhancedAppBar
     center={(
       <div className={classes.centerContainer}>
         <SearchBox />
-        <div>
-          <Button
-            variant="text"
-            color="inherit"
-            className={classnames(classes.noDrag, classes.addButton)}
-            startIcon={<AddIcon fontSize="small" />}
-            onClick={() => onOpenDialogCreateCustomApp()}
-            size="small"
-          >
-            Create Custom App
-          </Button>
-        </div>
       </div>
     )}
   />
@@ -64,7 +46,6 @@ const DefinedAppBar = ({
 
 DefinedAppBar.propTypes = {
   classes: PropTypes.object.isRequired,
-  onOpenDialogCreateCustomApp: PropTypes.func.isRequired,
 };
 
 const actionCreators = {

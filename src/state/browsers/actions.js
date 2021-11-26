@@ -1,7 +1,12 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-export const ROUTE_INSTALLED = 'ROUTE_INSTALLED';
-export const ROUTE_HOME = 'ROUTE_HOME';
-export const ROUTE_PREFERENCES = 'ROUTE_PREFERENCES';
-export const ROUTE_BROWSERS = 'ROUTE_BROWSERS';
+
+import {
+  BROWSERS_UPDATE_SCROLL_OFFSET,
+} from '../../constants/actions';
+
+export const updateScrollOffset = (scrollOffset) => ({
+  type: BROWSERS_UPDATE_SCROLL_OFFSET,
+  scrollOffset,
+});

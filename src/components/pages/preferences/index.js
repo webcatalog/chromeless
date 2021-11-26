@@ -17,7 +17,6 @@ import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
 
-import PaletteIcon from '@material-ui/icons/Palette';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import PowerIcon from '@material-ui/icons/Power';
@@ -197,11 +196,6 @@ const Preferences = ({
       Icon: WidgetsIcon,
       ref: useRef(),
     },
-    appearance: {
-      text: 'Appearance',
-      Icon: PaletteIcon,
-      ref: useRef(),
-    },
     privacy: {
       text: 'Privacy & Security',
       Icon: SecurityIcon,
@@ -268,6 +262,25 @@ const Preferences = ({
           <Paper elevation={0} className={classes.paper}>
             <List disablePadding dense>
               <ListItem>
+                <ListItemText primary="Theme" />
+                <Select
+                  value={themeSource}
+                  onChange={(e) => requestSetPreference('themeSource', e.target.value)}
+                  variant="filled"
+                  disableUnderline
+                  margin="dense"
+                  classes={{
+                    root: classes.select,
+                  }}
+                  className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
+                >
+                  <MenuItem dense value="system">System default</MenuItem>
+                  <MenuItem dense value="light">Light</MenuItem>
+                  <MenuItem dense value="dark">Dark</MenuItem>
+                </Select>
+              </ListItem>
+              <Divider />
+              <ListItem>
                 <ListItemText
                   primary={window.process.platform === 'darwin' ? 'Attach to menu bar' : 'Pin to system tray (notification area)'}
                   secondary="Tip: Right-click on app icon to access context menu."
@@ -305,23 +318,25 @@ const Preferences = ({
               <Divider />
               <ListItem>
                 <ListItemText
-                  primary="Show installed apps at launch"
+                  primary="Startup page"
+                  secondary="Startup page is the one that shows when you launch the app."
                 />
-                <ListItemSecondaryAction>
-                  <Switch
-                    edge="end"
-                    color="primary"
-                    checked={attachToMenubar || defaultHome === 'installed'}
-                    disabled={attachToMenubar}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        requestSetPreference('defaultHome', 'installed');
-                      } else {
-                        requestSetPreference('defaultHome', 'home');
-                      }
-                    }}
-                  />
-                </ListItemSecondaryAction>
+                <Select
+                  value={defaultHome}
+                  onChange={(e) => requestSetPreference('defaultHome', e.target.value)}
+                  variant="filled"
+                  disableUnderline
+                  margin="dense"
+                  classes={{
+                    root: classes.select,
+                  }}
+                  className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
+                >
+                  <MenuItem dense value="home">Catalog</MenuItem>
+                  <MenuItem dense value="browsers">Browsers</MenuItem>
+                  <MenuItem dense value="installed">Installed</MenuItem>
+                  <MenuItem dense value="preferences">Preferences</MenuItem>
+                </Select>
               </ListItem>
               <Divider />
               <ListItem>
@@ -340,32 +355,6 @@ const Preferences = ({
                   <MenuItem dense value="yes">Yes</MenuItem>
                   <MenuItem dense value="yes-hidden">Yes, but minimized</MenuItem>
                   <MenuItem dense value="no">No</MenuItem>
-                </Select>
-              </ListItem>
-            </List>
-          </Paper>
-
-          <Typography variant="subtitle2" color="textPrimary" className={classes.sectionTitle} ref={sections.appearance.ref}>
-            Appearance
-          </Typography>
-          <Paper elevation={0} className={classes.paper}>
-            <List disablePadding dense>
-              <ListItem>
-                <ListItemText primary="Theme" />
-                <Select
-                  value={themeSource}
-                  onChange={(e) => requestSetPreference('themeSource', e.target.value)}
-                  variant="filled"
-                  disableUnderline
-                  margin="dense"
-                  classes={{
-                    root: classes.select,
-                  }}
-                  className={classnames(classes.selectRoot, classes.selectRootExtraMargin)}
-                >
-                  <MenuItem dense value="system">System default</MenuItem>
-                  <MenuItem dense value="light">Light</MenuItem>
-                  <MenuItem dense value="dark">Dark</MenuItem>
                 </Select>
               </ListItem>
             </List>

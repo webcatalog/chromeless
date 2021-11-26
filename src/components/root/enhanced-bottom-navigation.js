@@ -9,6 +9,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import HomeIcon from '@material-ui/icons/Home';
 import SystemUpdateIcon from '@material-ui/icons/SystemUpdate';
 import SettingsIcon from '@material-ui/icons/Settings';
+import PublicIcon from '@material-ui/icons/Public';
 import Badge from '@material-ui/core/Badge';
 
 import connectComponent from '../../helpers/connect-component';
@@ -17,6 +18,7 @@ import { changeRoute } from '../../state/router/actions';
 import { getAppBadgeCount } from '../../state/app-management/utils';
 
 import {
+  ROUTE_BROWSERS,
   ROUTE_HOME,
   ROUTE_INSTALLED,
   ROUTE_PREFERENCES,
@@ -60,7 +62,16 @@ const EnhancedBottomNavigation = ({
         }}
       />
       <BottomNavigationAction
-        label="Updates"
+        label="Browsers"
+        icon={<PublicIcon />}
+        value={ROUTE_BROWSERS}
+        classes={{
+          wrapper: classes.bottomNavigationActionWrapper,
+          label: classes.bottomNavigationActionLabel,
+        }}
+      />
+      <BottomNavigationAction
+        label="Installed"
         icon={appBadgeCount > 0 ? (
           <Badge color="secondary" badgeContent={appBadgeCount}>
             <SystemUpdateIcon />
