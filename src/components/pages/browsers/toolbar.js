@@ -24,7 +24,7 @@ const Toolbar = ({
 }) => (
   <div className={classes.root}>
     <Typography variant="body2" color="textSecondary" noWrap>
-      Browser instances behave like normal browsers
+      Browser instances behave just like normal browsers
       but with isolation and but with independent and isolated cookies and storage.
     </Typography>
   </div>
