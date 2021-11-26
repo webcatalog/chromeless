@@ -24,8 +24,8 @@ import NoConnection from '../../shared/no-connection';
 
 import DefinedAppBar from './defined-app-bar';
 import SecondaryToolbar from './toolbar';
-import CreateCustomAppCard from './create-custom-app-card';
 
+import CreateCustomAppCard from '../../shared/create-custom-app-card';
 import AppCard from '../../shared/app-card';
 
 const connector = process.env.REACT_APP_ELASTIC_CLOUD_APP_SEARCH_SEARCH_KEY
@@ -100,7 +100,7 @@ const Home = ({
           return next(updatedState, queryConfig);
         },
         initialState: {
-          resultsPerPage: 60,
+          resultsPerPage: 83,
           sortField: '',
           sortDirection: '',
           filters: [
@@ -197,6 +197,7 @@ const Home = ({
 
                   return (
                     <>
+                      <CreateCustomAppCard />
                       {results.map((app) => (
                         <AppCard
                           key={app.id.raw}

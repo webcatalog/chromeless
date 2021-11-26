@@ -9,26 +9,11 @@ import connectComponent from '../../../helpers/connect-component';
 
 import { open as openDialogCreateCustomApp } from '../../../state/dialog-create-custom-app/actions';
 
-import SearchBox from './search-box';
-
 import EnhancedAppBar from '../../shared/enhanced-app-bar';
 
-const styles = (theme) => ({
-  addButton: {
-    marginLeft: theme.spacing(1),
-    height: 28,
-    lineHeight: '28px',
-  },
-  helpButton: {
-    marginLeft: theme.spacing(1),
-  },
-  noDrag: {
-    WebkitAppRegion: 'no-drag',
-  },
+const styles = () => ({
   centerContainer: {
-    display: 'flex',
-    maxWidth: 480,
-    margin: '0 auto',
+    textAlign: 'center',
   },
 });
 
@@ -38,7 +23,7 @@ const DefinedAppBar = ({
   <EnhancedAppBar
     center={(
       <div className={classes.centerContainer}>
-        <SearchBox />
+        Browser Instances
       </div>
     )}
   />

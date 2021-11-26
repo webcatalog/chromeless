@@ -9,11 +9,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
@@ -96,7 +92,7 @@ const DialogCreateCustomApp = (props) => {
       open={open}
     >
       <EnhancedDialogTitle onClose={onClose}>
-        Create Custom App
+        {urlDisabled ? 'Add Browser Instance' : 'Create Custom App'}
       </EnhancedDialogTitle>
       <DialogContent>
         <TextField
@@ -110,20 +106,6 @@ const DialogCreateCustomApp = (props) => {
           error={Boolean(nameError)}
           variant="outlined"
         />
-        <FormControl variant="outlined" fullWidth margin="normal">
-          <InputLabel id="input-type-label">Tied to</InputLabel>
-          <Select
-            id="input-type"
-            labelId="input-type-label"
-            value={urlDisabled}
-            onChange={(event) => onUpdateForm({ urlDisabled: event.target.value })}
-            label="Type"
-            margin="dense"
-          >
-            <MenuItem value={false}>Single Website</MenuItem>
-            <MenuItem value>Multiple Websites</MenuItem>
-          </Select>
-        </FormControl>
         {!urlDisabled && (
           <TextField
             fullWidth

@@ -7,11 +7,11 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import BrushIcon from '@material-ui/icons/Brush';
+import AddIcon from '@material-ui/icons/Add';
 
-import connectComponent from '../../../helpers/connect-component';
+import connectComponent from '../../helpers/connect-component';
 
-import { open as openDialogCreateCustomApp } from '../../../state/dialog-create-custom-app/actions';
+import { open as openDialogCreateCustomApp } from '../../state/dialog-create-custom-app/actions';
 
 const styles = (theme) => ({
   card: {
@@ -49,26 +49,31 @@ const styles = (theme) => ({
   },
 });
 
-const CreateCustomAppCard = ({ classes, onOpenDialogCreateCustomApp }) => (
+const CreateCustomAppCard = ({ classes, onOpenDialogCreateCustomApp, urlDisabled }) => (
   <Grid item>
     <Paper
       className={classes.card}
       elevation={0}
       role="link"
       tabIndex="0"
-      onClick={() => onOpenDialogCreateCustomApp()}
+      onClick={() => onOpenDialogCreateCustomApp({ urlDisabled })}
     >
-      <BrushIcon className={classes.icon} />
+      <AddIcon className={classes.icon} />
       <Typography variant="subtitle2" className={classes.desc}>
-        Create Custom App
+        {urlDisabled ? 'Add Browser Instance' : 'Create Custom App'}
       </Typography>
     </Paper>
   </Grid>
 );
 
+CreateCustomAppCard.defaultProps = {
+  urlDisabled: false,
+};
+
 CreateCustomAppCard.propTypes = {
   classes: PropTypes.object.isRequired,
   onOpenDialogCreateCustomApp: PropTypes.func.isRequired,
+  urlDisabled: PropTypes.bool,
 };
 
 const actionCreators = {
