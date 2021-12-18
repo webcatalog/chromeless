@@ -13,7 +13,9 @@ browser.webRequest.onBeforeSendHeaders.addListener((details) => {
 
   for (let i = 0, l = requestHeaders.length; i < l; i += 1) {
     if (requestHeaders[i].name === 'User-Agent') {
-      requestHeaders[i].value = `${requestHeaders[i].value} Edge/18.18875`;
+      // remove Chrome version from user-agent string
+      // allowing the app to work with Google login page
+      requestHeaders[i].value = requestHeaders[i].value.replace(/Chrome\/[\d.]+/, 'Chrome');
       break;
     }
   }
