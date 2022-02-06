@@ -12,6 +12,7 @@ const { getPreferences } = require('../../preferences');
 const sendToAllWindows = require('../../send-to-all-windows');
 const getEngineInfo = require('./get-engine-info');
 const getEngineAppPath = require('./get-engine-app-path');
+const packageJson = require('../../../../package.json');
 
 const prepareWebkitWrapperAsync = require('../prepare-webkit-wrapper-async');
 
@@ -60,7 +61,7 @@ const installAppAsync = (
 
       // use v2 script on Mac
       scriptFileName = 'install-app-forked-lite-v2.js';
-      v = '2.13.0';
+      v = packageJson.scriptVersion;
 
       return null;
     })

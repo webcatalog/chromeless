@@ -3,6 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import semver from 'semver';
 import { INSTALLING, INSTALLED } from '../../constants/app-statuses';
+import { scriptVersion } from '../../../package.json';
 
 export const isInstalledApp = (id, state) => {
   const { apps } = state.appManagement;
@@ -31,7 +32,7 @@ export const isOutdatedApp = (id, state) => {
   // app is Chromium/Firefox-based
   // check if app is installed with the latest version of forked-script-v2.js
   if (window.process.platform === 'darwin') {
-    return semver.lt(v, '2.13.0');
+    return semver.lt(v, scriptVersion);
   }
   // check if app is installed with the latest version of forked-script-v1.js
   return semver.lt(v, '1.8.0');

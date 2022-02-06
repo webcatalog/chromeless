@@ -207,7 +207,7 @@ const AppCard = (props) => {
         visible: Boolean(engine && version),
       },
       {
-        label: `Powered by ${engineName} (implementation ${version})`,
+        label: `Powered by ${engineName} (script v${version})`,
         enabled: false,
         visible: Boolean(engine && version),
       },
@@ -332,7 +332,7 @@ const AppCard = (props) => {
           {renderActionsElement()}
         </div>
         {engineIcon && (
-          <Tooltip title={`Powered by ${engineName}${version ? ` (implementation ${version})` : ''}`}>
+          <Tooltip title={`Powered by ${engineName}${version ? ` (script v${version})` : ''}`}>
             <img src={engineIcon} alt={engineName} className={classes.topLeft} />
           </Tooltip>
         )}

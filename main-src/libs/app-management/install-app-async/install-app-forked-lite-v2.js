@@ -28,6 +28,7 @@ const execAsync = require('../../exec-async');
 const downloadAsync = require('../../download-async');
 const getEngineInfo = require('./get-engine-info');
 const getEngineAppPath = require('./get-engine-app-path');
+const packageJson = require('../../../../package.json');
 
 // id, name, username might only contain numbers
 // causing yargsParser to parse them correctly as Number instead of String
@@ -445,10 +446,10 @@ open -n "$PWD"/${addSlash(name)}.app --args --no-sandbox --test-type --app="${ur
     return Promise.reject(new Error('Unsupported platform'));
   })
   .then(() => {
-    const packageJson = JSON.stringify({
-      version: '2.13.0',
+    const packageJsonContent = JSON.stringify({
+      version: packageJson.scriptVersion,
     });
-    return fsExtra.writeFileSync(packageJsonPath, packageJson);
+    return fsExtra.writeFileSync(packageJsonPath, packageJsonContent);
   })
   .then(() => {
     const appJson = JSON.stringify({
