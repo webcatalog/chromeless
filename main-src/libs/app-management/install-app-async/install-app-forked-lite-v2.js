@@ -262,7 +262,7 @@ if [ $numProc -ge 2 ]
   exit;
 fi
 pgrepResult=$(pgrep -f "$PWD"/${addSlash(name)}.app/Contents/MacOS/${addSlash(engineInfo.execFile)})
-if [ -n "$pgrepResult" ]; then
+if [ -n "$pgrepResult" -a $# -eq 0 ]; then
   exit
 fi
 
@@ -273,7 +273,7 @@ else
   Tabs="${url || ''}"
 fi
 
-open -n "$PWD"/${addSlash(name)}.app --args $Tabs --no-sandbox --test-type --user-data-dir="$HOME"/Library/Application\\ Support/Chromeless/ChromiumProfiles/${id} --load-extension="$PWD"/chromeless-helper
+open -n "$PWD"/${addSlash(name)}.app --args $Tabs --no-sandbox --test-type --user-data-dir="$HOME"/Library/Application\\ Support/Chromeless/ChromiumProfiles/${id} --load-extension="$PWD"/chromeless-helper "$@"
 `;
           } else {
             execFileContent = `#!/bin/sh
@@ -286,7 +286,7 @@ cp -rf ~/Library/Application\\ Support/${addSlash(engineInfo.userDataDir)}/Nativ
 
 pgrepResult=$(pgrep -f "$DIR/${addSlash(name)}.app")
 numProc=$(echo "$pgrepResult" | wc -l)
-if [ $numProc -ge 2 ]
+if [ $numProc -ge 2 -a $# -eq 0 ]
   then
   exit;
 fi
@@ -295,7 +295,7 @@ if [ -n "$pgrepResult" ]; then
   exit
 fi
 
-open -n "$PWD"/${addSlash(name)}.app --args --no-sandbox --test-type --app="${url}" --user-data-dir="$HOME"/Library/Application\\ Support/Chromeless/ChromiumProfiles/${id} --load-extension="$PWD"/chromeless-helper
+open -n "$PWD"/${addSlash(name)}.app --args --no-sandbox --test-type --app="${url}" --user-data-dir="$HOME"/Library/Application\\ Support/Chromeless/ChromiumProfiles/${id} --load-extension="$PWD"/chromeless-helper "$@"
 `;
           }
           return fsExtra.outputFile(execFilePath, execFileContent)
