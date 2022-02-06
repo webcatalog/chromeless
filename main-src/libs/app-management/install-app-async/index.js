@@ -72,9 +72,15 @@ const installAppAsync = (
         return;
       }
 
+      // the helper extension for apps has window management logic
+      // but that logic prevents user from opening new window in browser instances
+      // so we have a separate helper for browser instances without that logic
+      // https://github.com/webcatalog/chromeless/issues/88#issuecomment-1029733417
+      const helperDirName = url != null ? 'chromeless-helper' : 'chromeless-helper-browser-instances';
+
       const helperPath = process.env.NODE_ENV === 'production'
-        ? path.resolve(__dirname, 'chromeless-helper').replace('app.asar', 'app.asar.unpacked') // must use app.asar.unpacked because files copied from asar has wrong permission
-        : path.resolve(__dirname, '..', '..', '..', '..', 'public', 'chromeless-helper');
+        ? path.resolve(__dirname, helperDirName).replace('app.asar', 'app.asar.unpacked') // must use app.asar.unpacked because files copied from asar has wrong permission
+        : path.resolve(__dirname, '..', '..', '..', '..', 'public', helperDirName);
 
       const params = [
         '--engine',

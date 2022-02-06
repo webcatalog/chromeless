@@ -54,6 +54,7 @@ const opts = {
     asar: true,
     asarUnpack: [
       '**/build/chromeless-helper/**/*',
+      '**/build/chromeless-helper-browser-instances/**/*',
       'default-app-icons/**/*',
       '**/node_modules/regedit/**/*',
       '**/rcedit*.exe',

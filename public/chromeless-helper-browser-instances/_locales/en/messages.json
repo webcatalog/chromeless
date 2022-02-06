@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "Chromeless Helper (for browser instances)",
+    "description": "The title of the application, displayed in the web store."
+  },
+  "extDesc": {
+    "message": "Browser extension to control the behaviors of apps created with Chromeless app (https://chromeless.app).",
+    "description":"The description of the application, displayed in the web store."
+  }
+}
