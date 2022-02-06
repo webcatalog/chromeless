@@ -1,8 +1,8 @@
 {
   "name": "Chromeless",
   "description": "Turn Any Websites into Site-specific Browsers",
-  "version": "4.2.1",
-  "scriptVersion": "2.13.0",
+  "version": "4.3.0",
+  "scriptVersion": "2.14.0",
   "engines": {
     "node": ">=14.0.0 <15.0.0"
   },
