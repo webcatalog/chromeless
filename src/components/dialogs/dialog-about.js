@@ -86,13 +86,13 @@ const About = ({
         </Typography>
 
         <Button
-          onClick={() => requestOpenInBrowser('https://chromeless.app?utm_source=chromeless_app')}
+          onClick={() => requestOpenInBrowser('https://webcatalog.io/chromeless/?utm_source=chromeless_app')}
         >
           Website
         </Button>
 
         <Button
-          onClick={() => requestOpenInBrowser('https://chromeless.app/help?utm_source=chromeless_app')}
+          onClick={() => requestOpenInBrowser('https://webcatalog.io/chromeless/help/?utm_source=chromeless_app')}
         >
           Help
         </Button>

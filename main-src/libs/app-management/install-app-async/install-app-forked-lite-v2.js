@@ -179,7 +179,7 @@ Promise.resolve()
     // try to get fresh icon from catalog if possible
     if (!id.startsWith('custom-')) {
       // use unplated icon on Windows
-      const catalogIconUrl = `https://storage.webcatalog.app/catalog/${id}/${id}-icon.png`;
+      const catalogIconUrl = `https://cdn-1.webcatalog.io/catalog/${id}/${id}-icon.png`;
       return downloadAsync(catalogIconUrl, iconPngPath)
         .catch(() => fsExtra.copy(icon, iconPngPath)); // fallback if fails
     }
@@ -395,7 +395,7 @@ open -n "$PWD"/${addSlash(name)}.app --args --no-sandbox --test-type --app="${ur
                 // overwrite values
                 strings.CFBundleName = name;
                 strings.CFBundleDisplayName = name;
-                strings.CFBundleGetInfoString = 'The app is created with Chromeless (https://chromeless.app). Copyright © Google LLC. All rights reserved.';
+                strings.CFBundleGetInfoString = 'The app is created with Chromeless (https://webcatalog.io/chromeless/). Copyright © Google LLC. All rights reserved.';
 
                 const clonedStringsPath = path.join(clonedBrowserContentsPath, 'Resources', itemName, 'InfoPlist.strings');
                 fsExtra.ensureFileSync(clonedStringsPath);

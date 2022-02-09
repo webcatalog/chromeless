@@ -569,7 +569,7 @@ const Preferences = ({
             <List disablePadding dense>
               <ListItem
                 button
-                onClick={() => requestOpenInBrowser(`https://webcatalog.app?utm_source=${utmSource}`)}
+                onClick={() => requestOpenInBrowser(`https://webcatalog.io/webcatalog/?utm_source=${utmSource}`)}
                 className={classes.listItemPromotion}
               >
                 <div className={classes.promotionBlock}>
@@ -615,7 +615,7 @@ const Preferences = ({
               <Divider />
               <ListItem
                 button
-                onClick={() => requestOpenInBrowser(`https://switchbar.app?utm_source=${utmSource}`)}
+                onClick={() => requestOpenInBrowser(`https://webcatalog.io/switchbar/?utm_source=${utmSource}`)}
                 className={classes.listItemPromotion}
               >
                 <div className={classes.promotionBlock}>
@@ -638,7 +638,7 @@ const Preferences = ({
               <Divider />
               <ListItem
                 button
-                onClick={() => requestOpenInBrowser(`https://singlebox.app?utm_source=${utmSource}`)}
+                onClick={() => requestOpenInBrowser(`https://webcatalog.io/singlebox/?utm_source=${utmSource}`)}
                 className={classes.listItemPromotion}
               >
                 <div className={classes.promotionBlock}>
@@ -662,7 +662,7 @@ const Preferences = ({
               <ListItem
                 button
                 onClick={() => {
-                  const url = `https://clovery.app?utm_source=${utmSource}`;
+                  const url = `https://webcatalog.io/clovery/?utm_source=${utmSource}`;
                   requestOpenInBrowser(url);
                 }}
                 className={classes.listItemPromotion}
@@ -697,12 +697,12 @@ const Preferences = ({
                 <ChevronRightIcon color="action" />
               </ListItem>
               <Divider />
-              <ListItem button onClick={() => requestOpenInBrowser('https://chromeless.app?utm_source=chromeless_app')}>
+              <ListItem button onClick={() => requestOpenInBrowser('https://webcatalog.io/chromeless/?utm_source=chromeless_app')}>
                 <ListItemText primary="Website" />
                 <ChevronRightIcon color="action" />
               </ListItem>
               <Divider />
-              <ListItem button onClick={() => requestOpenInBrowser('https://chromeless.app/help?utm_source=chromeless_app')}>
+              <ListItem button onClick={() => requestOpenInBrowser('https://webcatalog.io/chromeless/help/?utm_source=chromeless_app')}>
                 <ListItemText primary="Help" />
                 <ChevronRightIcon color="action" />
               </ListItem>
