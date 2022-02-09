@@ -234,7 +234,7 @@ const loadListeners = () => {
               let displayedIcon;
               // display latest icon from WebCatalog
               if (!id.startsWith('custom-')) {
-                displayedIcon = `https://storage.webcatalog.app/catalog/${id}/${id}-icon-128.webp`;
+                displayedIcon = `https://cdn-1.webcatalog.io/catalog/${id}/${id}-icon-128.webp`;
               }
 
               send(e.sender, 'set-app', id, {

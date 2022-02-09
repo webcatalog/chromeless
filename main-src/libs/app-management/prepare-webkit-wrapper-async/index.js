@@ -33,10 +33,10 @@ const getTagNameAsync = () => Promise.resolve()
           let stableVersion;
           let prereleaseVersion;
           const p = [
-            customizedFetch('https://chromeless.app/webkit-wrapper/releases/latest.json')
+            customizedFetch('https://webcatalog.io/chromeless/webkit-wrapper/releases/latest.json')
               .then((res) => res.json())
               .then((data) => { stableVersion = data.version; }),
-            customizedFetch('https://chromeless.app/webkit-wrapper/releases/prerelease.json')
+            customizedFetch('https://webcatalog.io/chromeless/webkit-wrapper/releases/prerelease.json')
               .then((res) => res.json())
               .then((data) => { prereleaseVersion = data.version; }),
           ];
@@ -51,7 +51,7 @@ const getTagNameAsync = () => Promise.resolve()
         .then((version) => `v${version}`);
     }
 
-    return customizedFetch('https://chromeless.app/webkit-wrapper/releases/latest.json')
+    return customizedFetch('https://webcatalog.io/chromeless/webkit-wrapper/releases/latest.json')
       .then((res) => res.json())
       .then((data) => `v${data.version}`);
   });

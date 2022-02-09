@@ -4,7 +4,7 @@
   "version": "4.3.0",
   "scriptVersion": "2.14.0",
   "engines": {
-    "node": ">=14.0.0 <15.0.0"
+    "node": "16"
   },
   "main": "main-src/electron.js",
   "scripts": {

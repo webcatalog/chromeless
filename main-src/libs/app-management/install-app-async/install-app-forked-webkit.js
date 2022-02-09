@@ -119,7 +119,7 @@ Promise.resolve()
     // try to get fresh icon from catalog if possible
     if (!id.startsWith('custom-')) {
       // use unplated icon on Windows
-      const catalogIconUrl = `https://storage.webcatalog.app/catalog/${id}/${id}-icon.png`;
+      const catalogIconUrl = `https://cdn-1.webcatalog.io/catalog/${id}/${id}-icon.png`;
       return downloadAsync(catalogIconUrl, iconPngPath)
         .catch(() => fsExtra.copy(icon, iconPngPath)); // fallback if fails
     }

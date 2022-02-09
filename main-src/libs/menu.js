@@ -172,7 +172,7 @@ const createMenu = () => {
       submenu: [
         {
           label: 'Help',
-          click: () => shell.openExternal('https://chromeless.app/help?utm_source=chromeless_app'),
+          click: () => shell.openExternal('https://webcatalog.io/chromeless/help/?utm_source=chromeless_app'),
         },
         {
           label: 'Report a Bug via GitHub...',
@@ -184,7 +184,7 @@ const createMenu = () => {
         },
         {
           label: 'Learn More...',
-          click: () => shell.openExternal('https://chromeless.app?utm_source=chromeless_app'),
+          click: () => shell.openExternal('https://webcatalog.io/chromeless/?utm_source=chromeless_app'),
         },
         { type: 'separator' },
         {
