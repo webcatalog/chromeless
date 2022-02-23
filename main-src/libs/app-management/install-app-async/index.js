@@ -5,7 +5,6 @@
 const path = require('path');
 const { fork } = require('child_process');
 const { app } = require('electron');
-const { addBreadcrumb } = require('@sentry/electron');
 const envPaths = require('env-paths');
 
 const { getPreferences } = require('../../preferences');
@@ -119,18 +118,6 @@ const installAppAsync = (
         params.push('--browserPath');
         params.push(browserPath);
       }
-
-      addBreadcrumb({
-        category: 'run-forked-script',
-        message: 'install-app-async',
-        // avoid sending app name, app id to protect user privacy
-        data: {
-          engine,
-          cacheRoot,
-          installationPath,
-          requireAdmin,
-        },
-      });
 
       const scriptPath = path.join(__dirname, scriptFileName)
         .replace('app.asar', 'app.asar.unpacked');

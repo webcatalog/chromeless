@@ -4,11 +4,5 @@
 const { ipcRenderer } = require('electron');
 const remote = require('@electron/remote');
 
-// Activate the Sentry Electron SDK as early as possible in every process.
-if (process.env.NODE_ENV === 'production' && ipcRenderer.sendSync('get-preference', 'sentry')) {
-  // eslint-disable-next-line global-require
-  require('../sentry');
-}
-
 window.remote = remote;
 window.ipcRenderer = ipcRenderer;
