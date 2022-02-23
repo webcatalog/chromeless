@@ -4,7 +4,6 @@
 const path = require('path');
 const { fork } = require('child_process');
 const { app } = require('electron');
-const { addBreadcrumb } = require('@sentry/electron');
 
 const { getPreferences } = require('../../preferences');
 
@@ -16,14 +15,6 @@ const uninstallAppAsync = (id, name, engine) => new Promise((resolve, reject) =>
     installationPath,
     requireAdmin,
   } = getPreferences();
-
-  addBreadcrumb({
-    category: 'run-forked-script',
-    message: 'uninstall-app-async',
-    data: {
-      engine,
-    },
-  });
 
   const child = fork(scriptPath, [
     '--id',

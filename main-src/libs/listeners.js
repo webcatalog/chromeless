@@ -10,8 +10,6 @@ const {
 } = require('electron');
 const { autoUpdater } = require('electron-updater');
 
-const { captureException } = require('@sentry/electron');
-
 const sendToAllWindows = require('./send-to-all-windows');
 const getWebsiteIconUrlAsync = require('./get-website-icon-url-async');
 
@@ -144,7 +142,6 @@ const loadListeners = () => {
             if (error && error.message && (error.message.startsWith('EBUSY') || error.message === 'Application is in use.')) {
               send(e.sender, 'enqueue-snackbar', `Failed to uninstall ${name} as the application is in use.`, 'error');
             } else {
-              captureException(error);
               send(e.sender, 'enqueue-snackbar', `Failed to uninstall ${name}.`, 'error');
             }
             send(e.sender, 'set-app', id, {
@@ -198,7 +195,6 @@ const loadListeners = () => {
               } else if (error && error.message && error.message.startsWith('Chromeless is outdated')) {
                 send(e.sender, 'enqueue-snackbar', error.message, 'error');
               } else {
-                captureException(error);
                 send(e.sender, 'enqueue-snackbar', `Failed to install ${name}.`, 'error');
               }
               send(e.sender, 'remove-app', id);
@@ -256,7 +252,6 @@ const loadListeners = () => {
                 send(e.sender, 'enqueue-snackbar', error.message, 'error');
               } else {
                 send(e.sender, 'enqueue-snackbar', `Failed to update ${name}.`, 'error');
-                captureException(error);
               }
               send(e.sender, 'set-app', id, {
                 status: 'INSTALLED',

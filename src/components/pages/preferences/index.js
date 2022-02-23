@@ -21,7 +21,6 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import PowerIcon from '@material-ui/icons/Power';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
-import SecurityIcon from '@material-ui/icons/Security';
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 import WidgetsIcon from '@material-ui/icons/Widgets';
@@ -183,7 +182,6 @@ const Preferences = ({
   openAtLogin,
   preferredEngine,
   requireAdmin,
-  sentry,
   themeSource,
   updaterInfo,
   updaterStatus,
@@ -194,11 +192,6 @@ const Preferences = ({
     general: {
       text: 'General',
       Icon: WidgetsIcon,
-      ref: useRef(),
-    },
-    privacy: {
-      text: 'Privacy & Security',
-      Icon: SecurityIcon,
       ref: useRef(),
     },
     advanced: {
@@ -356,35 +349,6 @@ const Preferences = ({
                   <MenuItem dense value="yes-hidden">Yes, but minimized</MenuItem>
                   <MenuItem dense value="no">No</MenuItem>
                 </Select>
-              </ListItem>
-            </List>
-          </Paper>
-
-          <Typography variant="subtitle2" color="textPrimary" className={classes.sectionTitle} ref={sections.privacy.ref}>
-            Privacy &amp; Security
-          </Typography>
-          <Paper elevation={0} className={classes.paper}>
-            <List disablePadding dense>
-              <ListItem>
-                <ListItemText
-                  primary="Allow the app to send anonymous crash reports"
-                  secondary="Help us quickly diagnose and fix bugs in the app."
-                />
-                <ListItemSecondaryAction>
-                  <Switch
-                    edge="end"
-                    color="primary"
-                    checked={sentry}
-                    onChange={(e) => {
-                      requestSetPreference('sentry', e.target.checked);
-                    }}
-                  />
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Divider />
-              <ListItem button onClick={() => requestOpenInBrowser(`https://webcatalog.io/privacy/?utm_source=${utmSource}`)}>
-                <ListItemText primary="Privacy Policy" />
-                <ChevronRightIcon color="action" />
               </ListItem>
             </List>
           </Paper>
@@ -707,6 +671,11 @@ const Preferences = ({
                 <ChevronRightIcon color="action" />
               </ListItem>
               <Divider />
+              <ListItem button onClick={() => requestOpenInBrowser(`https://webcatalog.io/privacy/?utm_source=${utmSource}`)}>
+                <ListItemText primary="Privacy Policy" />
+                <ChevronRightIcon color="action" />
+              </ListItem>
+              <Divider />
               <ListItem button onClick={onOpenDialogOpenSourceNotices}>
                 <ListItemText primary="Open Source Notices" />
                 <ChevronRightIcon color="action" />
@@ -750,7 +719,6 @@ Preferences.propTypes = {
   openAtLogin: PropTypes.oneOf(['yes', 'yes-hidden', 'no']).isRequired,
   preferredEngine: PropTypes.string.isRequired,
   requireAdmin: PropTypes.bool.isRequired,
-  sentry: PropTypes.bool.isRequired,
   themeSource: PropTypes.string.isRequired,
   updaterInfo: PropTypes.object,
   updaterStatus: PropTypes.string,
@@ -768,7 +736,6 @@ const mapStateToProps = (state) => ({
   openAtLogin: state.systemPreferences.openAtLogin,
   preferredEngine: state.preferences.preferredEngine,
   requireAdmin: state.preferences.requireAdmin,
-  sentry: state.preferences.sentry,
   themeSource: state.preferences.themeSource,
   updaterInfo: state.updater.info,
   updaterStatus: state.updater.status,

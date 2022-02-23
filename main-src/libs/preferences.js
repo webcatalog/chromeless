@@ -26,7 +26,6 @@ const defaultPreferences = {
   installationPath: getDefaultInstallationPath(),
   preferredEngine: 'chrome',
   requireAdmin: false,
-  sentry: true,
   sortInstalledAppBy: 'last-updated',
   themeSource: 'system',
   useHardwareAcceleration: true,

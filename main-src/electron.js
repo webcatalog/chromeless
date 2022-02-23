@@ -27,12 +27,6 @@ const {
   getPreferences,
 } = require('./libs/preferences');
 
-// Activate the Sentry Electron SDK as early as possible in every process.
-if (process.env.NODE_ENV === 'production' && getPreference('sentry')) {
-  // eslint-disable-next-line global-require
-  require('./libs/sentry');
-}
-
 const { createMenu } = require('./libs/menu');
 const sendToAllWindows = require('./libs/send-to-all-windows');
 const loadListeners = require('./libs/listeners').load;
