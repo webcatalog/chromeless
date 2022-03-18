@@ -7,8 +7,6 @@
 ## Deprecation
 **Deprecated:** Chromeless is deprecated and will no longer receive updates. Nevertheless, the app will continue working as normal. If you're looking for a better alternative, check out **[WebCatalog](https://webcatalog.io/webcatalog/)**.
 
-**Chromeless** - Turn Any Websites into Chromium-based Apps.
-
 ## Introduction
 **Chromeless** is a free Mac app which lets you create Chromium-based, Firefox-based or WebKit-based apps (also known as site-specific browsers) from any websites.
 
