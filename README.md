@@ -4,11 +4,38 @@
 |---|
 |[![macOS](https://github.com/webcatalog/chromeless/workflows/macOS/badge.svg)](https://github.com/webcatalog/chromeless/actions?query=workflow:%22macOS%22)|
 
-**[Chromeless](https://webcatalog.io/chromeless/)** - Turn Any Websites into Chromium-based Apps.
+## Deprecation
+**Deprecated:** Chromeless is deprecated and will no longer receive updates. Nevertheless, the app will continue working as normal. If you're looking for a better alternative, check out **[WebCatalog](https://webcatalog.io/webcatalog/)**.
+
+## Introduction
+**Chromeless** is a free Mac app which lets you create Chromium-based, Firefox-based or WebKit-based apps (also known as site-specific browsers) from any websites.
+
+### How It Works
+Chromeless is a free and open-source app for Mac that lets you create a site-specific browser (also known as Chromium-based app, chromeless app, etc) out of any website or web application, effectively turning your favorite web apps into self-contained, distraction-free desktop apps, all powered by your daily web browsers.
+
+Supported Browser Engines:
+- Google Chrome
+- Microsoft Edge
+- Brave
+- Opera
+- Vivaldi
+- Chromium
+- Cốc Cốc
+- Yandex Browser
+- Mozilla Firefox
+- WebKit
+
+### Browser Instances
+Chromeless also lets you create traditional browser instances (also known as tabbed-style apps) that behave just like normal browsers but with their own cookies and storage.
+
+![Chromeless for Mac](build-resources/demos/screenshot-chromeless-app.png)
+![Chromeless for Mac - App Mode](build-resources/demos/screenshot-chromeless-youtube.png)
+![Chromeless for Mac - Browser Instance Mode](build-resources/demos/screenshot-chromeless-browser-instance.png)
+
 
 ---
 
-### Source Code
+## Source Code
 On the other hand, **the source code is freely available** for use, modification and distribution under the permissions, limitations and conditions listed in the [Mozilla Public License 2.0](LICENSE).
 
 ---
