@@ -4,7 +4,7 @@
 |---|
 |[![macOS](https://github.com/webcatalog/chromeless/workflows/macOS/badge.svg)](https://github.com/webcatalog/chromeless/actions?query=workflow:%22macOS%22)|
 
-** Deprecation
+## Deprecation
 **Deprecated:** Chromeless is deprecated and will no longer receive updates. Nevertheless, the app will continue working as normal. If you're looking for a better alternative, check out **[WebCatalog](https://webcatalog.io/webcatalog/)**.
 
 **Chromeless** - Turn Any Websites into Chromium-based Apps.
@@ -29,6 +29,10 @@ Supported Browser Engines:
 
 ### Browser Instances
 Chromeless also lets you create traditional browser instances (also known as tabbed-style apps) that behave just like normal browsers but with their own cookies and storage.
+
+![Chromeless for Mac](build-resources/demos/screenshot-chromeless-app.png)
+![Chromeless for Mac - App Mode](build-resources/demos/screenshot-chromeless-youtube.png)
+![Chromeless for Mac - Browser Instance Mode](build-resources/demos/screenshot-chromeless-browser-instance.png)
 
 
 ---
