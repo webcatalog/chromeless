@@ -69,9 +69,6 @@ const getElectronMainConfig = () => {
       cleanOnceBeforeBuildPatterns: ['libs'],
       cleanAfterEveryBuildPatterns: [],
     }),
-    new webpack.DefinePlugin({
-      'process.env.ELECTRON_APP_SENTRY_DSN': JSON.stringify(process.env.ELECTRON_APP_SENTRY_DSN),
-    }),
   ];
 
   const patterns = [
