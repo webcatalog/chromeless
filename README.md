@@ -5,7 +5,9 @@
 |[![macOS](https://github.com/webcatalog/chromeless/workflows/macOS/badge.svg)](https://github.com/webcatalog/chromeless/actions?query=workflow:%22macOS%22)|
 
 ## Deprecation
-**Deprecated:** Chromeless is deprecated and will no longer receive updates. Nevertheless, the app will continue working as normal. If you're looking for a better alternative, check out **[WebCatalog](https://webcatalog.io/webcatalog/)**.
+**Deprecated:** Chromeless is deprecated legacy software and will no longer receive feature updates. Nevertheless, the app will continue working and receiving maintainance updates.
+
+If you're looking for an alternative, check out **[WebCatalog](https://webcatalog.io/webcatalog/)**.
 
 ## Introduction
 **Chromeless** is a free Mac app which lets you create Chromium-based, Firefox-based or WebKit-based apps (also known as site-specific browsers) from any websites.
